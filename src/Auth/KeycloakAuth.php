@@ -5,6 +5,11 @@ namespace Simss\KeycloakAuth\Auth;
 use Jumbojett\OpenIDConnectClient;
 use Simss\KeycloakAuth\Config\KeycloakConfig;
 
+/**
+ * KeycloakAuth - OIDC client for Keycloak authentication
+ * 
+ * Handles the Authorization Code flow for SSR applications.
+ */
 class KeycloakAuth
 {
     private $oidcClient;
@@ -18,6 +23,7 @@ class KeycloakAuth
 
     private function initializeClient()
     {
+        //configures OIDC client using JumboJett library
         $this->oidcClient = new OpenIDConnectClient(
             $this->config->getIssuer(),
             $this->config->getClientId(),
@@ -44,13 +50,16 @@ class KeycloakAuth
             $this->oidcClient->setHttpProxy($proxy);
         }
 
-        // Set scopes
+        // Set client scopes
         $scopes = $this->config->getScopes();
         foreach ($scopes as $scope) {
             $this->oidcClient->addScope($scope);
         }
     }
 
+    /**
+     * Initiate or complete OIDC authentication
+     */
     public function authenticate()
     {
         try {
@@ -61,6 +70,9 @@ class KeycloakAuth
         }
     }
 
+    /**
+     * Get user info from Keycloak
+     */
     public function getUserInfo()
     {
         try {
@@ -76,35 +88,17 @@ class KeycloakAuth
         }
     }
 
-    public function getAccessToken()
-    {
-        return $this->oidcClient->getAccessToken();
-    }
-
-    public function getRefreshToken()
-    {
-        return $this->oidcClient->getRefreshToken();
-    }
-
+    /**
+     * Get ID token (needed for OIDC logout)
+     */
     public function getIdToken()
     {
         return $this->oidcClient->getIdToken();
     }
 
-    public function refreshToken($refreshToken)
-    {
-        try {
-            $this->oidcClient->refreshToken($refreshToken);
-            return [
-                'access_token' => $this->oidcClient->getAccessToken(),
-                'refresh_token' => $this->oidcClient->getRefreshToken(),
-                'id_token' => $this->oidcClient->getIdToken(),
-            ];
-        } catch (\Exception $e) {
-            throw new \RuntimeException("Token refresh failed: " . $e->getMessage(), 0, $e);
-        }
-    }
-
+    /**
+     * Get logout URL for OIDC single logout
+     */
     public function getLogoutUrl($idToken = null, $redirectUrl = null)
     {
         $logoutEndpoint = $this->config->getLogoutEndpoint();
@@ -125,25 +119,6 @@ class KeycloakAuth
         return $logoutEndpoint . '?' . http_build_query($params);
     }
 
-    public function validateToken($token)
-    {
-        try {
-            $this->oidcClient->setAccessToken($token);
-            return $this->oidcClient->verifyJWTsignature($token);
-        } catch (\Exception $e) {
-            return false;
-        }
-    }
-
-    public function introspectToken($token)
-    {
-        try {
-            return $this->oidcClient->introspectToken($token);
-        } catch (\Exception $e) {
-            throw new \RuntimeException("Token introspection failed: " . $e->getMessage(), 0, $e);
-        }
-    }
-
     private function getBaseUrl()
     {
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
@@ -151,6 +126,9 @@ class KeycloakAuth
         return $protocol . $host;
     }
 
+    /**
+     * Get the underlying OIDC client (for advanced usage)
+     */
     public function getClient()
     {
         return $this->oidcClient;

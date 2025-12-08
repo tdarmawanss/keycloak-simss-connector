@@ -112,7 +112,6 @@ $route['auth/login'] = 'AuthKeycloak/login';
 $route['auth/callback'] = 'AuthKeycloak/callback';
 $route['auth/logout'] = 'AuthKeycloak/logout';
 $route['auth/check'] = 'AuthKeycloak/check';
-$route['auth/refresh'] = 'AuthKeycloak/refresh';
 ```
 
 ### Step 7: Replace Old Auth Controller (Optional)
@@ -179,22 +178,77 @@ class Home extends CI_Controller
 
 #### Option B: Protect All Routes Globally
 
-Edit `application/config/hooks.php`:
+Edit `application/config/config.php`:
 
 ```php
 $config['enable_hooks'] = TRUE;
 ```
 
-Then add:
+Add in `application/config/hooks.php`:
+
 
 ```php
+// Use the provided hook function
 $hook['post_controller_constructor'][] = [
-    'class' => 'Simss\KeycloakAuth\Middleware\AuthMiddleware',
-    'function' => 'check',
-    'filename' => '',
-    'filepath' => '',
+    'function' => 'keycloak_auth_check',
+    'filename' => 'keycloak_auth_hook.php',
+    'filepath' => 'hooks',
 ];
 ```
+Copy and paste into `application/hooks/keycloak_auth_hook.php` the following:
+
+```php
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+/**
+ * Keycloak Authentication Hook Function
+ * 
+ * This function is called after the controller constructor.
+ * It checks if the user is authenticated via Keycloak.
+ */
+function keycloak_auth_check()
+{
+    // Create middleware instance with any additional excluded paths
+    $middleware = new \Simss\KeycloakAuth\Middleware\AuthMiddleware([
+        // Add any additional paths to exclude from authentication here
+        // '/api/public',
+    ]);
+    
+    // Check authentication
+    $middleware->check();
+}
+
+```
+
+This will enforce authentication globally, preserve the intended URL for redirect after login, and surface a gentle “session expired” notice on the login page when a session times out.
+
+### Step 10: (Optional) Role/Group-Based Access
+
+Roles and groups from Keycloak are stored in the session (`roles`, `groups`) with `lvl` kept for backward compatibility. To protect a controller:
+
+```php
+require_once APPPATH . 'third_party/keycloak-simss-connector/vendor/autoload.php';
+
+class DataStock extends CI_Controller
+{
+    public function __construct()
+    {
+        parent::__construct();
+        $middleware = new \Simss\KeycloakAuth\Middleware\AuthMiddleware();
+
+        // Require any of these roles or groups
+        $middleware->requireAnyRole(['admin', 'inventory']);
+        // Or a single role: $middleware->requireRole('admin');
+    }
+}
+```
+
+You can also create a base controller that calls `requireAnyRole()` in its constructor and extend it across protected controllers.
+
+### Step 11: (Optional) Rate Limiting
+
+`AuthController` applies a lightweight IP-based rate limit on `auth/login` (30 attempts / 60s) and `auth/callback` (60 attempts / 5m). It uses the CI cache driver if available, falling back to PHP session storage. No extra setup is required, but you can tune these limits in code if needed.
 
 ### Step 9: Update Views to Use New Session Data
 

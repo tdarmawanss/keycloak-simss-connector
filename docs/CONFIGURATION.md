@@ -198,6 +198,13 @@ return [
 ];
 ```
 
+## Built-in Behavior (non-configurable defaults)
+
+- **Role & group extraction**: Roles are collected from `roles`, `realm_access.roles`, and `resource_access.*.roles`. Groups are collected from `groups`. Both are stored in session (`roles`, `groups`), with `lvl` kept for backward compatibility (first role/group found).
+- **Session storage**: Only the ID token is stored (for OIDC logout). Auth state is server-side via CI session.
+- **Rate limiting**: Applied to `auth/login` (30 attempts / 60s) and `auth/callback` (60 attempts / 5m), per IP. Uses CI cache if available; falls back to PHP session.
+- **Idle timeout notice**: When a session expires, a gentle notice is shown on the login page via flash message.
+
 ## Environment-Specific Configurations
 
 ### Development Configuration

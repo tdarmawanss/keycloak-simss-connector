@@ -3,7 +3,7 @@
 /**
  * Keycloak OIDC Configuration
  *
- * Copy this file to your application's config directory and customize it.
+ * Copy this file to ==your application's== config directory and customize it.
  * For CodeIgniter: application/config/keycloak.php
  */
 

@@ -3,28 +3,27 @@
 namespace Simss\KeycloakAuth\Middleware;
 
 use Simss\KeycloakAuth\Auth\SessionManager;
-use Simss\KeycloakAuth\Auth\KeycloakAuth;
 
 /**
  * AuthMiddleware - Protect routes requiring authentication
  *
- * Can be used as a CodeIgniter hook or standalone
+ * For SSR applications, authentication is checked via server-side session.
+ * No token refresh logic - session expiry is managed by CodeIgniter.
  */
 class AuthMiddleware
 {
     protected $sessionManager;
-    protected $keycloakAuth;
     protected $excludedPaths;
 
     public function __construct(array $excludedPaths = [])
     {
         $this->sessionManager = new SessionManager();
-        $this->keycloakAuth = new KeycloakAuth();
         $this->excludedPaths = array_merge([
             '/auth',
             '/auth/login',
             '/auth/callback',
             '/auth/logout',
+            '/auth/check',
         ], $excludedPaths);
     }
 
@@ -41,15 +40,9 @@ class AuthMiddleware
             return true;
         }
 
-        // Check if user is authenticated
+        // Check if user is authenticated via session
         if (!$this->sessionManager->isAuthenticated()) {
             $this->redirectToLogin();
-            return false;
-        }
-
-        // Check if token is expired and try to refresh
-        if ($this->sessionManager->isTokenExpired()) {
-            $this->handleTokenExpiry();
             return false;
         }
 
@@ -62,38 +55,43 @@ class AuthMiddleware
     public function requireAuth()
     {
         if (!$this->sessionManager->isAuthenticated()) {
+            $this->setIdleNotice();
             $this->redirectToLogin();
             exit;
-        }
-
-        // Auto-refresh token if needed
-        if ($this->sessionManager->isTokenExpired()) {
-            $this->handleTokenExpiry();
         }
     }
 
     /**
-     * Handle token expiry by attempting refresh
+     * Check if user has a specific role
      */
-    protected function handleTokenExpiry()
+    public function hasRole($role)
     {
-        try {
-            $refreshToken = $this->sessionManager->getRefreshToken();
+        return $this->sessionManager->hasRole($role);
+    }
 
-            if (!$refreshToken) {
-                throw new \RuntimeException("No refresh token available");
-            }
+    /**
+     * Require a specific role, redirect to home if not authorized
+     */
+    public function requireRole($role)
+    {
+        $this->requireAuth();
 
-            // Attempt to refresh
-            $newTokens = $this->keycloakAuth->refreshToken($refreshToken);
+        if (!$this->hasRole($role)) {
+            // User is authenticated but doesn't have required role
+            $this->redirectToHome();
+            exit;
+        }
+    }
 
-            // Update session with new tokens
-            $this->sessionManager->updateTokens($newTokens);
+    /**
+     * Require any of the provided roles
+     */
+    public function requireAnyRole(array $roles)
+    {
+        $this->requireAuth();
 
-        } catch (\Exception $e) {
-            // Refresh failed, redirect to login
-            $this->sessionManager->destroy();
-            $this->redirectToLogin();
+        if (!$this->sessionManager->hasAnyRole($roles)) {
+            $this->redirectToHome();
             exit;
         }
     }
@@ -108,6 +106,7 @@ class AuthMiddleware
         // Store intended URL for post-login redirect
         $intendedUrl = $this->getCurrentUrl();
         $this->storeIntendedUrl($intendedUrl);
+        $this->setIdleNotice();
 
         if (function_exists('redirect')) {
             redirect($loginUrl);
@@ -118,15 +117,46 @@ class AuthMiddleware
     }
 
     /**
+     * Redirect to home page
+     */
+    protected function redirectToHome()
+    {
+        $homeUrl = function_exists('base_url')
+            ? base_url('home')
+            : $this->getBaseUrl() . '/home';
+
+        if (function_exists('redirect')) {
+            redirect($homeUrl);
+        } else {
+            header("Location: " . $homeUrl);
+            exit;
+        }
+    }
+
+    /**
      * Check if current path is excluded from authentication
+     * Uses exact matching to prevent false positives
      */
     protected function isExcludedPath($path)
     {
+        // Normalize path (remove trailing slash, ensure leading slash)
+        $path = '/' . trim($path, '/');
+        
         foreach ($this->excludedPaths as $excludedPath) {
-            if (strpos($path, $excludedPath) === 0) {
+            $excludedPath = '/' . trim($excludedPath, '/');
+            
+            // Exact match
+            if ($path === $excludedPath) {
+                return true;
+            }
+            
+            // Match path with trailing content (e.g., /auth/login matches /auth/login?foo=bar)
+            // But /auth should NOT match /authentication
+            if (strpos($path, $excludedPath . '/') === 0) {
                 return true;
             }
         }
+        
         return false;
     }
 
@@ -195,19 +225,19 @@ class AuthMiddleware
     }
 
     /**
-     * Get and clear intended URL
+     * Set a gentle notice for session expiry
      */
-    public function getIntendedUrl($default = null)
+    protected function setIdleNotice()
     {
         if (function_exists('get_instance')) {
             $ci =& get_instance();
-            $url = $ci->session->userdata('intended_url');
-            $ci->session->unset_userdata('intended_url');
-            return $url ?: $default;
+            $ci->load->library('session');
+            $ci->session->set_flashdata('auth_notice', 'Sesi Anda berakhir. Silakan login kembali.');
         } else {
-            $url = $_SESSION['intended_url'] ?? null;
-            unset($_SESSION['intended_url']);
-            return $url ?: $default;
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
+            $_SESSION['auth_notice'] = 'Sesi Anda berakhir. Silakan login kembali.';
         }
     }
 }

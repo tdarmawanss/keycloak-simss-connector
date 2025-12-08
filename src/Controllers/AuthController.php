@@ -9,7 +9,8 @@ use Simss\KeycloakAuth\Config\KeycloakConfig;
 /**
  * AuthController - Main authentication controller for Keycloak OIDC
  *
- * This controller can be used standalone or extended by CodeIgniter applications
+ * Implements the Authorization Code flow for SSR applications.
+ * Session is managed server-side; only ID token is stored for logout.
  */
 class AuthController
 {
@@ -17,6 +18,7 @@ class AuthController
     protected $sessionManager;
     protected $config;
     protected $ci;
+    protected $cache;
 
     public function __construct()
     {
@@ -24,7 +26,7 @@ class AuthController
         try {
             $this->config = KeycloakConfig::getInstance();
         } catch (\Exception $e) {
-            $this->handleError("Configuration error: " . $e->getMessage());
+            $this->handleError("Configuration error. Please contact administrator.");
             return;
         }
 
@@ -35,6 +37,15 @@ class AuthController
         // Load CodeIgniter instance if available
         if (function_exists('get_instance')) {
             $this->ci =& get_instance();
+            // Optional cache driver for rate limiting (uses file cache by default)
+            if (property_exists($this->ci, 'load')) {
+                try {
+                    $this->ci->load->driver('cache', ['adapter' => 'file']);
+                    $this->cache = $this->ci->cache;
+                } catch (\Exception $e) {
+                    // Fallback silently
+                }
+            }
         }
     }
 
@@ -43,16 +54,16 @@ class AuthController
      */
     public function index()
     {
-        // Destroy any existing session
-        $this->sessionManager->destroy();
-
+        // If already authenticated, redirect to home
         if ($this->sessionManager->isAuthenticated()) {
             $this->redirect($this->getHomeUrl());
             return;
         }
 
+        // Show login page
         $this->loadView('auth-login', [
             'login_url' => $this->getLoginUrl(),
+            'notice' => $this->getAuthNotice(),
         ]);
     }
 
@@ -68,6 +79,12 @@ class AuthController
                 return;
             }
 
+            // Basic rate limiting
+            if ($this->isRateLimited('auth_login', 20, 60)) { // 30 attempts per 60 seconds
+                $this->handleError("Terlalu banyak percobaan. Silakan tunggu sebentar.");
+                return;
+            }
+
             // Initiate OIDC authentication
             // This will redirect to Keycloak login page
             $this->keycloakAuth->authenticate();
@@ -77,7 +94,8 @@ class AuthController
             $this->handleSuccessfulAuthentication();
 
         } catch (\Exception $e) {
-            $this->handleError("Authentication failed: " . $e->getMessage());
+            $this->logError('Authentication failed', $e);
+            $this->handleError("Authentication failed. Please try again.");
         }
     }
 
@@ -87,6 +105,12 @@ class AuthController
     public function callback()
     {
         try {
+            // Basic rate limiting on callback as well
+            if ($this->isRateLimited('auth_callback', 60, 300)) { // 60 per 5 minutes
+                $this->handleError("Terlalu banyak percobaan. Silakan tunggu sebentar.");
+                return;
+            }
+
             // The authenticate method will handle the callback
             $this->keycloakAuth->authenticate();
 
@@ -94,7 +118,8 @@ class AuthController
             $this->handleSuccessfulAuthentication();
 
         } catch (\Exception $e) {
-            $this->handleError("Callback failed: " . $e->getMessage());
+            $this->logError('Callback failed', $e);
+            $this->handleError("Login failed. Please try again.");
         }
     }
 
@@ -104,7 +129,7 @@ class AuthController
     public function logout()
     {
         try {
-            // Get ID token before destroying session
+            // Get ID token before destroying session (for OIDC logout)
             $idToken = $this->sessionManager->getIdToken();
 
             // Destroy local session
@@ -120,52 +145,21 @@ class AuthController
         } catch (\Exception $e) {
             // Even if logout fails, destroy local session
             $this->sessionManager->destroy();
-            $this->handleError("Logout failed: " . $e->getMessage());
+            $this->logError('Logout failed', $e);
+            // Redirect to home anyway
+            $this->redirect($this->getBaseUrl());
         }
     }
 
     /**
-     * Refresh - Refresh access token using refresh token
-     */
-    public function refresh()
-    {
-        try {
-            $refreshToken = $this->sessionManager->getRefreshToken();
-
-            if (!$refreshToken) {
-                throw new \RuntimeException("No refresh token available");
-            }
-
-            // Refresh tokens
-            $newTokens = $this->keycloakAuth->refreshToken($refreshToken);
-
-            // Update session with new tokens
-            $this->sessionManager->updateTokens($newTokens);
-
-            $this->respondJson([
-                'success' => true,
-                'message' => 'Token refreshed successfully',
-            ]);
-
-        } catch (\Exception $e) {
-            $this->respondJson([
-                'success' => false,
-                'message' => 'Token refresh failed: ' . $e->getMessage(),
-            ], 401);
-        }
-    }
-
-    /**
-     * Check - Check authentication status
+     * Check - Check authentication status (for AJAX calls)
      */
     public function check()
     {
         $isAuthenticated = $this->sessionManager->isAuthenticated();
-        $isExpired = $this->sessionManager->isTokenExpired();
 
         $this->respondJson([
             'authenticated' => $isAuthenticated,
-            'token_expired' => $isExpired,
             'user' => $isAuthenticated ? $this->sessionManager->getSessionData() : null,
         ]);
     }
@@ -178,22 +172,61 @@ class AuthController
         // Get user information from Keycloak
         $userInfo = $this->keycloakAuth->getUserInfo();
 
-        // Get tokens
-        $tokens = [
-            'access_token' => $this->keycloakAuth->getAccessToken(),
-            'refresh_token' => $this->keycloakAuth->getRefreshToken(),
-            'id_token' => $this->keycloakAuth->getIdToken(),
-        ];
+        // Get ID token (needed for OIDC logout)
+        $idToken = $this->keycloakAuth->getIdToken();
 
-        // Create session
-        $this->sessionManager->createSession($userInfo, $tokens);
+        // Regenerate session ID to prevent session fixation attacks
+        $this->regenerateSession();
 
-        // Redirect to home page
-        $this->redirect($this->getHomeUrl());
+        // Create session with user info and ID token
+        $this->sessionManager->createSession($userInfo, $idToken);
+
+        // Redirect to intended URL or home
+        $intendedUrl = $this->getIntendedUrl();
+        $this->redirect($intendedUrl ?: $this->getHomeUrl());
     }
 
     /**
-     * Handle errors
+     * Regenerate session ID for security
+     */
+    protected function regenerateSession()
+    {
+        if ($this->ci) {
+            $this->ci->session->sess_regenerate(true);
+        } elseif (session_status() === PHP_SESSION_ACTIVE) {
+            session_regenerate_id(true);
+        }
+    }
+
+    /**
+     * Get and clear intended URL from session
+     */
+    protected function getIntendedUrl()
+    {
+        if ($this->ci) {
+            $url = $this->ci->session->userdata('intended_url');
+            $this->ci->session->unset_userdata('intended_url');
+            return $url ?: null;
+        } else {
+            $url = $_SESSION['intended_url'] ?? null;
+            unset($_SESSION['intended_url']);
+            return $url;
+        }
+    }
+
+    /**
+     * Retrieve notice (e.g., idle timeout) from flash/session
+     */
+    protected function getAuthNotice()
+    {
+        if ($this->ci) {
+            return $this->ci->session->flashdata('auth_notice') ?: null;
+        }
+        return $_SESSION['auth_notice'] ?? null;
+    }
+
+    /**
+     * Handle errors - show user-friendly message
      */
     protected function handleError($message)
     {
@@ -207,6 +240,26 @@ class AuthController
                 'error' => $message,
                 'login_url' => $this->getLoginUrl(),
             ]);
+        }
+    }
+
+    /**
+     * Log error for debugging (does not expose to user)
+     */
+    protected function logError($context, \Exception $e)
+    {
+        $message = sprintf(
+            "[KeycloakAuth] %s: %s in %s:%d",
+            $context,
+            $e->getMessage(),
+            $e->getFile(),
+            $e->getLine()
+        );
+
+        if (function_exists('log_message')) {
+            log_message('error', $message);
+        } else {
+            error_log($message);
         }
     }
 
@@ -228,10 +281,14 @@ class AuthController
         if ($this->ci) {
             $this->ci->load->view('pages/' . $view, $data);
         } else {
-            // Fallback: output simple HTML
-            echo "<html><body><pre>";
-            print_r($data);
-            echo "</pre></body></html>";
+            // Fallback: simple error page
+            echo "<!DOCTYPE html><html><head><title>Error</title></head><body>";
+            echo "<h1>Authentication Error</h1>";
+            echo "<p>" . htmlspecialchars($data['error'] ?? 'Unknown error') . "</p>";
+            if (!empty($data['login_url'])) {
+                echo "<p><a href='" . htmlspecialchars($data['login_url']) . "'>Try again</a></p>";
+            }
+            echo "</body></html>";
         }
     }
 
@@ -241,6 +298,62 @@ class AuthController
         header('Content-Type: application/json');
         echo json_encode($data);
         exit;
+    }
+
+    /**
+     * Simple rate limiter per IP and key
+     */
+    protected function isRateLimited($key, $limit, $windowSeconds)
+    {
+        $ip = $this->getClientIp();
+        $bucketKey = "rate_{$key}_{$ip}";
+        $now = time();
+
+        // Use CI cache if available
+        if ($this->cache && method_exists($this->cache, 'get')) {
+            $entry = $this->cache->get($bucketKey);
+            if ($entry && isset($entry['count'], $entry['expires_at']) && $entry['expires_at'] > $now) {
+                if ($entry['count'] >= $limit) {
+                    return true;
+                }
+                $entry['count'] += 1;
+            } else {
+                $entry = ['count' => 1, 'expires_at' => $now + $windowSeconds];
+            }
+            $this->cache->save($bucketKey, $entry, $windowSeconds);
+            return false;
+        }
+
+        // Fallback to PHP session storage
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (!isset($_SESSION['rate_limit'])) {
+            $_SESSION['rate_limit'] = [];
+        }
+        $entry = $_SESSION['rate_limit'][$bucketKey] ?? ['count' => 0, 'expires_at' => $now + $windowSeconds];
+        if ($entry['expires_at'] <= $now) {
+            $entry = ['count' => 0, 'expires_at' => $now + $windowSeconds];
+        }
+        if ($entry['count'] >= $limit) {
+            $_SESSION['rate_limit'][$bucketKey] = $entry;
+            return true;
+        }
+        $entry['count'] += 1;
+        $_SESSION['rate_limit'][$bucketKey] = $entry;
+        return false;
+    }
+
+    protected function getClientIp()
+    {
+        $keys = ['HTTP_CLIENT_IP','HTTP_X_FORWARDED_FOR','REMOTE_ADDR'];
+        foreach ($keys as $k) {
+            if (!empty($_SERVER[$k])) {
+                $ipList = explode(',', $_SERVER[$k]);
+                return trim($ipList[0]);
+            }
+        }
+        return 'unknown';
     }
 
     protected function isAjaxRequest()
