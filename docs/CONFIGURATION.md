@@ -249,28 +249,6 @@ return [
 ];
 ```
 
-### Environment File (.env)
-
-```env
-KEYCLOAK_ISSUER=https://keycloak.example.com/realms/simss
-KEYCLOAK_CLIENT_ID=simadis
-KEYCLOAK_CLIENT_SECRET=your-secret-here
-KEYCLOAK_REDIRECT_URI=https://your-app.com/auth/callback
-```
-
-### Using CodeIgniter .env (CI 4+) or dotenv library
-
-Install `vlucas/phpdotenv`:
-```bash
-composer require vlucas/phpdotenv
-```
-
-In `index.php` or bootstrap:
-```php
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->load();
-```
-
 ## Configuration Validation
 
 The configuration is automatically validated when loaded. Errors will be thrown for:
