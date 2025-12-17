@@ -1,0 +1,32 @@
+# Production Dockerfile for Keycloak with PTSS Custom Theme
+# Optimized for Azure Container Instances / Azure Container Apps
+
+FROM quay.io/keycloak/keycloak:latest
+
+# Copy custom theme to Keycloak themes directory
+COPY themes/ptss_keycloak_theme /opt/keycloak/themes/ptss_keycloak_theme
+
+# Set proper ownership
+USER root
+RUN chown -R keycloak:keycloak /opt/keycloak/themes/ptss_keycloak_theme
+USER keycloak
+
+# Production environment variables
+ENV KC_HEALTH_ENABLED=true
+ENV KC_METRICS_ENABLED=true
+ENV KC_HTTP_ENABLED=false
+ENV KC_HOSTNAME_STRICT=true
+ENV KC_HOSTNAME_STRICT_HTTPS=true
+ENV KC_PROXY=edge
+
+# Build Keycloak with production settings
+# This optimizes the image and improves startup time
+RUN /opt/keycloak/bin/kc.sh build \
+    --db=postgres \
+    --features=token-exchange,admin-fine-grained-authz \
+    --health-enabled=true \
+    --metrics-enabled=true
+
+# Default command for production
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
+CMD ["start", "--optimized"]

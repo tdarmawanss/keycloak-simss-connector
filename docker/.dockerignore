@@ -1,0 +1,24 @@
+# Exclude unnecessary files from Docker build context
+.git
+.gitignore
+*.md
+!themes/ptss_keycloak_theme/README.md
+!themes/ptss_keycloak_theme/login/resources/img/README.md
+
+# Exclude source code (only include theme files)
+src/
+vendor/
+composer.json
+composer.lock
+
+# Exclude IDE and system files
+.DS_Store
+.idea
+.vscode
+*.swp
+*.swo
+*~
+
+# Exclude documentation
+docs/
+README.md
