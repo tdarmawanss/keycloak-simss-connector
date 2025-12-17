@@ -5,15 +5,17 @@ namespace Simss\KeycloakAuth\Config;
 class KeycloakConfig
 {
     private $config;
+    private $configLoaded = false;
     private static $instance;
 
     private function __construct(array $config = [])
     {
-        if (empty($config)) {
-            $config = $this->loadConfigFile();
+        if (!empty($config)) {
+            $this->config = $config;
+            $this->configLoaded = true;
+            $this->validate();
         }
-        $this->config = $config;
-        $this->validate();
+        // If config is empty, we'll lazy load it on first access
     }
 
     public static function getInstance(array $config = [])
@@ -29,16 +31,32 @@ class KeycloakConfig
         self::$instance = null;
     }
 
-    private function loadConfigFile()
+    private function ensureConfigLoaded()
     {
-        // For CodeIgniter integration
-        if (function_exists('config_item')) {
-            $ci =& get_instance();
-            $ci->load->config('keycloak', TRUE);
-            return $ci->config->item('keycloak') ?: [];
+        if ($this->configLoaded) {
+            return;
         }
 
-        // Standalone loading
+        $this->config = $this->loadConfigFile();
+        $this->configLoaded = true;
+        $this->validate();
+    }
+
+    private function loadConfigFile()
+    {
+        // For CodeIgniter integration - CI should be ready by now
+        if (function_exists('config_item')) {
+            $ci =& get_instance();
+            if ($ci !== null) {
+                $ci->load->config('keycloak');
+                $keycloakConfig = $ci->config->item('keycloak');
+                if (is_array($keycloakConfig) && !empty($keycloakConfig)) {
+                    return $keycloakConfig;
+                }
+            }
+        }
+
+        // Standalone loading fallback
         $configPath = dirname(dirname(__DIR__)) . '/config/keycloak.php';
         if (file_exists($configPath)) {
             return require $configPath;
@@ -69,46 +87,55 @@ class KeycloakConfig
 
     public function get($key, $default = null)
     {
+        $this->ensureConfigLoaded();
         return $this->config[$key] ?? $default;
     }
 
     public function getIssuer()
     {
+        $this->ensureConfigLoaded();
         return $this->config['issuer'];
     }
 
     public function getClientId()
     {
+        $this->ensureConfigLoaded();
         return $this->config['client_id'];
     }
 
     public function getClientSecret()
     {
+        $this->ensureConfigLoaded();
         return $this->config['client_secret'];
     }
 
     public function getRedirectUri()
     {
+        $this->ensureConfigLoaded();
         return $this->config['redirect_uri'];
     }
 
     public function getTokenEndpoint()
     {
+        $this->ensureConfigLoaded();
         return $this->get('token_endpoint', $this->config['issuer'] . '/protocol/openid-connect/token');
     }
 
     public function getUserInfoEndpoint()
     {
+        $this->ensureConfigLoaded();
         return $this->get('userinfo_endpoint', $this->config['issuer'] . '/protocol/openid-connect/userinfo');
     }
 
     public function getAuthorizationEndpoint()
     {
+        $this->ensureConfigLoaded();
         return $this->get('authorization_endpoint', $this->config['issuer'] . '/protocol/openid-connect/auth');
     }
 
     public function getLogoutEndpoint()
     {
+        $this->ensureConfigLoaded();
         return $this->get('logout_endpoint', $this->config['issuer'] . '/protocol/openid-connect/logout');
     }
 
@@ -139,6 +166,7 @@ class KeycloakConfig
 
     public function toArray()
     {
+        $this->ensureConfigLoaded();
         return $this->config;
     }
 }

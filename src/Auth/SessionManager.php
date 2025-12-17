@@ -8,6 +8,9 @@ namespace Simss\KeycloakAuth\Auth;
  * For SSR applications, authentication state is managed via server-side sessions.
  * Only the ID token is stored (for OIDC logout). Session expiry is controlled
  * by CodeIgniter's session configuration, not token expiration.
+ * 
+ * IMPORTANT: Uses native PHP $_SESSION to maintain compatibility with the
+ * jumbojett OIDC library which stores state/nonce in $_SESSION.
  */
 class SessionManager
 {
@@ -15,21 +18,13 @@ class SessionManager
     const SESSION_KEY = 'keycloak_auth';
     const TOKEN_KEY = 'keycloak_id_token';
 
-    private $ci;
-    private $useCodeIgniter;
-
     public function __construct()
     {
-        $this->useCodeIgniter = function_exists('get_instance');
-
-        if ($this->useCodeIgniter) {
-            $this->ci =& get_instance();
-            $this->ci->load->library('session');
-        } else {
-            // Ensure native PHP session is started
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            }
+        // Always use native PHP session for compatibility with OIDC library
+        // The jumbojett OIDC library stores state/nonce in $_SESSION,
+        // so we must use the same session storage for auth data
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
         }
     }
 
@@ -58,17 +53,10 @@ class SessionManager
             'logged_in' => true,
         ];
 
-        if ($this->useCodeIgniter) {
-            $this->ci->session->set_userdata(self::SESSION_KEY, $userData);
-            // Store ID token separately (needed for OIDC logout)
-            if ($idToken) {
-                $this->ci->session->set_userdata(self::TOKEN_KEY, $idToken);
-            }
-        } else {
-            $_SESSION[self::SESSION_KEY] = $userData;
-            if ($idToken) {
-                $_SESSION[self::TOKEN_KEY] = $idToken;
-            }
+        // Use native PHP session for compatibility with OIDC library
+        $_SESSION[self::SESSION_KEY] = $userData;
+        if ($idToken) {
+            $_SESSION[self::TOKEN_KEY] = $idToken;
         }
 
         return $userData;
@@ -88,11 +76,7 @@ class SessionManager
      */
     public function getSessionData()
     {
-        if ($this->useCodeIgniter) {
-            return $this->ci->session->userdata(self::SESSION_KEY) ?: [];
-        } else {
-            return $_SESSION[self::SESSION_KEY] ?? [];
-        }
+        return $_SESSION[self::SESSION_KEY] ?? [];
     }
 
     /**
@@ -100,25 +84,38 @@ class SessionManager
      */
     public function getIdToken()
     {
-        if ($this->useCodeIgniter) {
-            return $this->ci->session->userdata(self::TOKEN_KEY) ?: null;
-        } else {
-            return $_SESSION[self::TOKEN_KEY] ?? null;
-        }
+        return $_SESSION[self::TOKEN_KEY] ?? null;
     }
 
     /**
      * Destroy the session (logout)
+     * 
+     * Properly destroys the session by:
+     * 1. Clearing all session variables from memory
+     * 2. Deleting the session cookie from browser
+     * 3. Destroying the session file on server
      */
     public function destroy()
     {
-        if ($this->useCodeIgniter) {
-            $this->ci->session->unset_userdata(self::SESSION_KEY);
-            $this->ci->session->unset_userdata(self::TOKEN_KEY);
-            $this->ci->session->sess_destroy();
-        } else {
-            unset($_SESSION[self::SESSION_KEY]);
-            unset($_SESSION[self::TOKEN_KEY]);
+        // Clear all session variables from $_SESSION superglobal
+        $_SESSION = [];
+        
+        // Delete the session cookie from browser
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(
+                session_name(),
+                '',
+                time() - 42000,
+                $params["path"],
+                $params["domain"],
+                $params["secure"],
+                $params["httponly"]
+            );
+        }
+        
+        // Destroy the session file on server
+        if (session_status() === PHP_SESSION_ACTIVE) {
             session_destroy();
         }
     }
