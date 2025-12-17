@@ -32,6 +32,11 @@ class AuthMiddleware
      */
     public function check()
     {
+        // Ensure native PHP session is started (required for SessionManager)
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
         // Get current path
         $currentPath = $this->getCurrentPath();
 

@@ -126,31 +126,75 @@ class AuthController
     /**
      * Logout - Clear session and redirect to Keycloak logout
      */
-    public function logout()
-    {
-        try {
-            // Get ID token before destroying session (for OIDC logout)
-            $idToken = $this->sessionManager->getIdToken();
+   // Replace the logout() method in AuthController.php (lines 129-166):
 
-            // Destroy local session
-            $this->sessionManager->destroy();
-
-            // Build logout URL
-            $postLogoutRedirect = $this->getBaseUrl();
-            $logoutUrl = $this->keycloakAuth->getLogoutUrl($idToken, $postLogoutRedirect);
-
-            // Redirect to Keycloak logout
-            $this->redirect($logoutUrl);
-
-        } catch (\Exception $e) {
-            // Even if logout fails, destroy local session
-            $this->sessionManager->destroy();
-            $this->logError('Logout failed', $e);
-            // Redirect to home anyway
-            $this->redirect($this->getBaseUrl());
+public function logout()
+{
+    try {
+        // Ensure session is started
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
         }
-    }
 
+        /* DEBUG: Show raw session FIRST
+        echo "<pre>\n";
+        echo "=== LOGOUT DEBUG - RAW SESSION ===\n";
+        echo "Session ID: " . session_id() . "\n";
+        echo "Session status: " . session_status() . " (2=active)\n";
+        echo "\$_SESSION contents:\n";
+        print_r($_SESSION);
+        echo "\n";
+        */
+
+        // Get ID token before destroying session (for OIDC logout)
+        $idToken = $this->sessionManager->getIdToken();
+
+        /*
+        echo "=== LOGOUT DEBUG - ID TOKEN CHECK ===\n";
+        echo "getIdToken() returned: " . ($idToken ? "YES (length: " . strlen($idToken) . ")" : "NULL") . "\n";
+        echo "Direct \$_SESSION['keycloak_id_token']: " . (isset($_SESSION['keycloak_id_token']) ? "EXISTS" : "NOT SET") . "\n";
+
+        if ($idToken) {
+            echo "ID Token (first 80 chars): " . substr($idToken, 0, 80) . "...\n";
+        }
+        */
+
+        // Build logout URL before destroying session
+        $postLogoutRedirect = $this->getBaseUrl();
+        $logoutUrl = $this->keycloakAuth->getLogoutUrl($idToken, $postLogoutRedirect);
+
+        /*
+        echo "\n=== LOGOUT URL ===\n";
+        echo "Has id_token_hint: " . (strpos($logoutUrl, 'id_token_hint') !== false ? "YES" : "NO - MISSING!") . "\n";
+        echo "Full URL: " . $logoutUrl . "\n";
+
+        // NOW destroy the session
+        echo "\n--- Calling sessionManager->destroy() ---\n";
+        */
+
+        $this->sessionManager->destroy();
+
+        /*
+        echo "\n=== AFTER DESTROY ===\n";
+        echo "Session destroyed successfully\n";
+
+        echo "</pre>";
+        echo "<p><a href='" . htmlspecialchars($logoutUrl) . "'>Click here to continue to Keycloak logout</a></p>";
+        exit;
+        // END DEBUG
+        */
+
+        // Redirect to Keycloak logout
+        $this->redirect($logoutUrl);
+
+    } catch (\Exception $e) {
+        // Even if logout fails, destroy local session
+        $this->sessionManager->destroy();
+        $this->logError('Logout failed', $e);
+        // Redirect to home anyway
+        $this->redirect($this->getBaseUrl());
+    }
+}
     /**
      * Check - Check authentication status (for AJAX calls)
      */
@@ -175,11 +219,37 @@ class AuthController
         // Get ID token (needed for OIDC logout)
         $idToken = $this->keycloakAuth->getIdToken();
 
+        /* DEBUG: Show what we got
+        echo "<pre>\n";
+        echo "=== LOGIN SUCCESS DEBUG ===\n";
+        echo "Session ID: " . session_id() . "\n";
+        echo "ID Token received: " . ($idToken ? "YES (length: " . strlen($idToken) . ")" : "NO") . "\n";
+        echo "ID Token (first 50 chars): " . ($idToken ? substr($idToken, 0, 50) . "..." : "NULL") . "\n";
+        echo "User: " . ($userInfo->preferred_username ?? $userInfo->sub ?? 'unknown') . "\n";
+        echo "</pre>";
+        // END DEBUG
+        */
+
         // Regenerate session ID to prevent session fixation attacks
         $this->regenerateSession();
 
         // Create session with user info and ID token
         $this->sessionManager->createSession($userInfo, $idToken);
+
+        /* DEBUG: Verify session was saved
+        echo "<pre>\n";
+        echo "=== AFTER SESSION SAVE ===\n";
+        echo "New Session ID: " . session_id() . "\n";
+        echo "\$_SESSION keys: " . implode(", ", array_keys($_SESSION ?? [])) . "\n";
+        echo "keycloak_id_token saved: " . (isset($_SESSION['keycloak_id_token']) ? "YES" : "NO") . "\n";
+        $intendedUrl = $this->getIntendedUrl();
+        $redirectTo = $intendedUrl ?: $this->getHomeUrl();
+        echo "Will redirect to: " . $redirectTo . "\n";
+        echo "</pre>";
+        echo "<p><a href='" . htmlspecialchars($redirectTo) . "'>Click here to continue</a></p>";
+        exit;
+        // END DEBUG
+        */
 
         // Redirect to intended URL or home
         $intendedUrl = $this->getIntendedUrl();
