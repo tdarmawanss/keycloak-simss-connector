@@ -1,0 +1,309 @@
+/*
+ * PTSS Keycloak Theme - Custom Styles
+ * Customize logo and header for login screen
+ */
+
+/* Custom Header Wrapper - Integrated into login form */
+#kc-header {
+    display: block !important;
+    visibility: visible !important;
+    width: 100% !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    position: relative;
+    z-index: 1;
+}
+
+#kc-header-wrapper {
+    display: block !important;
+    visibility: visible !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    background: #f5f5f5 !important;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 20px 20px 15px 20px !important;
+    margin: 0 !important;
+    text-align: center;
+    box-sizing: border-box;
+    min-height: 140px;
+    transition: background-color 0.2s ease;
+}
+
+/* Custom Logo Styling - Using img tag approach */
+.login-pf-brand {
+    display: block !important;
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    margin: 0 auto 10px;
+    padding: 0;
+    text-align: center;
+}
+
+.login-pf-brand img.custom-logo {
+    max-width: 100%;
+    height: auto;
+    max-height: 100px;
+    width: auto;
+    display: block;
+    margin: 0 auto;
+    object-fit: contain;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.login-pf-brand img.custom-logo:hover {
+    transform: scale(1.02);
+    opacity: 0.9;
+}
+
+/* Header Text Styling */
+#kc-header-wrapper .kc-logo-text,
+#kc-header-wrapper .realm-name {
+    color: #333;
+    font-size: 18px;
+    font-weight: 500;
+    margin-top: 8px;
+    letter-spacing: 0.3px;
+}
+
+/* Main Login Container - Revert to original Keycloak background */
+.login-pf {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+body {
+    min-height: 100vh;
+}
+
+/* Customize the login card - Header integrated at top */
+.card-pf {
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.04);
+    padding: 0;
+    margin: 30px auto;
+    max-width: 450px;
+    width: 100%;
+    border: 1px solid #e0e0e0;
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+}
+
+.card-pf:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+
+/* Content area inside card */
+.card-pf #kc-content {
+    padding: 24px 32px 32px 32px;
+}
+
+/* Form header inside card */
+.card-pf header {
+    padding: 0 32px;
+    padding-top: 12px;
+}
+
+/* Form Header inside card */
+#kc-content .kc-form-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.kc-page-title {
+    font-size: 22px;
+    color: #1a1a1a;
+    margin-bottom: 0;
+    font-weight: 500;
+    letter-spacing: -0.2px;
+}
+
+/* Customize buttons - Red sign-in button */
+#kc-form-buttons .btn-primary,
+.pf-c-button.pf-m-primary,
+#kc-login {
+    background-color: #cc0000 !important;
+    background: #cc0000 !important;
+    border: none !important;
+    color: #ffffff !important;
+    font-weight: 500;
+    padding: 14px 32px;
+    width: 100%;
+    font-size: 16px;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+#kc-form-buttons .btn-primary:hover,
+.pf-c-button.pf-m-primary:hover,
+#kc-login:hover {
+    background-color: #b30000 !important;
+    background: #b30000 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(204, 0, 0, 0.3);
+}
+
+#kc-form-buttons .btn-primary:active,
+.pf-c-button.pf-m-primary:active,
+#kc-login:active {
+    background-color: #990000 !important;
+    background: #990000 !important;
+    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba(204, 0, 0, 0.2);
+}
+
+/* Input fields styling */
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    border: 1px solid #d0d0d0;
+    padding: 16px 16px;
+    transition: all 0.2s ease;
+    font-size: 15px;
+    background-color: #ffffff;
+    width: 100%;
+    box-sizing: border-box;
+    color: #1a1a1a;
+    line-height: 15px;
+    min-height: 48px;
+}
+
+input[type="text"]:hover,
+input[type="password"]:hover,
+input[type="email"]:hover {
+    border-color: #b0b0b0;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus {
+    border-color: #888888;
+    border-width: 2px;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(136, 136, 136, 0.12);
+    background-color: #fafafa;
+    transform: scale(1.02);
+    padding: 17px 17px;
+}
+
+input[type="text"]::placeholder,
+input[type="password"]::placeholder,
+input[type="email"]::placeholder {
+    color: #999;
+    opacity: 1;
+}
+
+/* Links */
+a {
+    color: #cc0000;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    font-size: 14px;
+}
+
+a:hover {
+    color: #b30000;
+    text-decoration: underline;
+}
+
+a:active {
+    color: #990000;
+}
+
+/* Form labels */
+label,
+#kc-form label,
+.form-group label,
+.pf-c-form__group label,
+[for*="username"],
+[for*="password"],
+[for*="email"] {
+    font-weight: 500 !important;
+    color: #333 !important;
+    font-size: 16px !important;
+    margin-bottom: 8px !important;
+    display: block !important;
+    letter-spacing: 0.2px !important;
+}
+
+/* Form groups */
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Alert messages */
+.alert {
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    border-left: 3px solid;
+    font-size: 14px;
+    transition: opacity 0.2s ease;
+}
+
+.alert:hover {
+    opacity: 0.95;
+}
+
+/* Checkbox styling */
+input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+input[type="checkbox"]:hover {
+    transform: scale(1.1);
+}
+
+input[type="checkbox"]:checked {
+    accent-color: #cc0000;
+}
+
+/* Additional interactive elements */
+#kc-form-buttons {
+    margin-top: 24px;
+}
+
+#kc-form-options {
+    margin-top: 16px;
+    font-size: 14px;
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    #kc-header-wrapper {
+        padding: 16px 16px 12px 16px;
+        min-height: 120px;
+    }
+    
+    .login-pf-brand img.custom-logo {
+        max-height: 80px;
+    }
+    
+    .card-pf {
+        margin: 20px;
+    }
+    
+    .card-pf #kc-content {
+        padding: 20px 24px 24px 24px;
+    }
+    
+    .card-pf header {
+        padding: 0 24px;
+        padding-top: 12px;
+    }
+    
+    .kc-page-title {
+        font-size: 20px;
+    }
+}
