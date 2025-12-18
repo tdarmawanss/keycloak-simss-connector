@@ -5,17 +5,15 @@ namespace Simss\KeycloakAuth\Config;
 class KeycloakConfig
 {
     private $config;
-    private $configLoaded = false;
     private static $instance;
 
     private function __construct(array $config = [])
     {
-        if (!empty($config)) {
-            $this->config = $config;
-            $this->configLoaded = true;
-            $this->validate();
+        if (empty($config)) {
+            $config = $this->loadConfigFile();
         }
-        // If config is empty, we'll lazy load it on first access
+        $this->config = $config;
+        $this->validate();
     }
 
     public static function getInstance(array $config = [])
@@ -31,32 +29,16 @@ class KeycloakConfig
         self::$instance = null;
     }
 
-    private function ensureConfigLoaded()
-    {
-        if ($this->configLoaded) {
-            return;
-        }
-
-        $this->config = $this->loadConfigFile();
-        $this->configLoaded = true;
-        $this->validate();
-    }
-
     private function loadConfigFile()
     {
-        // For CodeIgniter integration - CI should be ready by now
+        // For CodeIgniter integration
         if (function_exists('config_item')) {
             $ci =& get_instance();
-            if ($ci !== null) {
-                $ci->load->config('keycloak');
-                $keycloakConfig = $ci->config->item('keycloak');
-                if (is_array($keycloakConfig) && !empty($keycloakConfig)) {
-                    return $keycloakConfig;
-                }
-            }
+            $ci->load->config('keycloak', TRUE);
+            return $ci->config->item('keycloak') ?: [];
         }
 
-        // Standalone loading fallback
+        // Standalone loading
         $configPath = dirname(dirname(__DIR__)) . '/config/keycloak.php';
         if (file_exists($configPath)) {
             return require $configPath;
@@ -87,55 +69,46 @@ class KeycloakConfig
 
     public function get($key, $default = null)
     {
-        $this->ensureConfigLoaded();
         return $this->config[$key] ?? $default;
     }
 
     public function getIssuer()
     {
-        $this->ensureConfigLoaded();
         return $this->config['issuer'];
     }
 
     public function getClientId()
     {
-        $this->ensureConfigLoaded();
         return $this->config['client_id'];
     }
 
     public function getClientSecret()
     {
-        $this->ensureConfigLoaded();
         return $this->config['client_secret'];
     }
 
     public function getRedirectUri()
     {
-        $this->ensureConfigLoaded();
         return $this->config['redirect_uri'];
     }
 
     public function getTokenEndpoint()
     {
-        $this->ensureConfigLoaded();
         return $this->get('token_endpoint', $this->config['issuer'] . '/protocol/openid-connect/token');
     }
 
     public function getUserInfoEndpoint()
     {
-        $this->ensureConfigLoaded();
         return $this->get('userinfo_endpoint', $this->config['issuer'] . '/protocol/openid-connect/userinfo');
     }
 
     public function getAuthorizationEndpoint()
     {
-        $this->ensureConfigLoaded();
         return $this->get('authorization_endpoint', $this->config['issuer'] . '/protocol/openid-connect/auth');
     }
 
     public function getLogoutEndpoint()
     {
-        $this->ensureConfigLoaded();
         return $this->get('logout_endpoint', $this->config['issuer'] . '/protocol/openid-connect/logout');
     }
 
@@ -164,9 +137,28 @@ class KeycloakConfig
         return $this->get('http_proxy', null);
     }
 
+    /**
+     * Get token refresh buffer (seconds before expiry to trigger refresh)
+     *
+     * @return int Buffer in seconds (default: 60)
+     */
+    public function getTokenRefreshBuffer()
+    {
+        return $this->get('token_refresh_buffer', 60);
+    }
+
+    /**
+     * Check if silent SSO re-authentication is enabled
+     *
+     * @return bool Default: true
+     */
+    public function isSilentSsoEnabled()
+    {
+        return $this->get('enable_silent_sso', true);
+    }
+
     public function toArray()
     {
-        $this->ensureConfigLoaded();
         return $this->config;
     }
 }
