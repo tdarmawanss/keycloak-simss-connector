@@ -4,10 +4,11 @@ namespace Simss\KeycloakAuth\Auth;
 
 /**
  * SessionManager - Manages server-side session for SSR OIDC authentication
+ * This class is NOT exposed to the client, to be used internally by the connector.
  * 
  * For SSR applications, authentication state is managed via server-side sessions.
- * Only the ID token is stored (for OIDC logout). Session expiry is controlled
- * by CodeIgniter's session configuration, not token expiration.
+ * ID token is stored (for OIDC logout). Access token is stored for keycloak getuserinfo(). 
+ * Session expiry is controlled by CodeIgniter's session configuration, not token expiration.
  * 
  * IMPORTANT: Uses native PHP $_SESSION to maintain compatibility with the
  * jumbojett OIDC library which stores state/nonce in $_SESSION.

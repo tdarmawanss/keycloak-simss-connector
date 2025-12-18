@@ -8,7 +8,8 @@ use Simss\KeycloakAuth\Config\KeycloakConfig;
 /**
  * KeycloakAuth - OIDC client for Keycloak authentication
  * 
- * Handles the Authorization Code flow for SSR applications.
+ * Handles the Authorization Code flow for SSR applications, using Keycloak.
+ * This class is NOT exposed to the client, to be used internally by the connector.
  * 
  * NOTE: This class uses a hybrid approach:
  * - The jumbojett/OpenIDConnectClient library is used for initiating the login
@@ -183,6 +184,7 @@ class KeycloakAuth
     /**
      * Fetch user information from Keycloak's userinfo endpoint
      * 
+     * Requires access token. 
      * Must be called after successful authenticate() which obtains the access token.
      * Uses direct cURL for consistency with token exchange.
      * 
