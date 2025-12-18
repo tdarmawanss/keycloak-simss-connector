@@ -2,22 +2,25 @@
 
 namespace Simss\KeycloakAuth\Middleware;
 
+use Simss\KeycloakAuth\Auth\KeycloakAuth;
 use Simss\KeycloakAuth\Auth\SessionManager;
 
 /**
  * AuthMiddleware - Protect routes requiring authentication
  *
  * For SSR applications, authentication is checked via server-side session.
- * No token refresh logic - session expiry is managed by CodeIgniter.
+ * Implements automatic token refresh and silent SSO re-authentication.
  */
 class AuthMiddleware
 {
     protected $sessionManager;
+    protected $keycloakAuth;
     protected $excludedPaths;
 
-    public function __construct(array $excludedPaths = [])
+    public function __construct(array $excludedPaths = [], KeycloakAuth $keycloakAuth = null)
     {
         $this->sessionManager = new SessionManager();
+        $this->keycloakAuth = $keycloakAuth ?: new KeycloakAuth();
         $this->excludedPaths = array_merge([
             '/auth',
             '/auth/login',
@@ -45,8 +48,8 @@ class AuthMiddleware
             return true;
         }
 
-        // Check if user is authenticated via session
-        if (!$this->sessionManager->isAuthenticated()) {
+        // Check if user is authenticated with valid token
+        if (!$this->isAuthenticatedWithValidToken()) {
             $this->redirectToLogin();
             return false;
         }
@@ -59,7 +62,7 @@ class AuthMiddleware
      */
     public function requireAuth()
     {
-        if (!$this->sessionManager->isAuthenticated()) {
+        if (!$this->isAuthenticatedWithValidToken()) {
             $this->setIdleNotice();
             $this->redirectToLogin();
             exit;
@@ -98,6 +101,128 @@ class AuthMiddleware
         if (!$this->sessionManager->hasAnyRole($roles)) {
             $this->redirectToHome();
             exit;
+        }
+    }
+
+    /**
+     * Check if user is authenticated AND has valid tokens
+     * Automatically refreshes tokens if needed
+     *
+     * @return bool True if authenticated with valid token
+     */
+    protected function isAuthenticatedWithValidToken()
+    {
+        // Step 1: Check basic session authentication
+        if (!$this->sessionManager->isAuthenticated()) {
+            return false;
+        }
+
+        // Step 2: Check if tokens exist (migration path)
+        if (!$this->sessionManager->getAccessToken()) {
+            // Legacy session without tokens - force re-login
+            $this->sessionManager->destroy();
+            return false;
+        }
+
+        // Step 3: Check token expiry
+        if (!$this->sessionManager->isTokenExpired()) {
+            // Token is valid, user is authenticated
+            return true;
+        }
+
+        // Step 4: Token expired - attempt refresh
+        try {
+            return $this->attemptTokenRefresh();
+        } catch (\Exception $e) {
+            // Refresh failed - log and treat as unauthenticated
+            $this->logTokenRefreshError($e);
+            return false;
+        }
+    }
+
+    /**
+     * Attempt to refresh access token or initiate silent SSO re-auth
+     *
+     * @return bool True if token refreshed successfully
+     */
+    protected function attemptTokenRefresh()
+    {
+        // Check if we have a refresh token
+        $refreshToken = $this->sessionManager->getRefreshToken();
+
+        if (!$refreshToken) {
+            // No refresh token - clear session and require login
+            $this->sessionManager->destroy();
+            return false;
+        }
+
+        // Attempt token refresh
+        try {
+            $this->keycloakAuth->refreshAccessToken();
+
+            // Refresh successful - user remains authenticated
+            return true;
+
+        } catch (\RuntimeException $e) {
+            // Token refresh failed
+            // This typically means refresh token is expired or invalid
+
+            // Check if we should attempt silent SSO re-auth
+            if ($this->shouldAttemptSilentSso($e)) {
+                // Clear current session
+                $this->sessionManager->destroy();
+
+                // Attempt silent SSO re-authentication
+                $this->keycloakAuth->silentSsoReauth();
+                exit;  // silentSsoReauth() redirects
+            }
+
+            // Clear session and require login
+            $this->sessionManager->destroy();
+            return false;
+        }
+    }
+
+    /**
+     * Determine if we should attempt silent SSO re-authentication
+     *
+     * @param \RuntimeException $refreshError The error from token refresh
+     * @return bool True if should attempt silent SSO
+     */
+    protected function shouldAttemptSilentSso(\RuntimeException $refreshError)
+    {
+        $errorMessage = $refreshError->getMessage();
+
+        // Attempt silent SSO for these conditions:
+        // 1. HTTP 400 with "invalid_grant" (expired refresh token)
+        // 2. HTTP 400 with "Token is not active" (expired refresh token)
+
+        if (stripos($errorMessage, 'invalid_grant') !== false) {
+            return true;
+        }
+
+        if (stripos($errorMessage, 'not active') !== false) {
+            return true;
+        }
+
+        // For other errors (network, server error), don't attempt SSO
+        return false;
+    }
+
+    /**
+     * Log token refresh errors for debugging
+     */
+    protected function logTokenRefreshError(\Exception $e)
+    {
+        $message = sprintf(
+            "[KeycloakAuth] Token refresh failed: %s",
+            $e->getMessage()
+        );
+
+        if (function_exists('log_message')) {
+            log_message('info', $message);
+        } else {
+            error_log($message);
         }
     }
 

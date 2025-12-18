@@ -7,10 +7,113 @@ A shared authentication module for SIMSS applications using Keycloak and OpenID 
 - Complete OIDC authentication flow
 - Ready-to-use authentication controller
 - Session management compatible with CodeIgniter
-- Token refresh mechanism
+- Automatic token refresh with silent SSO re-authentication
 - Route protection middleware
 - Comprehensive test suite
 - Docker-based test environment
+
+## Token Management & Session Lifecycle
+
+This connector implements proper OAuth2/OIDC token management to ensure your app session lifetime never exceeds Keycloak's token lifetimes.
+
+### How Sessions Work
+
+When a user logs in, three things are created:
+
+1. **Access Token** (5 minutes) - Used to fetch user info from Keycloak
+2. **Refresh Token** (30 minutes) - Used to get new access tokens without re-login
+3. **SSO Session** (10 hours) - Keycloak's single sign-on session
+
+Your app session is automatically managed based on these token lifetimes.
+
+### Automatic Token Refresh
+
+When the access token expires (every 5 minutes), the middleware automatically refreshes it using the refresh token. This happens silently in the background - users never notice.
+
+**User Experience**: User keeps working normally, no interruption.
+
+### Silent SSO Re-Authentication
+
+When the refresh token expires (after 30 minutes), the app can't refresh anymore. But if the user's Keycloak SSO session is still valid (10-hour lifetime), the connector uses **Silent SSO** to automatically re-authenticate without asking for credentials.
+
+#### How Silent SSO Works
+
+1. **Refresh token expires** (30 minutes after login)
+2. **App redirects to Keycloak** with `prompt=none` parameter
+3. **Keycloak checks SSO session cookie**:
+   - **If SSO valid**: Returns new authorization code (no login page shown)
+   - **If SSO expired**: Returns `login_required` error
+4. **If successful**: App exchanges code for fresh tokens, user continues seamlessly
+5. **If failed**: User sees "Session expired" and must re-login
+
+#### User Experience Examples
+
+**Active User (within 10 hours)**:
+```
+0:00  - Login with username/password
+0:05  - Access token expires → auto-refresh (invisible)
+0:30  - Refresh token expires → silent SSO (1-second flicker)
+1:00  - Another silent SSO (if still active)
+10:00 - SSO session expires → must re-login
+```
+
+**User Returns After Lunch (45 minutes away)**:
+```
+0:00 - Login and use app
+0:35 - Close laptop, go to lunch
+1:20 - Return and click something
+     → Silent SSO triggers automatically
+     → User continues working (no password needed)
+```
+
+**User Returns Next Day (16 hours away)**:
+```
+Day 1, 17:00 - Login and close laptop
+Day 2, 09:00 - Open laptop and click something
+             → SSO session expired (10-hour limit)
+             → User must enter username/password
+```
+
+### Session Expiry Behavior
+
+| Time Since Login | What Happens | User Action Required |
+|-----------------|--------------|---------------------|
+| 0-5 minutes | Access token valid | None - seamless |
+| 5-30 minutes | Auto-refresh access token | None - seamless |
+| 30 min - 10 hours | Silent SSO re-authentication | None - tiny redirect flicker |
+| After 10 hours | SSO session expired | Re-enter username/password |
+
+### Configuration
+
+Enable refresh tokens by adding `offline_access` scope:
+
+```php
+'scopes' => ['openid', 'profile', 'email', 'offline_access'],
+```
+
+**Optional Configuration**:
+
+```php
+// Refresh 60 seconds before token expiry (prevents edge cases)
+'token_refresh_buffer' => 60,
+
+// Enable/disable silent SSO re-authentication
+'enable_silent_sso' => true,  // Default: true
+```
+
+**Disable Silent SSO** (force re-login after 30 minutes for high-security apps):
+```php
+'enable_silent_sso' => false,
+```
+
+### Security Notes
+
+- **Tokens stored server-side only** - Never exposed to the browser
+- **CSRF protection** - State parameter validates all authentication flows
+- **SSO session protection** - Keycloak manages SSO session security
+- **Automatic cleanup** - Tokens cleared on logout
+
+For more details, see [CONFIGURATION.md](docs/CONFIGURATION.md).
 
 ## Installation
 

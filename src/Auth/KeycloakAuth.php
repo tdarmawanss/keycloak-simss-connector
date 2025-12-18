@@ -28,27 +28,31 @@ class KeycloakAuth
 {
     /** @var OpenIDConnectClient Used only for generating login redirect */
     private $oidcClient;
-    
+
     /** @var KeycloakConfig */
     private $config;
-    
+
+    /** @var SessionManager */
+    private $sessionManager;
+
     /** @var string|null Access token from token exchange */
     private $accessToken;
-    
+
     /** @var string|null ID token from token exchange (needed for logout) */
     private $idToken;
-    
+
     /** @var object|null Full token response from Keycloak */
     private $tokenResponse;
 
-    public function __construct(KeycloakConfig $config = null)
+    public function __construct(KeycloakConfig $config = null, SessionManager $sessionManager = null)
     {
         // Native PHP session required for storing OAuth state parameter
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        
+
         $this->config = $config ?: KeycloakConfig::getInstance();
+        $this->sessionManager = $sessionManager ?: new SessionManager();
         $this->initializeClient();
     }
 
@@ -176,7 +180,18 @@ class KeycloakAuth
         
         $this->accessToken = $this->tokenResponse->access_token;
         $this->idToken = $this->tokenResponse->id_token ?? null;
-        
+
+        // Extract and persist ALL tokens to session
+        $tokens = [
+            'access_token' => $this->tokenResponse->access_token,
+            'refresh_token' => $this->tokenResponse->refresh_token ?? null,
+            'id_token' => $this->tokenResponse->id_token ?? null,
+            'expires_in' => $this->tokenResponse->expires_in ?? 300,
+        ];
+
+        // Persist to SessionManager (not just memory)
+        $this->sessionManager->updateTokens($tokens);
+
         // Clear the state from session (one-time use for CSRF protection)
         unset($_SESSION['openid_connect_state']);
     }
@@ -234,15 +249,143 @@ class KeycloakAuth
 
     /**
      * Get the ID token obtained during authentication
-     * 
+     *
      * The ID token is required for OIDC-compliant single logout (RP-initiated logout).
      * It's passed as id_token_hint to Keycloak's end_session_endpoint.
-     * 
+     *
      * @return string|null The ID token JWT, or null if not available
      */
     public function getIdToken()
     {
         return $this->idToken;
+    }
+
+    /**
+     * Get the full token response from Keycloak
+     *
+     * @return object|null Token response object or null
+     */
+    public function getTokenResponse()
+    {
+        return $this->tokenResponse;
+    }
+
+    /**
+     * Refresh access token using refresh token
+     *
+     * Uses the OAuth2 refresh_token grant to obtain new access and refresh tokens.
+     * This extends the session without requiring user interaction.
+     *
+     * @return bool True on success
+     * @throws \RuntimeException On refresh failure (expired refresh token, network error, etc.)
+     */
+    public function refreshAccessToken()
+    {
+        // Get refresh token from session
+        $refreshToken = $this->sessionManager->getRefreshToken();
+
+        if (!$refreshToken) {
+            throw new \RuntimeException("No refresh token available - cannot refresh");
+        }
+
+        $tokenEndpoint = $this->config->getTokenEndpoint();
+
+        // Setup cURL for token refresh request
+        $ch = curl_init($tokenEndpoint);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->config->shouldVerifyPeer());
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, $this->config->shouldVerifyHost() ? 2 : 0);
+
+        // POST refresh token grant
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+            'grant_type' => 'refresh_token',
+            'client_id' => $this->config->getClientId(),
+            'client_secret' => $this->config->getClientSecret(),
+            'refresh_token' => $refreshToken,
+        ]));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/x-www-form-urlencoded']);
+
+        // Execute request
+        $result = curl_exec($ch);
+        $error = curl_error($ch);
+        $errno = curl_errno($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        // Handle errors
+        if ($errno !== 0) {
+            throw new \RuntimeException("Token refresh failed - curl error: $error");
+        }
+
+        if ($httpCode !== 200) {
+            // Parse error response for better diagnostics
+            $errorResponse = json_decode($result);
+            $errorDesc = $errorResponse->error_description ?? $errorResponse->error ?? 'Unknown error';
+
+            throw new \RuntimeException("Token refresh failed - HTTP $httpCode: $errorDesc");
+        }
+
+        // Parse response
+        $tokenResponse = json_decode($result);
+
+        if (!$tokenResponse || !isset($tokenResponse->access_token)) {
+            throw new \RuntimeException("Token refresh failed - invalid response");
+        }
+
+        // Update memory storage (for current request)
+        $this->accessToken = $tokenResponse->access_token;
+        $this->idToken = $tokenResponse->id_token ?? $this->idToken;  // ID token may not be returned
+        $this->tokenResponse = $tokenResponse;
+
+        // Extract and persist new tokens to session
+        $tokens = [
+            'access_token' => $tokenResponse->access_token,
+            'refresh_token' => $tokenResponse->refresh_token ?? $refreshToken,  // Reuse old if not returned
+            'id_token' => $tokenResponse->id_token ?? null,
+            'expires_in' => $tokenResponse->expires_in ?? 300,
+        ];
+
+        $this->sessionManager->updateTokens($tokens);
+
+        return true;
+    }
+
+    /**
+     * Initiate silent SSO re-authentication
+     *
+     * Redirects to Keycloak with prompt=none to attempt silent authentication.
+     * If SSO session is still valid, new tokens are issued automatically.
+     * If SSO session expired, redirects to login page.
+     *
+     * This should be called when refresh token is expired but we want to avoid
+     * forcing user to login if their Keycloak SSO session is still active.
+     */
+    public function silentSsoReauth()
+    {
+        // Build authorization URL with prompt=none
+        $authEndpoint = $this->config->getAuthorizationEndpoint();
+
+        // Generate new state for CSRF protection
+        $state = bin2hex(random_bytes(16));
+        $_SESSION['openid_connect_state'] = $state;
+
+        $params = [
+            'client_id' => $this->config->getClientId(),
+            'redirect_uri' => $this->config->getRedirectUri(),
+            'response_type' => 'code',
+            'scope' => implode(' ', $this->config->getScopes()),
+            'state' => $state,
+            'prompt' => 'none',  // CRITICAL: Silent authentication
+        ];
+
+        $authUrl = $authEndpoint . '?' . http_build_query($params);
+
+        // Redirect to Keycloak
+        header("Location: " . $authUrl);
+        exit;
     }
 
     /**

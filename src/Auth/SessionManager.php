@@ -15,9 +15,10 @@ namespace Simss\KeycloakAuth\Auth;
  */
 class SessionManager
 {
-    // keys for storing session data in session or $_SESSION   
+    // keys for storing session data in session or $_SESSION
     const SESSION_KEY = 'keycloak_auth';
     const TOKEN_KEY = 'keycloak_id_token';
+    const TOKENS_KEY = 'keycloak_tokens';
 
     public function __construct()
     {
@@ -31,13 +32,18 @@ class SessionManager
 
     /**
      * Create a new authenticated session
-     * 
+     *
      * @param object $userInfo User info from Keycloak
-     * @param string|null $idToken ID token for OIDC logout
+     * @param array|string|null $tokens Tokens array or legacy ID token string
      * @return array User data stored in session
      */
-    public function createSession($userInfo, $idToken = null)
+    public function createSession($userInfo, $tokens = [])
     {
+        // Backward compatibility: convert legacy string idToken to tokens array
+        if (is_string($tokens)) {
+            $tokens = ['id_token' => $tokens];
+        }
+
         // Extract user attributes from Keycloak userInfo
         $roles = $this->extractRoles($userInfo);
         $groups = $this->extractGroups($userInfo);
@@ -56,8 +62,10 @@ class SessionManager
 
         // Use native PHP session for compatibility with OIDC library
         $_SESSION[self::SESSION_KEY] = $userData;
-        if ($idToken) {
-            $_SESSION[self::TOKEN_KEY] = $idToken;
+
+        // Store tokens (access, refresh, ID tokens with expiry)
+        if (!empty($tokens)) {
+            $this->storeTokens($tokens);
         }
 
         return $userData;
@@ -86,6 +94,118 @@ class SessionManager
     public function getIdToken()
     {
         return $_SESSION[self::TOKEN_KEY] ?? null;
+    }
+
+    /**
+     * Get access token from session
+     * @return string|null
+     */
+    public function getAccessToken()
+    {
+        $tokens = $_SESSION[self::TOKENS_KEY] ?? [];
+        return $tokens['access_token'] ?? null;
+    }
+
+    /**
+     * Get refresh token from session
+     * @return string|null
+     */
+    public function getRefreshToken()
+    {
+        $tokens = $_SESSION[self::TOKENS_KEY] ?? [];
+        return $tokens['refresh_token'] ?? null;
+    }
+
+    /**
+     * Get all tokens as array
+     * @return array
+     */
+    public function getTokens()
+    {
+        return $_SESSION[self::TOKENS_KEY] ?? [];
+    }
+
+    /**
+     * Check if access token is expired or will expire soon
+     *
+     * @param int|null $bufferSeconds Seconds before expiry to consider token expired (default from config: 60)
+     * @return bool True if expired or no expiry info available
+     */
+    public function isTokenExpired($bufferSeconds = null)
+    {
+        $tokens = $_SESSION[self::TOKENS_KEY] ?? [];
+
+        // No expiry info = treat as expired (requires refresh)
+        if (!isset($tokens['expires_at'])) {
+            return true;
+        }
+
+        // Use config buffer if not provided
+        if ($bufferSeconds === null) {
+            try {
+                $config = \Simss\KeycloakAuth\Config\KeycloakConfig::getInstance();
+                $bufferSeconds = $config->getTokenRefreshBuffer();
+            } catch (\Exception $e) {
+                // Config not available (e.g., in tests) - use default
+                $bufferSeconds = 60;
+            }
+        }
+
+        // Check if expired or within buffer window
+        $expiresAt = (int)$tokens['expires_at'];
+        $now = time();
+
+        return ($now + $bufferSeconds) >= $expiresAt;
+    }
+
+    /**
+     * Update tokens after refresh (preserves user session data)
+     *
+     * @param array $newTokens New tokens from refresh response
+     */
+    public function updateTokens(array $newTokens)
+    {
+        $this->storeTokens($newTokens);
+    }
+
+    /**
+     * Store OAuth2/OIDC tokens in session with expiry tracking
+     *
+     * @param array $tokens Token response from Keycloak
+     *                      - access_token (required)
+     *                      - refresh_token (optional)
+     *                      - id_token (optional)
+     *                      - expires_in (optional, in seconds)
+     */
+    private function storeTokens(array $tokens)
+    {
+        $tokenData = [];
+
+        // Access token
+        if (isset($tokens['access_token'])) {
+            $tokenData['access_token'] = $tokens['access_token'];
+        }
+
+        // Refresh token
+        if (isset($tokens['refresh_token'])) {
+            $tokenData['refresh_token'] = $tokens['refresh_token'];
+        }
+
+        // ID token
+        if (isset($tokens['id_token'])) {
+            $tokenData['id_token'] = $tokens['id_token'];
+            // IMPORTANT: Also store in legacy location for backward compatibility
+            $_SESSION[self::TOKEN_KEY] = $tokens['id_token'];
+        }
+
+        // Calculate expiry timestamp
+        if (isset($tokens['expires_in'])) {
+            // expires_at = current_time + expires_in
+            $tokenData['expires_at'] = time() + (int)$tokens['expires_in'];
+        }
+
+        // Store token data
+        $_SESSION[self::TOKENS_KEY] = $tokenData;
     }
 
     /**

@@ -111,6 +111,12 @@ class AuthController
                 return;
             }
 
+            // Check for silent SSO errors (prompt=none)
+            if (isset($_GET['error'])) {
+                $this->handleSilentSsoError($_GET['error'], $_GET['error_description'] ?? '');
+                return;
+            }
+
             // The authenticate method will handle the callback
             $this->keycloakAuth->authenticate();
 
@@ -194,7 +200,7 @@ public function logout()
         // Redirect to home anyway
         $this->redirect($this->getBaseUrl());
     }
-}
+
     /**
      * Check - Check authentication status (for AJAX calls)
      */
@@ -209,6 +215,29 @@ public function logout()
     }
 
     /**
+     * Handle errors from silent SSO re-authentication (prompt=none)
+     *
+     * @param string $error Error code from Keycloak
+     * @param string $errorDescription Error description
+     */
+    protected function handleSilentSsoError($error, $errorDescription)
+    {
+        // Errors that indicate SSO session expired - redirect to login
+        $requireLoginErrors = ['login_required', 'consent_required', 'interaction_required'];
+
+        if (in_array($error, $requireLoginErrors)) {
+            // SSO session expired - redirect to login page
+            $this->setIdleNotice();
+            $this->redirect($this->getLoginUrl());
+            return;
+        }
+
+        // Other errors - log and show error
+        $this->logError('Silent SSO failed', new \RuntimeException("$error: $errorDescription"));
+        $this->handleError("Session expired. Please login again.");
+    }
+
+    /**
      * Handle successful authentication
      */
     protected function handleSuccessfulAuthentication()
@@ -218,6 +247,15 @@ public function logout()
 
         // Get ID token (needed for OIDC logout)
         $idToken = $this->keycloakAuth->getIdToken();
+
+        // Extract full tokens array
+        $tokenResponse = $this->keycloakAuth->getTokenResponse();
+        $tokens = [
+            'access_token' => $tokenResponse->access_token ?? null,
+            'refresh_token' => $tokenResponse->refresh_token ?? null,
+            'id_token' => $tokenResponse->id_token ?? null,
+            'expires_in' => $tokenResponse->expires_in ?? 300,
+        ];
 
         /* DEBUG: Show what we got
         echo "<pre>\n";
@@ -233,8 +271,8 @@ public function logout()
         // Regenerate session ID to prevent session fixation attacks
         $this->regenerateSession();
 
-        // Create session with user info and ID token
-        $this->sessionManager->createSession($userInfo, $idToken);
+        // Create session with user info and tokens
+        $this->sessionManager->createSession($userInfo, $tokens);
 
         /* DEBUG: Verify session was saved
         echo "<pre>\n";
