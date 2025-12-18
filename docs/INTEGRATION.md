@@ -246,11 +246,94 @@ class DataStock extends CI_Controller
 
 You can also create a base controller that calls `requireAnyRole()` in its constructor and extend it across protected controllers.
 
-### Step 11: (Optional) Rate Limiting
+### Step 11: (Optional) Attribute-Based Access Control
+
+For more granular access control based on user attributes (e.g., branch code, store code), use `SessionManager` directly:
+
+#### Check Single Attribute
+
+```php
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class BranchReport extends CI_Controller
+{
+    public function __construct()
+    {
+        parent::__construct();
+        
+        $middleware = new \Simss\KeycloakAuth\Middleware\AuthMiddleware();
+        $middleware->requireAuth();
+        
+        // Restrict to specific branch
+        $sessionManager = new \Simss\KeycloakAuth\Auth\SessionManager();
+        $userBranch = $sessionManager->getUserAttribute('kdcab');
+        
+        if ($userBranch !== 'CAB001') {
+            redirect('home'); // Deny access
+        }
+    }
+}
+```
+
+#### Restrict by Multiple Allowed Values
+
+```php
+$sessionManager = new \Simss\KeycloakAuth\Auth\SessionManager();
+$userBranch = $sessionManager->getUserAttribute('kdcab');
+
+$allowedBranches = ['CAB001', 'CAB002', 'CAB003'];
+if (!in_array($userBranch, $allowedBranches)) {
+    redirect('home');
+}
+```
+
+#### Combine Role and Attribute Checks
+
+```php
+$middleware = new \Simss\KeycloakAuth\Middleware\AuthMiddleware();
+$sessionManager = new \Simss\KeycloakAuth\Auth\SessionManager();
+
+// Must be authenticated
+$middleware->requireAuth();
+
+// Admin can access all branches, others restricted to their own
+if (!$middleware->hasRole('admin')) {
+    $userBranch = $sessionManager->getUserAttribute('kdcab');
+    $requestedBranch = $this->input->get('branch');
+    
+    if ($requestedBranch && $requestedBranch !== $userBranch) {
+        show_error('You can only access data for your own branch.', 403);
+    }
+}
+```
+
+#### Available User Attributes
+
+The following attributes are stored in session after login:
+
+| Attribute | Description | Example |
+|-----------|-------------|---------|
+| `username` | Keycloak username | `john.doe` |
+| `nama` | Full name | `John Doe` |
+| `email` | Email address | `john@example.com` |
+| `kdcab` | Branch code | `CAB001` |
+| `inicab` | Store code | `STO001` |
+| `lvl` | User level (first role/group) | `admin` |
+| `roles` | Array of all roles | `['admin', 'manager']` |
+| `groups` | Array of all groups | `['/branch-managers']` |
+
+Access any attribute via:
+```php
+$sessionManager = new \Simss\KeycloakAuth\Auth\SessionManager();
+$value = $sessionManager->getUserAttribute('kdcab', 'default_value');
+```
+
+### Step 12: (Optional) Rate Limiting
 
 `AuthController` applies a lightweight IP-based rate limit on `auth/login` (30 attempts / 60s) and `auth/callback` (60 attempts / 5m). It uses the CI cache driver if available, falling back to PHP session storage. No extra setup is required, but you can tune these limits in code if needed.
 
-### Step 9: Update Views to Use New Session Data
+### Step 13: Update Views to Use New Session Data
 
 The session structure remains the same, so existing code should work. However, update login views:
 
@@ -273,7 +356,7 @@ Edit `application/views/pages/auth-login.php`:
 </html>
 ```
 
-### Step 10: Access User Information
+### Step 14: Access User Information
 
 Throughout your application, access user data as before:
 
@@ -290,7 +373,7 @@ if ($sessionManager->isAuthenticated()) {
 }
 ```
 
-### Step 11: Update Existing Session Checks
+### Step 15: Update Existing Session Checks
 
 Find and update any session checks in your codebase:
 
