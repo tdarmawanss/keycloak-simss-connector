@@ -35,7 +35,18 @@ class KeycloakConfig
         if (function_exists('config_item')) {
             $ci =& get_instance();
             $ci->load->config('keycloak', TRUE);
-            return $ci->config->item('keycloak') ?: [];
+            $config = $ci->config->item('keycloak');
+
+            // If CodeIgniter config loading failed, try direct file loading
+            if (empty($config) && defined('APPPATH')) {
+                $ciConfigPath = APPPATH . 'config/keycloak.php';
+                if (file_exists($ciConfigPath)) {
+                    $configData = require $ciConfigPath;
+                    return $configData['keycloak'] ?? [];
+                }
+            }
+
+            return $config ?: [];
         }
 
         // Standalone loading
@@ -137,24 +148,19 @@ class KeycloakConfig
         return $this->get('http_proxy', null);
     }
 
-    /**
-     * Get token refresh buffer (seconds before expiry to trigger refresh)
-     *
-     * @return int Buffer in seconds (default: 60)
-     */
     public function getTokenRefreshBuffer()
     {
         return $this->get('token_refresh_buffer', 60);
     }
 
-    /**
-     * Check if silent SSO re-authentication is enabled
-     *
-     * @return bool Default: true
-     */
-    public function isSilentSsoEnabled()
+    public function getCurlTimeout()
     {
-        return $this->get('enable_silent_sso', true);
+        return $this->get('curl_timeout', 30);
+    }
+
+    public function getCurlConnectTimeout()
+    {
+        return $this->get('curl_connect_timeout', 10);
     }
 
     public function toArray()

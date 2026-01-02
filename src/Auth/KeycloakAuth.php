@@ -4,6 +4,7 @@ namespace Simss\KeycloakAuth\Auth;
 
 use Jumbojett\OpenIDConnectClient;
 use Simss\KeycloakAuth\Config\KeycloakConfig;
+use Simss\KeycloakAuth\Helpers\RetryHandler;
 
 /**
  * KeycloakAuth - OIDC client for Keycloak authentication
@@ -35,6 +36,9 @@ class KeycloakAuth
     /** @var SessionManager */
     private $sessionManager;
 
+    /** @var RetryHandler */
+    private $retryHandler;
+
     /** @var string|null Access token from token exchange */
     private $accessToken;
 
@@ -53,6 +57,7 @@ class KeycloakAuth
 
         $this->config = $config ?: KeycloakConfig::getInstance();
         $this->sessionManager = $sessionManager ?: new SessionManager();
+        $this->retryHandler = new RetryHandler(3, 1000, 2.0); // 3 retries, 1s initial delay, 2x backoff
         $this->initializeClient();
     }
 
@@ -90,7 +95,8 @@ class KeycloakAuth
     /**
      * Initiate or complete OIDC authentication
      * 
-     * Flow:
+     * OIDC SSO Flow:
+     * code = authentication code from keycloak, from previous authentication
      * 1. If no 'code' param → redirect user to Keycloak login page
      * 2. If 'code' param present → exchange code for tokens
      * 
@@ -101,7 +107,7 @@ class KeycloakAuth
     {
         // Step 1: No code = user needs to authenticate at Keycloak
         if (!isset($_GET['code'])) {
-            // This redirects to Keycloak and exits
+            // This redirects to Keycloak and exits (Keycloak will redirect back to /auth/callback)
             $this->oidcClient->authenticate();
             return true;
         }
@@ -123,61 +129,66 @@ class KeycloakAuth
 
     /**
      * Exchange authorization code for access/ID tokens
-     * 
+     *
      * Uses direct cURL instead of jumbojett library to avoid connection issues.
      * Key settings that make this work:
-     * - CURLOPT_TIMEOUT: 30 seconds for the entire request
-     * - CURLOPT_CONNECTTIMEOUT: 10 seconds for connection establishment
-     * 
+     * - CURLOPT_TIMEOUT: Configurable via 'curl_timeout' (default: 30 seconds)
+     * - CURLOPT_CONNECTTIMEOUT: Configurable via 'curl_connect_timeout' (default: 10 seconds)
+     *
      * @param string $code Authorization code from Keycloak callback
      * @throws \RuntimeException On token exchange failure
      */
     private function exchangeCodeForTokens($code)
     {
         $tokenEndpoint = $this->config->getTokenEndpoint();
-        
-        $ch = curl_init($tokenEndpoint);
-        
-        // Essential: Set explicit timeouts (missing in jumbojett library)
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-        
-        // SSL settings
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->config->shouldVerifyPeer());
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, $this->config->shouldVerifyHost() ? 2 : 0);
-        
-        // POST the token request
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
-            'grant_type' => 'authorization_code',
-            'client_id' => $this->config->getClientId(),
-            'client_secret' => $this->config->getClientSecret(),
-            'code' => $code,
-            'redirect_uri' => $this->config->getRedirectUri(),
-        ]));
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/x-www-form-urlencoded']);
-        
-        $result = curl_exec($ch);
-        $error = curl_error($ch);
-        $errno = curl_errno($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-        
-        if ($errno !== 0) {
-            throw new \RuntimeException("Token exchange failed - curl error: $error");
-        }
-        
-        if ($httpCode !== 200) {
-            throw new \RuntimeException("Token exchange failed - HTTP $httpCode: $result");
-        }
-        
+
+        // Wrap token exchange in retry logic to handle network issues
+        $result = $this->retryHandler->execute(function() use ($tokenEndpoint, $code) {
+            $ch = curl_init($tokenEndpoint);
+
+            // Essential: Set explicit timeouts (missing in jumbojett library)
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT, $this->config->getCurlTimeout());
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->config->getCurlConnectTimeout());
+
+            // SSL settings
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->config->shouldVerifyPeer());
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, $this->config->shouldVerifyHost() ? 2 : 0);
+
+            // POST the token request
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+                'grant_type' => 'authorization_code',
+                'client_id' => $this->config->getClientId(),
+                'client_secret' => $this->config->getClientSecret(),
+                'code' => $code,
+                'redirect_uri' => $this->config->getRedirectUri(),
+            ]));
+            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/x-www-form-urlencoded']);
+
+            $result = curl_exec($ch);
+            $error = curl_error($ch);
+            $errno = curl_errno($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+
+            if ($errno !== 0) {
+                throw new \RuntimeException("Token exchange failed - curl error ($errno): $error");
+            }
+
+            if ($httpCode !== 200) {
+                throw new \RuntimeException("Token exchange failed - HTTP $httpCode: $result");
+            }
+
+            return $result;
+        });
+
         $this->tokenResponse = json_decode($result);
-        
+
         if (!$this->tokenResponse || !isset($this->tokenResponse->access_token)) {
             throw new \RuntimeException("Token exchange failed - invalid response");
         }
-        
+
         $this->accessToken = $this->tokenResponse->access_token;
         $this->idToken = $this->tokenResponse->id_token ?? null;
 
@@ -213,33 +224,39 @@ class KeycloakAuth
         }
 
         $userInfoEndpoint = $this->config->getUserInfoEndpoint();
-        
-        $ch = curl_init($userInfoEndpoint);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->config->shouldVerifyPeer());
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, $this->config->shouldVerifyHost() ? 2 : 0);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Authorization: Bearer ' . $this->accessToken,
-            'Accept: application/json',
-        ]);
-        
-        $result = curl_exec($ch);
-        $error = curl_error($ch);
-        $errno = curl_errno($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-        
-        if ($errno !== 0) {
-            throw new \RuntimeException("UserInfo request failed - curl error: $error");
-        }
-        
-        if ($httpCode !== 200) {
-            throw new \RuntimeException("UserInfo request failed - HTTP $httpCode: $result");
-        }
-        
+
+        // Wrap userinfo request in retry logic
+        $result = $this->retryHandler->execute(function() use ($userInfoEndpoint) {
+            $ch = curl_init($userInfoEndpoint);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT, $this->config->getCurlTimeout());
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->config->getCurlConnectTimeout());
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->config->shouldVerifyPeer());
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, $this->config->shouldVerifyHost() ? 2 : 0);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Authorization: Bearer ' . $this->accessToken,
+                'Accept: application/json',
+            ]);
+
+            $result = curl_exec($ch);
+            $error = curl_error($ch);
+            $errno = curl_errno($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+
+            if ($errno !== 0) {
+                throw new \RuntimeException("UserInfo request failed - curl error ($errno): $error");
+            }
+
+            if ($httpCode !== 200) {
+                throw new \RuntimeException("UserInfo request failed - HTTP $httpCode: $result");
+            }
+
+            return $result;
+        });
+
         $userInfo = json_decode($result);
-        
+
         if (!$userInfo) {
             throw new \RuntimeException("Failed to retrieve user information");
         }
@@ -290,43 +307,48 @@ class KeycloakAuth
 
         $tokenEndpoint = $this->config->getTokenEndpoint();
 
-        // Setup cURL for token refresh request
-        $ch = curl_init($tokenEndpoint);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->config->shouldVerifyPeer());
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, $this->config->shouldVerifyHost() ? 2 : 0);
+        // Wrap token refresh in retry logic
+        $result = $this->retryHandler->execute(function() use ($tokenEndpoint, $refreshToken) {
+            // Setup cURL for token refresh request
+            $ch = curl_init($tokenEndpoint);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT, $this->config->getCurlTimeout());
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->config->getCurlConnectTimeout());
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->config->shouldVerifyPeer());
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, $this->config->shouldVerifyHost() ? 2 : 0);
 
-        // POST refresh token grant
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
-            'grant_type' => 'refresh_token',
-            'client_id' => $this->config->getClientId(),
-            'client_secret' => $this->config->getClientSecret(),
-            'refresh_token' => $refreshToken,
-        ]));
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/x-www-form-urlencoded']);
+            // POST refresh token grant
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+                'grant_type' => 'refresh_token',
+                'client_id' => $this->config->getClientId(),
+                'client_secret' => $this->config->getClientSecret(),
+                'refresh_token' => $refreshToken,
+            ]));
+            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/x-www-form-urlencoded']);
 
-        // Execute request
-        $result = curl_exec($ch);
-        $error = curl_error($ch);
-        $errno = curl_errno($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
+            // Execute request
+            $result = curl_exec($ch);
+            $error = curl_error($ch);
+            $errno = curl_errno($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
 
-        // Handle errors
-        if ($errno !== 0) {
-            throw new \RuntimeException("Token refresh failed - curl error: $error");
-        }
+            // Handle errors
+            if ($errno !== 0) {
+                throw new \RuntimeException("Token refresh failed - curl error ($errno): $error");
+            }
 
-        if ($httpCode !== 200) {
-            // Parse error response for better diagnostics
-            $errorResponse = json_decode($result);
-            $errorDesc = $errorResponse->error_description ?? $errorResponse->error ?? 'Unknown error';
+            if ($httpCode !== 200) {
+                // Parse error response for better diagnostics
+                $errorResponse = json_decode($result);
+                $errorDesc = $errorResponse->error_description ?? $errorResponse->error ?? 'Unknown error';
 
-            throw new \RuntimeException("Token refresh failed - HTTP $httpCode: $errorDesc");
-        }
+                throw new \RuntimeException("Token refresh failed - HTTP $httpCode: $errorDesc");
+            }
+
+            return $result;
+        });
 
         // Parse response
         $tokenResponse = json_decode($result);

@@ -44,6 +44,14 @@ class SessionManager
             $tokens = ['id_token' => $tokens];
         }
 
+        // Extract token claims (iat, exp, etc.) from JWT
+        $tokenClaims = [];
+        if (!empty($tokens['id_token'])) {
+            $tokenClaims = $this->decodeJwtClaims($tokens['id_token']);
+        } elseif (!empty($tokens['access_token'])) {
+            $tokenClaims = $this->decodeJwtClaims($tokens['access_token']);
+        }
+
         // Extract user attributes from Keycloak userInfo
         $roles = $this->extractRoles($userInfo);
         $groups = $this->extractGroups($userInfo);
@@ -57,6 +65,18 @@ class SessionManager
             'kdcab' => $this->extractAttribute($userInfo, 'kdcab', ''),
             'inicab' => $this->extractAttribute($userInfo, 'inicab', ''),
             'email' => $this->extractAttribute($userInfo, 'email', ''),
+            // Custom SIMSS organizational attributes (nested under 'simss' key)
+            'simss' => [
+                'cabang' => $this->extractSimssCabang($userInfo),
+                'role' => $this->extractSimssRole($userInfo),
+                'divisi' => $this->extractSimssDivisi($userInfo),
+                'station' => $this->extractSimssStation($userInfo),
+                'subdivisi' => $this->extractSimssSubdivisi($userInfo),
+            ],
+            // Token metadata (from JWT claims)
+            'iat' => $tokenClaims['iat'] ?? null,
+            'exp' => $tokenClaims['exp'] ?? null,
+            'sub' => $tokenClaims['sub'] ?? null,
             'logged_in' => true,
         ];
 
@@ -72,7 +92,7 @@ class SessionManager
     }
 
     /**
-     * Check if user is authenticated via session
+     * Check if user is authenticated via PHP session
      */
     public function isAuthenticated()
     {
@@ -269,6 +289,36 @@ class SessionManager
     }
 
     /**
+     * Get all SIMSS organizational data
+     *
+     * @return array SIMSS data with keys: cabang, role, divisi, station, subdivisi
+     */
+    public function getSimssData()
+    {
+        $sessionData = $this->getSessionData();
+        return $sessionData['simss'] ?? [
+            'cabang' => [],
+            'role' => [],
+            'divisi' => [],
+            'station' => [],
+            'subdivisi' => [],
+        ];
+    }
+
+    /**
+     * Get a specific SIMSS attribute
+     *
+     * @param string $key SIMSS attribute key (cabang, role, divisi, station, subdivisi)
+     * @param mixed $default Default value if not found
+     * @return array|mixed
+     */
+    public function getSimssAttribute($key, $default = [])
+    {
+        $simssData = $this->getSimssData();
+        return $simssData[$key] ?? $default;
+    }
+
+    /**
      * Check if user has a role (case-insensitive)
      */
     public function hasRole($role)
@@ -370,18 +420,155 @@ class SessionManager
             }
         }
 
+        // Custom SIMSS roles (simss_role)
+        if (isset($userInfo->simss_role) && is_array($userInfo->simss_role)) {
+            $roles = array_merge($roles, $userInfo->simss_role);
+        }
+
         // Ensure unique values
         return array_values(array_unique($roles));
     }
 
     /**
      * Extract groups from Keycloak user info
+     * Also extracts SIMSS organizational attributes (cabang, divisi, station, subdivisi)
      */
     private function extractGroups($userInfo)
     {
+        $groups = [];
+
+        // Standard groups claim
         if (isset($userInfo->groups) && is_array($userInfo->groups)) {
-            return array_values(array_unique($userInfo->groups));
+            $groups = array_merge($groups, $userInfo->groups);
+        }
+
+        // Custom SIMSS organizational fields
+        // These are included in groups for backward compatibility with hasRole() checks
+        if (isset($userInfo->simss_cabang) && is_array($userInfo->simss_cabang)) {
+            $groups = array_merge($groups, $userInfo->simss_cabang);
+        }
+
+        if (isset($userInfo->simss_divisi) && is_array($userInfo->simss_divisi)) {
+            $groups = array_merge($groups, $userInfo->simss_divisi);
+        }
+
+        if (isset($userInfo->simss_station) && is_array($userInfo->simss_station)) {
+            $groups = array_merge($groups, $userInfo->simss_station);
+        }
+
+        if (isset($userInfo->simss_subdivisi) && is_array($userInfo->simss_subdivisi)) {
+            $groups = array_merge($groups, $userInfo->simss_subdivisi);
+        }
+
+        return array_values(array_unique($groups));
+    }
+
+    /**
+     * Extract SIMSS cabang (branch) from token
+     * @return array
+     */
+    private function extractSimssCabang($userInfo)
+    {
+        if (isset($userInfo->simss_cabang) && is_array($userInfo->simss_cabang)) {
+            return $userInfo->simss_cabang;
         }
         return [];
+    }
+
+    /**
+     * Extract SIMSS role from token
+     * @return array
+     */
+    private function extractSimssRole($userInfo)
+    {
+        if (isset($userInfo->simss_role) && is_array($userInfo->simss_role)) {
+            return $userInfo->simss_role;
+        }
+        return [];
+    }
+
+    /**
+     * Extract SIMSS divisi (division) from token
+     * @return array
+     */
+    private function extractSimssDivisi($userInfo)
+    {
+        if (isset($userInfo->simss_divisi) && is_array($userInfo->simss_divisi)) {
+            return $userInfo->simss_divisi;
+        }
+        return [];
+    }
+
+    /**
+     * Extract SIMSS station from token
+     * @return array
+     */
+    private function extractSimssStation($userInfo)
+    {
+        if (isset($userInfo->simss_station) && is_array($userInfo->simss_station)) {
+            return $userInfo->simss_station;
+        }
+        return [];
+    }
+
+    /**
+     * Extract SIMSS subdivisi (subdivision) from token
+     * @return array
+     */
+    private function extractSimssSubdivisi($userInfo)
+    {
+        if (isset($userInfo->simss_subdivisi) && is_array($userInfo->simss_subdivisi)) {
+            return $userInfo->simss_subdivisi;
+        }
+        return [];
+    }
+
+    /**
+     * Decode JWT token and extract claims (iat, exp, sub, etc.)
+     *
+     * @param string $jwt JWT token string
+     * @return array Decoded claims from the token payload
+     */
+    private function decodeJwtClaims($jwt)
+    {
+        if (empty($jwt)) {
+            return [];
+        }
+
+        try {
+            // JWT has 3 parts separated by dots: header.payload.signature
+            $parts = explode('.', $jwt);
+
+            if (count($parts) !== 3) {
+                return [];
+            }
+
+            // Decode the payload (second part)
+            $payload = $parts[1];
+
+            // JWT uses base64url encoding (not standard base64)
+            // Replace URL-safe characters and add padding if needed
+            $payload = str_replace(['-', '_'], ['+', '/'], $payload);
+            $remainder = strlen($payload) % 4;
+            if ($remainder) {
+                $payload .= str_repeat('=', 4 - $remainder);
+            }
+
+            // Decode from base64
+            $decoded = base64_decode($payload, true);
+
+            if ($decoded === false) {
+                return [];
+            }
+
+            // Parse JSON
+            $claims = json_decode($decoded, true);
+
+            return is_array($claims) ? $claims : [];
+
+        } catch (\Exception $e) {
+            // Silent fail - return empty array
+            return [];
+        }
     }
 }

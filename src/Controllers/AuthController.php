@@ -25,6 +25,14 @@ class AuthController
         // Initialize configuration
         try {
             $this->config = KeycloakConfig::getInstance();
+
+            // DEBUG: Show loaded config
+            if (isset($_GET['debug_config'])) {
+                echo "<pre>Loaded Keycloak Config:\n";
+                print_r($this->config->toArray());
+                echo "</pre>";
+                exit;
+            }
         } catch (\Exception $e) {
             $this->handleError("Configuration error. Please contact administrator.");
             return;
@@ -73,14 +81,15 @@ class AuthController
     public function login()
     {
         try {
-            // Check if already authenticated
+            // Check if already authenticated, via PHP session
             if ($this->sessionManager->isAuthenticated()) {
                 $this->redirect($this->getHomeUrl());
                 return;
             }
 
             // Basic rate limiting
-            if ($this->isRateLimited('auth_login', 20, 60)) { // 30 attempts per 60 seconds
+            // key, limit, window
+            if ($this->isRateLimited('auth_login', 10, 60)) { // 10 attempts per 60 seconds
                 $this->handleError("Terlalu banyak percobaan. Silakan tunggu sebentar.");
                 return;
             }
@@ -95,7 +104,7 @@ class AuthController
 
         } catch (\Exception $e) {
             $this->logError('Authentication failed', $e);
-            $this->handleError("Authentication failed. Please try again.");
+            $this->handleAuthenticationError($e);
         }
     }
 
@@ -125,7 +134,7 @@ class AuthController
 
         } catch (\Exception $e) {
             $this->logError('Callback failed', $e);
-            $this->handleError("Login failed. Please try again.");
+            $this->handleAuthenticationError($e);
         }
     }
 
@@ -200,6 +209,7 @@ public function logout()
         // Redirect to home anyway
         $this->redirect($this->getBaseUrl());
     }
+}
 
     /**
      * Check - Check authentication status (for AJAX calls)
@@ -238,7 +248,10 @@ public function logout()
     }
 
     /**
-     * Handle successful authentication
+     * Handle successful authentication by creating a new PHP session
+     * and storing the user information in the session.
+     * The user is then redirected to the intended URL or home URL otherwise.
+
      */
     protected function handleSuccessfulAuthentication()
     {
@@ -323,6 +336,23 @@ public function logout()
     }
 
     /**
+     * Set idle/session expired notice
+     */
+    protected function setIdleNotice()
+    {
+        $message = "Your session has expired due to inactivity. Please login again.";
+
+        if ($this->ci) {
+            $this->ci->session->set_flashdata('auth_notice', $message);
+        } else {
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
+            $_SESSION['auth_notice'] = $message;
+        }
+    }
+
+    /**
      * Retrieve notice (e.g., idle timeout) from flash/session
      */
     protected function getAuthNotice()
@@ -330,23 +360,118 @@ public function logout()
         if ($this->ci) {
             return $this->ci->session->flashdata('auth_notice') ?: null;
         }
-        return $_SESSION['auth_notice'] ?? null;
+
+        // For native PHP sessions, retrieve and clear the notice
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        $notice = $_SESSION['auth_notice'] ?? null;
+        unset($_SESSION['auth_notice']);
+        return $notice;
+    }
+
+    /**
+     * Handle authentication errors with intelligent error messages
+     */
+    protected function handleAuthenticationError(\Exception $e)
+    {
+        $message = $e->getMessage();
+        $errorMessage = '';
+        $canRetry = false;
+
+        // Detect timeout/network errors
+        if ($this->isTimeoutError($message)) {
+            $errorMessage = "Koneksi ke server autentikasi timeout. Server mungkin sedang sibuk atau koneksi internet Anda lambat. Silakan coba lagi.";
+            $canRetry = true;
+        }
+        // Connection errors
+        elseif ($this->isConnectionError($message)) {
+            $errorMessage = "Tidak dapat terhubung ke server autentikasi. Periksa koneksi internet Anda dan coba lagi.";
+            $canRetry = true;
+        }
+        // Server errors (5xx)
+        elseif (preg_match('/HTTP 5\d{2}/', $message)) {
+            $errorMessage = "Server autentikasi sedang mengalami masalah. Silakan coba lagi dalam beberapa saat.";
+            $canRetry = true;
+        }
+        // Authentication/authorization errors
+        elseif (preg_match('/HTTP 401|HTTP 403|invalid_grant/', $message)) {
+            $errorMessage = "Autentikasi gagal. Silakan login kembali.";
+            $canRetry = true;
+        }
+        // Generic error
+        else {
+            $errorMessage = "Autentikasi gagal: " . $message;
+            $canRetry = true;
+        }
+
+        $this->handleError($errorMessage, $canRetry);
+    }
+
+    /**
+     * Check if error is a timeout error
+     */
+    protected function isTimeoutError($message)
+    {
+        $timeoutPatterns = [
+            'timeout',
+            'timed out',
+            'curl error: (28)',
+            'execution time',
+            'exceeded',
+        ];
+
+        foreach ($timeoutPatterns as $pattern) {
+            if (stripos($message, $pattern) !== false) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if error is a connection error
+     */
+    protected function isConnectionError($message)
+    {
+        $connectionPatterns = [
+            'connection refused',
+            'connection reset',
+            'couldn\'t connect',
+            'failed to connect',
+            'network unreachable',
+            'curl error: (6)',
+            'curl error: (7)',
+            'curl error: (52)',
+            'curl error: (56)',
+        ];
+
+        foreach ($connectionPatterns as $pattern) {
+            if (stripos($message, $pattern) !== false) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
      * Handle errors - show user-friendly message
      */
-    protected function handleError($message)
+    protected function handleError($message, $canRetry = false)
     {
         if ($this->isAjaxRequest()) {
             $this->respondJson([
                 'success' => false,
                 'message' => $message,
+                'can_retry' => $canRetry,
             ], 400);
         } else {
             $this->loadView('auth-error', [
                 'error' => $message,
                 'login_url' => $this->getLoginUrl(),
+                'can_retry' => $canRetry,
             ]);
         }
     }
