@@ -288,10 +288,13 @@ class KeycloakAuth
     }
 
     /**
-     * Refresh access token using refresh token
+     * Refresh tokens (access token, refresh token, and ID token) using refresh token
      *
-     * Uses the OAuth2 refresh_token grant to obtain new access and refresh tokens.
+     * Uses the OAuth2 refresh_token grant to obtain new access, refresh, and ID tokens.
      * This extends the session without requiring user interaction.
+     *
+     * The refresh request includes 'openid' scope to ensure a new ID token is returned,
+     * which is critical for maintaining authentication validity in SSR applications.
      *
      * @return bool True on success
      * @throws \RuntimeException On refresh failure (expired refresh token, network error, etc.)
@@ -318,12 +321,14 @@ class KeycloakAuth
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, $this->config->shouldVerifyHost() ? 2 : 0);
 
             // POST refresh token grant
+            // IMPORTANT: Include 'openid' scope to ensure ID token is returned in refresh response
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
                 'grant_type' => 'refresh_token',
                 'client_id' => $this->config->getClientId(),
                 'client_secret' => $this->config->getClientSecret(),
                 'refresh_token' => $refreshToken,
+                'scope' => 'openid profile email',  // Ensure ID token is refreshed
             ]));
             curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/x-www-form-urlencoded']);
 
