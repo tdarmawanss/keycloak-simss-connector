@@ -1,0 +1,110 @@
+{
+  "_meta": {
+    "description": "Maps user roles to module privileges (CRUD). Used with endpoint_permissions.json to determine access.",
+    "generated_from": "access_control.csv",
+    "generated_at": "2026-01-02 13:21:07"
+  },
+  "roles": {
+    "branch_mgr": {
+      "display_name": "branch_mgr",
+      "modules": {
+        "data_produk": [
+          "R"
+        ],
+        "data_stock": [
+          "R"
+        ],
+        "data_ekspedisi": [
+          "R"
+        ]
+      }
+    },
+    "boc_mgr": {
+      "display_name": "boc_mgr",
+      "modules": {
+        "data_produk": [
+          "R"
+        ],
+        "data_stock": [
+          "R"
+        ],
+        "data_ekspedisi": [
+          "R"
+        ]
+      }
+    },
+    "gen_mgr": {
+      "display_name": "gen_mgr",
+      "modules": {
+        "data_produk": [
+          "R"
+        ],
+        "data_stock": [
+          "R"
+        ],
+        "data_ekspedisi": [
+          "R"
+        ]
+      }
+    },
+    "log_mgr": {
+      "display_name": "log_mgr",
+      "modules": {
+        "data_produk": [
+          "C",
+          "R",
+          "U"
+        ],
+        "data_stock": [
+          "R"
+        ],
+        "data_ekspedisi": [
+          "C",
+          "R",
+          "U"
+        ]
+      }
+    },
+    "log_staff": {
+      "display_name": "log_staff",
+      "modules": {
+        "data_produk": [
+          "C",
+          "R",
+          "U"
+        ],
+        "data_stock": [
+          "R"
+        ],
+        "data_ekspedisi": [
+          "C",
+          "R",
+          "U"
+        ]
+      }
+    },
+    "admin": {
+      "display_name": "admin",
+      "modules": {
+        "data_produk": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ],
+        "data_stock": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ],
+        "data_ekspedisi": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    }
+  }
+}

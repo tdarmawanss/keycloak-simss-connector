@@ -1,0 +1,2837 @@
+{
+  "allreport/daftarbkb": {
+    "controller": "AllReport",
+    "method": "daftarbkb",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "allreport/daftarbtb": {
+    "controller": "AllReport",
+    "method": "daftarbtb",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "allreport/daftarretur": {
+    "controller": "AllReport",
+    "method": "daftarretur",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "allreport/daftarspb": {
+    "controller": "AllReport",
+    "method": "daftarspb",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "allreport/getdataperincianstok": {
+    "controller": "AllReport",
+    "method": "getdataperincianstok",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "allreport/getdataposisistok": {
+    "controller": "AllReport",
+    "method": "getdataposisistok",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "allreport/getproduk": {
+    "controller": "AllReport",
+    "method": "getproduk",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "allreport/outrequisisi": {
+    "controller": "AllReport",
+    "method": "outrequisisi",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "allreport/outstandingbkb": {
+    "controller": "AllReport",
+    "method": "outstandingbkb",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "allreport/perincianstok": {
+    "controller": "AllReport",
+    "method": "perincianstok",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "allreport/perincianstok_pdf": {
+    "controller": "AllReport",
+    "method": "perincianstok_pdf",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "allreport/posisistok": {
+    "controller": "AllReport",
+    "method": "posisistok",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "allreport/posisistok_pdf": {
+    "controller": "AllReport",
+    "method": "posisistok_pdf",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "allreport/sjb": {
+    "controller": "AllReport",
+    "method": "sjb",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "auth": {
+    "controller": "AuthKeycloak",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "auth/callback": {
+    "controller": "AuthKeycloak",
+    "method": "callback",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "auth/check": {
+    "controller": "AuthKeycloak",
+    "method": "check",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "auth/login": {
+    "controller": "AuthKeycloak",
+    "method": "login",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "auth/logout": {
+    "controller": "AuthKeycloak",
+    "method": "logout",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "authkeycloak": {
+    "controller": "AuthKeycloak",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "authkeycloak/callback": {
+    "controller": "AuthKeycloak",
+    "method": "callback",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "authkeycloak/check": {
+    "controller": "AuthKeycloak",
+    "method": "check",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "authkeycloak/index": {
+    "controller": "AuthKeycloak",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "authkeycloak/login": {
+    "controller": "AuthKeycloak",
+    "method": "login",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "authkeycloak/logout": {
+    "controller": "AuthKeycloak",
+    "method": "logout",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bkb": {
+    "controller": "Bkb",
+    "method": "index",
+    "modules": [
+      {
+        "name": "data_produk",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bkb/add": {
+    "controller": "Bkb",
+    "method": "add",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bkb/cekbarangstok": {
+    "controller": "Bkb",
+    "method": "cekbarangstok",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bkb/confirm": {
+    "controller": "Bkb",
+    "method": "confirm",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bkb/delete": {
+    "controller": "Bkb",
+    "method": "delete",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bkb/detail": {
+    "controller": "Bkb",
+    "method": "detail",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bkb/edit": {
+    "controller": "Bkb",
+    "method": "edit",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bkb/finddatacustomer": {
+    "controller": "Bkb",
+    "method": "finddataCustomer",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bkb/finddataekspedisi": {
+    "controller": "Bkb",
+    "method": "finddataEkspedisi",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bkb/finddatanocp": {
+    "controller": "Bkb",
+    "method": "finddatanocp",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bkb/finddatanoform": {
+    "controller": "Bkb",
+    "method": "finddatanoform",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bkb/finddatanolks": {
+    "controller": "Bkb",
+    "method": "finddatanolks",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bkb/finddatanomc": {
+    "controller": "Bkb",
+    "method": "finddatanomc",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bkb/finddataprincsup": {
+    "controller": "Bkb",
+    "method": "finddataPrincSup",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bkb/finddatastation": {
+    "controller": "Bkb",
+    "method": "finddataStation",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bkb/finddataviaekspedisi": {
+    "controller": "Bkb",
+    "method": "finddataViaEkspedisi",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bkb/findtipebkb": {
+    "controller": "Bkb",
+    "method": "findtipeBKB",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bkb/getalldatabkb": {
+    "controller": "Bkb",
+    "method": "getAllDataBKB",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bkb/getdatabarang": {
+    "controller": "Bkb",
+    "method": "getdatabarang",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bkb/getdataclaim": {
+    "controller": "Bkb",
+    "method": "getdataclaim",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bkb/getdataedit": {
+    "controller": "Bkb",
+    "method": "getdataedit",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bkb/getdataform": {
+    "controller": "Bkb",
+    "method": "getdataform",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bkb/getnourut": {
+    "controller": "Bkb",
+    "method": "getnourut",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bkb/getserial": {
+    "controller": "Bkb",
+    "method": "getserial",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bkb/index": {
+    "controller": "Bkb",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bkb/print": {
+    "controller": "Bkb",
+    "method": "print",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bkb/save": {
+    "controller": "Bkb",
+    "method": "save",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bkb/update": {
+    "controller": "Bkb",
+    "method": "update",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bonsementara": {
+    "controller": "BonSementara",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bonsementara/add": {
+    "controller": "BonSementara",
+    "method": "add",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bonsementara/confirm": {
+    "controller": "BonSementara",
+    "method": "confirm",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bonsementara/delete": {
+    "controller": "BonSementara",
+    "method": "delete",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bonsementara/detail": {
+    "controller": "BonSementara",
+    "method": "detail",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bonsementara/edit": {
+    "controller": "BonSementara",
+    "method": "edit",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bonsementara/finddatacustomer": {
+    "controller": "BonSementara",
+    "method": "finddataCustomer",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bonsementara/finddataekspedisi": {
+    "controller": "BonSementara",
+    "method": "finddataEkspedisi",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bonsementara/finddatanocp": {
+    "controller": "BonSementara",
+    "method": "finddatanocp",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bonsementara/finddatanomc": {
+    "controller": "BonSementara",
+    "method": "finddatanomc",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bonsementara/finddataprincsup": {
+    "controller": "BonSementara",
+    "method": "finddataPrincSup",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bonsementara/finddatastation": {
+    "controller": "BonSementara",
+    "method": "finddataStation",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bonsementara/finddataviaekspedisi": {
+    "controller": "BonSementara",
+    "method": "finddataViaEkspedisi",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bonsementara/findtipebkb": {
+    "controller": "BonSementara",
+    "method": "findtipeBKB",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bonsementara/getdatabarang": {
+    "controller": "BonSementara",
+    "method": "getdatabarang",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bonsementara/getdataedit": {
+    "controller": "BonSementara",
+    "method": "getdataedit",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bonsementara/getdataref": {
+    "controller": "BonSementara",
+    "method": "getdataref",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bonsementara/getnourut": {
+    "controller": "BonSementara",
+    "method": "getnourut",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bonsementara/getserial": {
+    "controller": "BonSementara",
+    "method": "getserial",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bonsementara/index": {
+    "controller": "BonSementara",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bonsementara/print": {
+    "controller": "BonSementara",
+    "method": "print",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bonsementara/save": {
+    "controller": "BonSementara",
+    "method": "save",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "bonsementara/update": {
+    "controller": "BonSementara",
+    "method": "update",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "btb": {
+    "controller": "Btb",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "btb/add": {
+    "controller": "Btb",
+    "method": "add",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "btb/delete": {
+    "controller": "Btb",
+    "method": "delete",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "btb/detail": {
+    "controller": "Btb",
+    "method": "detail",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "btb/edit": {
+    "controller": "Btb",
+    "method": "edit",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "btb/finddataprincsup": {
+    "controller": "Btb",
+    "method": "finddataPrincSup",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "btb/finddatastation": {
+    "controller": "Btb",
+    "method": "finddataStation",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "btb/findtipebtb": {
+    "controller": "Btb",
+    "method": "findtipeBTB",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "btb/getallserial": {
+    "controller": "Btb",
+    "method": "getallserial",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "btb/getdatabarang": {
+    "controller": "Btb",
+    "method": "getdatabarang",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "btb/getdatabkb": {
+    "controller": "Btb",
+    "method": "getdatabkb",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "btb/getdataedit": {
+    "controller": "Btb",
+    "method": "getdataedit",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "btb/getnourut": {
+    "controller": "Btb",
+    "method": "getnourut",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "btb/index": {
+    "controller": "Btb",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "btb/print": {
+    "controller": "Btb",
+    "method": "print",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "btb/save": {
+    "controller": "Btb",
+    "method": "save",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "btb/update": {
+    "controller": "Btb",
+    "method": "update",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "datastock": {
+    "controller": "DataStock",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "datastock/getdataproduk": {
+    "controller": "DataStock",
+    "method": "getdataproduk",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "datastock/index": {
+    "controller": "DataStock",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "datastock/repairstok": {
+    "controller": "DataStock",
+    "method": "repairstok",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "ekspedisi": {
+    "controller": "Ekspedisi",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "ekspedisi/add": {
+    "controller": "Ekspedisi",
+    "method": "add",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "ekspedisi/detail": {
+    "controller": "Ekspedisi",
+    "method": "detail",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "ekspedisi/edit": {
+    "controller": "Ekspedisi",
+    "method": "edit",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "ekspedisi/index": {
+    "controller": "Ekspedisi",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "ekspedisi/save": {
+    "controller": "Ekspedisi",
+    "method": "save",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "ekspedisi/update": {
+    "controller": "Ekspedisi",
+    "method": "update",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "extra/kirimdata_bkb": {
+    "controller": "Extra",
+    "method": "kirimdata_BKB",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "extra/kirimdata_btb": {
+    "controller": "Extra",
+    "method": "kirimdata_BTB",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "extra/kirimdata_serial": {
+    "controller": "Extra",
+    "method": "kirimdata_Serial",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "extra/kirimdata_spb": {
+    "controller": "Extra",
+    "method": "kirimdata_SPB",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "extra/migrasi_custmc": {
+    "controller": "Extra",
+    "method": "migrasi_custmc",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "extra/set_periodeapp": {
+    "controller": "Extra",
+    "method": "set_periodeapp",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "extra/updatebtb": {
+    "controller": "Extra",
+    "method": "updatebtb",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "extra/updatestoknas": {
+    "controller": "Extra",
+    "method": "updatestoknas",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "home": {
+    "controller": "Home",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "home/index": {
+    "controller": "Home",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "produkptss": {
+    "controller": "ProdukPtss",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "produkptss/getdataproduk": {
+    "controller": "ProdukPtss",
+    "method": "getdataproduk",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "produkptss/index": {
+    "controller": "ProdukPtss",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "requisisi": {
+    "controller": "Requisisi",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "requisisi/add": {
+    "controller": "Requisisi",
+    "method": "add",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "requisisi/confirm": {
+    "controller": "Requisisi",
+    "method": "confirm",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "requisisi/delete": {
+    "controller": "Requisisi",
+    "method": "delete",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "requisisi/detail": {
+    "controller": "Requisisi",
+    "method": "detail",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "requisisi/edit": {
+    "controller": "Requisisi",
+    "method": "edit",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "requisisi/findbarang": {
+    "controller": "Requisisi",
+    "method": "findbarang",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "requisisi/getdatabarang": {
+    "controller": "Requisisi",
+    "method": "getdatabarang",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "requisisi/getdataedit": {
+    "controller": "Requisisi",
+    "method": "getdataedit",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "requisisi/getformclaim": {
+    "controller": "Requisisi",
+    "method": "getformclaim",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "requisisi/getnourut": {
+    "controller": "Requisisi",
+    "method": "getnourut",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "requisisi/index": {
+    "controller": "Requisisi",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "requisisi/print": {
+    "controller": "Requisisi",
+    "method": "print",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "requisisi/save": {
+    "controller": "Requisisi",
+    "method": "save",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "requisisi/update": {
+    "controller": "Requisisi",
+    "method": "update",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "retur": {
+    "controller": "Retur",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "retur/add": {
+    "controller": "Retur",
+    "method": "add",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "retur/delete": {
+    "controller": "Retur",
+    "method": "delete",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "retur/detail": {
+    "controller": "Retur",
+    "method": "detail",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "retur/edit": {
+    "controller": "Retur",
+    "method": "edit",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "retur/getdataedit": {
+    "controller": "Retur",
+    "method": "getdataedit",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "retur/getdatafaktur": {
+    "controller": "Retur",
+    "method": "getdatafaktur",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "retur/getnofaktur": {
+    "controller": "Retur",
+    "method": "getnofaktur",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "retur/getnourut": {
+    "controller": "Retur",
+    "method": "getnourut",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "retur/index": {
+    "controller": "Retur",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "retur/print": {
+    "controller": "Retur",
+    "method": "print",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "retur/save": {
+    "controller": "Retur",
+    "method": "save",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "retur/update": {
+    "controller": "Retur",
+    "method": "update",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spb": {
+    "controller": "Spb",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spb/add": {
+    "controller": "Spb",
+    "method": "add",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spb/cekbarangstok": {
+    "controller": "Spb",
+    "method": "cekbarangstok",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spb/delete": {
+    "controller": "Spb",
+    "method": "delete",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spb/detail": {
+    "controller": "Spb",
+    "method": "detail",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spb/edit": {
+    "controller": "Spb",
+    "method": "edit",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spb/getallserial": {
+    "controller": "Spb",
+    "method": "getallserial",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spb/getdatabarang": {
+    "controller": "Spb",
+    "method": "getdatabarang",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spb/getdataedit": {
+    "controller": "Spb",
+    "method": "getdataedit",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spb/getdatafaktur": {
+    "controller": "Spb",
+    "method": "getdatafaktur",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spb/getnofaktur": {
+    "controller": "Spb",
+    "method": "getnofaktur",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spb/getnourut": {
+    "controller": "Spb",
+    "method": "getnourut",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spb/index": {
+    "controller": "Spb",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spb/print": {
+    "controller": "Spb",
+    "method": "print",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spb/save": {
+    "controller": "Spb",
+    "method": "save",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spb/update": {
+    "controller": "Spb",
+    "method": "update",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spbex": {
+    "controller": "SpbEx",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spbex/add": {
+    "controller": "SpbEx",
+    "method": "add",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spbex/cekbarangstok": {
+    "controller": "SpbEx",
+    "method": "cekbarangstok",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spbex/delete": {
+    "controller": "SpbEx",
+    "method": "delete",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spbex/detail": {
+    "controller": "SpbEx",
+    "method": "detail",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spbex/edit": {
+    "controller": "SpbEx",
+    "method": "edit",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spbex/getallserial": {
+    "controller": "SpbEx",
+    "method": "getallserial",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spbex/getdatabarang": {
+    "controller": "SpbEx",
+    "method": "getdatabarang",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spbex/getdataedit": {
+    "controller": "SpbEx",
+    "method": "getdataedit",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spbex/getdatafaktur": {
+    "controller": "SpbEx",
+    "method": "getdatafaktur",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spbex/getnofaktur": {
+    "controller": "SpbEx",
+    "method": "getnofaktur",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spbex/getnourut": {
+    "controller": "SpbEx",
+    "method": "getnourut",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spbex/index": {
+    "controller": "SpbEx",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spbex/print": {
+    "controller": "SpbEx",
+    "method": "print",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spbex/save": {
+    "controller": "SpbEx",
+    "method": "save",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "spbex/update": {
+    "controller": "SpbEx",
+    "method": "update",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "suratjalan": {
+    "controller": "SuratJalan",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "suratjalan/add": {
+    "controller": "SuratJalan",
+    "method": "add",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "suratjalan/delete": {
+    "controller": "SuratJalan",
+    "method": "delete",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "suratjalan/detail": {
+    "controller": "SuratJalan",
+    "method": "detail",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "suratjalan/edit": {
+    "controller": "SuratJalan",
+    "method": "edit",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "suratjalan/getdatabarang": {
+    "controller": "SuratJalan",
+    "method": "getdatabarang",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "suratjalan/getdataedit": {
+    "controller": "SuratJalan",
+    "method": "getdataedit",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "suratjalan/getnourut": {
+    "controller": "SuratJalan",
+    "method": "getnourut",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "suratjalan/index": {
+    "controller": "SuratJalan",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "suratjalan/print": {
+    "controller": "SuratJalan",
+    "method": "print",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "suratjalan/save": {
+    "controller": "SuratJalan",
+    "method": "save",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "suratjalan/update": {
+    "controller": "SuratJalan",
+    "method": "update",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  }
+}
