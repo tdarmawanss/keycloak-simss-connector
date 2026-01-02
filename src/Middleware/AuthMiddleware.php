@@ -141,9 +141,14 @@ class AuthMiddleware
     }
 
     /**
-     * Attempt to refresh access token or initiate silent SSO re-auth
+     * Attempt to refresh tokens (access, refresh, and ID tokens) or initiate silent SSO re-auth
      *
-     * @return bool True if token refreshed successfully
+     * When ID token expires, this method:
+     * 1. Attempts to refresh all tokens using the refresh token (includes new ID token)
+     * 2. If refresh fails, attempts silent SSO re-authentication
+     * 3. If both fail, destroys session and requires login
+     *
+     * @return bool True if tokens refreshed successfully
      */
     protected function attemptTokenRefresh()
     {

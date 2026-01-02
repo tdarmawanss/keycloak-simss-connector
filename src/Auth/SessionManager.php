@@ -53,17 +53,11 @@ class SessionManager
         }
 
         // Extract user attributes from Keycloak userInfo
-        $roles = $this->extractRoles($userInfo);
-        $groups = $this->extractGroups($userInfo);
         $userData = [
             'username' => $this->extractUsername($userInfo),
-            // Backward compatibility: keep lvl as first available role/group
-            'lvl' => $roles[0] ?? $groups[0] ?? $this->extractUserLevel($userInfo),
-            'roles' => $roles,
-            'groups' => $groups,
+            // Backward compatibility: keep lvl
+            'lvl' => $this->extractUserLevel($userInfo),
             'nama' => $this->extractFullName($userInfo),
-            'kdcab' => $this->extractAttribute($userInfo, 'kdcab', ''),
-            'inicab' => $this->extractAttribute($userInfo, 'inicab', ''),
             'email' => $this->extractAttribute($userInfo, 'email', ''),
             // Custom SIMSS organizational attributes (nested under 'simss' key)
             'simss' => [
@@ -146,7 +140,10 @@ class SessionManager
     }
 
     /**
-     * Check if access token is expired or will expire soon
+     * Check if ID token is expired or will expire soon
+     *
+     * NOTE: This checks ID token expiry (authentication validity), not access token expiry.
+     * For SSR applications, session validity is tied to ID token expiry.
      *
      * @param int|null $bufferSeconds Seconds before expiry to consider token expired (default from config: 60)
      * @return bool True if expired or no expiry info available
@@ -155,8 +152,9 @@ class SessionManager
     {
         $tokens = $_SESSION[self::TOKENS_KEY] ?? [];
 
-        // No expiry info = treat as expired (requires refresh)
-        if (!isset($tokens['expires_at'])) {
+        // Check ID token expiry first (primary check for authentication)
+        if (!isset($tokens['id_token_expires_at'])) {
+            // No ID token expiry = treat as expired (requires re-authentication)
             return true;
         }
 
@@ -171,11 +169,11 @@ class SessionManager
             }
         }
 
-        // Check if expired or within buffer window
-        $expiresAt = (int)$tokens['expires_at'];
+        // Check if ID token is expired or within buffer window
+        $idTokenExpiresAt = (int)$tokens['id_token_expires_at'];
         $now = time();
 
-        return ($now + $bufferSeconds) >= $expiresAt;
+        return ($now + $bufferSeconds) >= $idTokenExpiresAt;
     }
 
     /**
@@ -195,7 +193,7 @@ class SessionManager
      *                      - access_token (required)
      *                      - refresh_token (optional)
      *                      - id_token (optional)
-     *                      - expires_in (optional, in seconds)
+     *                      - expires_in (optional, in seconds - for access token)
      */
     private function storeTokens(array $tokens)
     {
@@ -204,6 +202,11 @@ class SessionManager
         // Access token
         if (isset($tokens['access_token'])) {
             $tokenData['access_token'] = $tokens['access_token'];
+
+            // Store access token expiry (for API calls)
+            if (isset($tokens['expires_in'])) {
+                $tokenData['access_token_expires_at'] = time() + (int)$tokens['expires_in'];
+            }
         }
 
         // Refresh token
@@ -216,11 +219,16 @@ class SessionManager
             $tokenData['id_token'] = $tokens['id_token'];
             // IMPORTANT: Also store in legacy location for backward compatibility
             $_SESSION[self::TOKEN_KEY] = $tokens['id_token'];
+
+            // Extract ID token expiry from JWT claims (used for session validation)
+            $idTokenClaims = $this->decodeJwtClaims($tokens['id_token']);
+            if (isset($idTokenClaims['exp'])) {
+                $tokenData['id_token_expires_at'] = (int)$idTokenClaims['exp'];
+            }
         }
 
-        // Calculate expiry timestamp
+        // Backward compatibility: keep expires_at for access token
         if (isset($tokens['expires_in'])) {
-            // expires_at = current_time + expires_in
             $tokenData['expires_at'] = time() + (int)$tokens['expires_in'];
         }
 
@@ -271,21 +279,22 @@ class SessionManager
     }
 
     /**
-     * Get all roles from session
+     * Get all roles from session (now uses simss.role)
      */
     public function getRoles()
     {
-        $sessionData = $this->getSessionData();
-        return $sessionData['roles'] ?? [];
+        $simssData = $this->getSimssData();
+        return $simssData['role'] ?? [];
     }
 
     /**
-     * Get all groups from session
+     * Get all groups from session (deprecated - groups removed from session)
+     * Use getSimssData() for organizational attributes (cabang, divisi, station, subdivisi)
      */
     public function getGroups()
     {
-        $sessionData = $this->getSessionData();
-        return $sessionData['groups'] ?? [];
+        // Groups removed from session - return empty array for backward compatibility
+        return [];
     }
 
     /**
