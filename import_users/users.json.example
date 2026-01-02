@@ -1,0 +1,78 @@
+[
+  {
+    "username": "john.doe",
+    "email": "john.doe@example.com",
+    "firstName": "John",
+    "lastName": "Doe",
+    "enabled": true,
+    "emailVerified": false,
+    "password": "ChangeMe123!",
+    "temporary_password": true,
+    "groups": ["users"],
+    "attributes": {
+      "department": ["IT"],
+      "employee_id": ["EMP001"]
+    }
+  },
+  {
+    "username": "jane.smith",
+    "email": "jane.smith@example.com",
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "enabled": true,
+    "emailVerified": false,
+    "password": "SecurePass456!",
+    "temporary_password": true,
+    "groups": ["users", "managers"],
+    "attributes": {
+      "department": ["HR"],
+      "employee_id": ["EMP002"]
+    }
+  },
+  {
+    "username": "bob.johnson",
+    "email": "bob.johnson@example.com",
+    "firstName": "Bob",
+    "lastName": "Johnson",
+    "enabled": true,
+    "emailVerified": true,
+    "password": "TempPass789!",
+    "temporary_password": true,
+    "groups": ["users"],
+    "attributes": {
+      "department": ["Finance"],
+      "employee_id": ["EMP003"],
+      "location": ["NYC"]
+    }
+  },
+  {
+    "username": "alice.williams",
+    "email": "alice.williams@example.com",
+    "firstName": "Alice",
+    "lastName": "Williams",
+    "enabled": true,
+    "emailVerified": false,
+    "password": "Welcome2024!",
+    "temporary_password": true,
+    "groups": ["users", "admins"],
+    "attributes": {
+      "department": ["Engineering"],
+      "employee_id": ["EMP004"],
+      "team": ["Backend"]
+    }
+  },
+  {
+    "username": "charlie.brown",
+    "email": "charlie.brown@example.com",
+    "firstName": "Charlie",
+    "lastName": "Brown",
+    "enabled": false,
+    "emailVerified": false,
+    "password": "MyPassword!99",
+    "temporary_password": true,
+    "groups": [],
+    "attributes": {
+      "department": ["Sales"]
+    }
+  }
+]

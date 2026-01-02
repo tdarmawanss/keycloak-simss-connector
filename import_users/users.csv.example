@@ -1,0 +1,6 @@
+username,email,firstName,lastName,password,enabled,emailVerified,temporary_password,groups,attributes
+john.doe,john.doe@example.com,John,Doe,ChangeMe123!,true,false,true,users,"{""department"":[""IT""],""employee_id"":[""EMP001""]}"
+jane.smith,jane.smith@example.com,Jane,Smith,SecurePass456!,true,false,true,users|managers,"{""department"":[""HR""],""employee_id"":[""EMP002""]}"
+bob.johnson,bob.johnson@example.com,Bob,Johnson,TempPass789!,true,true,true,users,"{""department"":[""Finance""],""employee_id"":[""EMP003""],""location"":[""NYC""]}"
+alice.williams,alice.williams@example.com,Alice,Williams,Welcome2024!,true,false,true,users|admins,"{""department"":[""Engineering""],""employee_id"":[""EMP004""],""team"":[""Backend""]}"
+charlie.brown,charlie.brown@example.com,Charlie,Brown,MyPassword!99,false,false,true,,"{""department"":[""Sales""]}"

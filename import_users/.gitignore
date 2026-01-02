@@ -1,0 +1,38 @@
+# Environment variables with sensitive credentials
+.env
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# User data files (exclude actual user data, keep example files)
+users.csv
+users.json
+
+# But allow example files
+!users.csv.example
+!users.json.example
+
+# Exclude any other CSV/JSON files with user data
+*_users.csv
+*_users.json
+import_*.csv
+import_*.json
+
+# Logs
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~

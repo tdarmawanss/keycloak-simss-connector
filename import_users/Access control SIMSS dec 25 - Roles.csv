@@ -1,0 +1,24 @@
+Role Code,Division,Subdivision,pusat,Medan,Pematang Siantar,Banda Aceh,Pekanbaru,Padang,Palembang,Jambi,Bandar Lampung,Jakarta,Bogor,Bandung,Cirebon,Semarang,Yogya,Surabaya,Malang,Balikpapan,Banjarmasin,Denpasar,Mataram,Kupang,Makassar,Palu,Kendari,Manado,Sorong,Ambon,Jayapura
+branch_mgr,Manajemen,NA,,1,,,,,1,,,1,,1,,1,1,1,,1,,1,,1,1,,,,,,
+boc_mgr,Manajemen,NA,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+gen_mgr,Manajemen,NA,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+fna_head,FNA,"Finance, Accounting",,1,,,,,1,,,1,,1,,1,1,1,,1,,1,,1,1,,,,1,,
+fna_staff,FNA,"Finance, Accounting",,1,1,,1,1,1,1,,1,,1,,1,1,1,,1,1,1,1,1,1,1,1,,,1,1
+acc_mgr,FNA,Accounting,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+acc_spv,FNA,Accounting,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+acc_staff,FNA,Accounting,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+fin_mgr,FNA,Finance,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+fin_staff,FNA,Finance,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+log_mgr,Logistik,NA,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+log_staff,Logistik,NA,2,1,,,,,1,,,1,,,,,,1,,1,,1,,1,1,,,,,,
+cs_staff,SNM,Customer Service,,1,1,,1,1,1,1,,1,,1,,1,1,1,,1,1,1,1,1,1,1,1,1,,1,1
+mkt_mgr,SNM,Marketing,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+mkt_staff,SNM,Marketing,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+sales_spv,SNM,Sales,,1,,,1,,1,,,1,1,1,,,,1,,1,,1,1,,2,1,,,,1,
+sales,SNM,Sales,,1,2,1,1,1,3,,1,4,1,4,,3,3,3,,3,2,3,3,3,3,2,1,1,1,2,1
+tech_head,Teknik,NA,,1,,,1,,1,,,1,,1,,1,1,1,,1,,1,1,1,1,,,,,1,
+tech_mgr,Teknik,NA,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+tech,Teknik,NA,,6,1,1,2,1,3,1,1,4,2,6,1,3,7,3,2,4,2,4,1,5,5,1,,2,2,2,1
+admin,IT,NA,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,18,14,5,2,7,4,13,3,,15,4,16,1,11,15,13,2,14,6,14,8,14,16,6,3,4,4,8,4
+244,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
