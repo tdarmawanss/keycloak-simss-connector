@@ -84,55 +84,6 @@ Access at http://localhost:8080
 
 ---
 
-## Azure Container Registry
-
-### 1. Login to Azure
-
-```bash
-az login
-```
-
-### 2. Create Azure Container Registry (if not exists)
-
-```bash
-# Set variables
-RESOURCE_GROUP="your-resource-group"
-ACR_NAME="yourregistryname"
-LOCATION="eastus"
-
-# Create resource group
-az group create --name $RESOURCE_GROUP --location $LOCATION
-
-# Create container registry
-az acr create \
-  --resource-group $RESOURCE_GROUP \
-  --name $ACR_NAME \
-  --sku Basic
-```
-
-### 3. Login to ACR
-
-```bash
-az acr login --name $ACR_NAME
-```
-
-### 4. Tag and Push Image
-
-```bash
-# Get ACR login server
-ACR_LOGIN_SERVER=$(az acr show --name $ACR_NAME --query loginServer --output tsv)
-
-# Tag the image
-docker tag keycloak-ptss:latest $ACR_LOGIN_SERVER/keycloak-ptss:latest
-docker tag keycloak-ptss:latest $ACR_LOGIN_SERVER/keycloak-ptss:v1.0.0
-
-# Push to ACR
-docker push $ACR_LOGIN_SERVER/keycloak-ptss:latest
-docker push $ACR_LOGIN_SERVER/keycloak-ptss:v1.0.0
-```
-
----
-
 ## Azure Deployment
 
 ### Option 1: Azure Container Instances (Simple)
@@ -255,29 +206,6 @@ az containerapp show \
   --query properties.configuration.ingress.fqdn \
   -o tsv
 ```
-
-### Option 3: Azure Kubernetes Service (AKS)
-
-For AKS deployment, you would typically use Helm charts. Here's a basic approach:
-
-```bash
-# Create AKS cluster
-az aks create \
-  --resource-group $RESOURCE_GROUP \
-  --name keycloak-aks \
-  --node-count 2 \
-  --enable-managed-identity \
-  --attach-acr $ACR_NAME
-
-# Get credentials
-az aks get-credentials --resource-group $RESOURCE_GROUP --name keycloak-aks
-
-# Deploy using kubectl
-kubectl create deployment keycloak --image=$ACR_LOGIN_SERVER/keycloak-ptss:latest
-kubectl expose deployment keycloak --type=LoadBalancer --port=8080
-```
-
----
 
 ## Production Checklist
 
