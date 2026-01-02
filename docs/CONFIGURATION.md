@@ -172,6 +172,65 @@ HTTP proxy server for outbound connections.
 'http_proxy' => 'http://proxy.example.com:8080'
 ```
 
+### `token_refresh_buffer` (integer, optional)
+
+Seconds before token expiry to trigger a refresh. This prevents edge cases where a token expires mid-request.
+
+**Default**: `60`
+
+**Example**:
+```php
+'token_refresh_buffer' => 60
+```
+
+### `enable_silent_sso` (boolean, optional)
+
+Enable silent SSO re-authentication when refresh token expires but SSO session is still valid.
+
+**Default**: `true`
+
+When enabled, users are seamlessly re-authenticated via Keycloak's SSO session without seeing a login page (as long as SSO session hasn't expired).
+
+Disable for high-security apps that require explicit re-login after refresh token expiry.
+
+**Example**:
+```php
+'enable_silent_sso' => false  // Force re-login after refresh token expires
+```
+
+## Token Duration Configuration (Keycloak Server)
+
+Token lifetimes are configured **in Keycloak Admin Console**, not in this connector:
+
+### Realm-Wide Defaults
+
+**Keycloak Admin Console** → Realm Settings → Tokens
+
+| Setting | Description | Typical Value |
+|---------|-------------|---------------|
+| Access Token Lifespan | How long access tokens are valid | 5 minutes |
+| SSO Session Idle | Idle timeout for SSO session | 30 minutes |
+| SSO Session Max | Maximum SSO session lifetime | 10 hours |
+
+### Client-Specific Overrides
+
+**Keycloak Admin Console** → Clients → [Your Client] → Advanced → Advanced Settings
+
+| Setting | Description |
+|---------|-------------|
+| Access Token Lifespan | Override realm default for this client |
+| Client Session Idle | Idle timeout for refresh token |
+| Client Session Max | Maximum refresh token lifetime |
+
+### Session Behavior Summary
+
+| Time Since Login | What Happens | User Action Required |
+|-----------------|--------------|---------------------|
+| 0 - Access Token Lifespan | Access token valid | None |
+| Access Token expired - Refresh Token valid | Auto-refresh | None |
+| Refresh Token expired - SSO Session valid | Silent SSO (if enabled) | None (brief redirect) |
+| SSO Session expired | Session fully expired | Re-enter credentials |
+
 ## Complete Configuration Example
 
 ```php
@@ -185,13 +244,17 @@ return [
     'client_secret' => getenv('KEYCLOAK_CLIENT_SECRET'), // From environment variable
     'redirect_uri' => 'https://simadis.example.com/auth/callback',
 
-    // Optional
+    // Scopes (include offline_access for refresh tokens)
     'scopes' => ['openid', 'profile', 'email', 'offline_access'],
 
     // SSL (Production)
     'verify_peer' => true,
     'verify_host' => true,
     'cert_path' => '/etc/ssl/certs/ca-bundle.crt',
+
+    // Token refresh settings
+    'token_refresh_buffer' => 60,  // Refresh 60s before expiry
+    'enable_silent_sso' => true,   // Auto re-auth via SSO session
 
     // Proxy (if needed)
     'http_proxy' => getenv('HTTP_PROXY'),
@@ -231,6 +294,8 @@ return [
     'verify_peer' => true,
     'verify_host' => true,
     'scopes' => ['openid', 'profile', 'email', 'offline_access'],
+    'token_refresh_buffer' => 60,
+    'enable_silent_sso' => true,
 ];
 ```
 
