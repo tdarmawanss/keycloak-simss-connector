@@ -238,34 +238,54 @@ class SessionManager
 
     /**
      * Destroy the session (logout)
-     * 
-     * Properly destroys the session by:
-     * 1. Clearing all session variables from memory
-     * 2. Deleting the session cookie from browser
-     * 3. Destroying the session file on server
+     *
+     * Safely destroys session data while respecting shared sessions.
+     * If multiple applications share the same PHP session, this will only
+     * remove our keys. Full destruction only happens if we're the sole user.
+     *
+     * Steps:
+     * 1. Remove our session keys (safe for shared sessions)
+     * 2. Check if session is empty or only contains framework data
+     * 3. If empty, fully destroy session file and cookie
+     * 4. If not empty, leave other apps' data intact
      */
     public function destroy()
     {
-        // Clear all session variables from $_SESSION superglobal
-        $_SESSION = [];
-        
-        // Delete the session cookie from browser
-        if (ini_get("session.use_cookies")) {
-            $params = session_get_cookie_params();
-            setcookie(
-                session_name(),
-                '',
-                time() - 42000,
-                $params["path"],
-                $params["domain"],
-                $params["secure"],
-                $params["httponly"]
-            );
-        }
-        
-        // Destroy the session file on server
-        if (session_status() === PHP_SESSION_ACTIVE) {
-            session_destroy();
+        // Remove only our session keys (safer for shared sessions)
+        unset($_SESSION[self::SESSION_KEY]);
+        unset($_SESSION[self::TOKEN_KEY]);
+        unset($_SESSION[self::TOKENS_KEY]);
+        unset($_SESSION['openid_connect_state']);
+        unset($_SESSION['openid_connect_nonce']);
+
+        // Check if session only contains our data or is mostly empty
+        $remainingKeys = array_keys($_SESSION);
+        $frameworkKeys = ['__ci_last_regenerate', '__ci_vars'];
+        $isOnlyOurs = count($remainingKeys) === 0 ||
+                      count(array_diff($remainingKeys, $frameworkKeys)) === 0;
+
+        // Only fully destroy if we're the only user of the session
+        if ($isOnlyOurs) {
+            $_SESSION = [];
+
+            // Delete the session cookie from browser
+            if (ini_get("session.use_cookies")) {
+                $params = session_get_cookie_params();
+                setcookie(
+                    session_name(),
+                    '',
+                    time() - 42000,
+                    $params["path"],
+                    $params["domain"],
+                    $params["secure"],
+                    $params["httponly"]
+                );
+            }
+
+            // Destroy the session file on server
+            if (session_status() === PHP_SESSION_ACTIVE) {
+                session_destroy();
+            }
         }
     }
 

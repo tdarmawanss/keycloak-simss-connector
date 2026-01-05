@@ -249,8 +249,15 @@ class KeycloakAuth
 
         $this->tokenResponse = json_decode($result);
 
+        // Check for JSON decoding errors
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \RuntimeException(
+                "Token exchange failed - invalid JSON response: " . json_last_error_msg()
+            );
+        }
+
         if (!$this->tokenResponse || !isset($this->tokenResponse->access_token)) {
-            throw new \RuntimeException("Token exchange failed - invalid response");
+            throw new \RuntimeException("Token exchange failed - missing access_token in response");
         }
 
         $this->accessToken = $this->tokenResponse->access_token;
@@ -321,8 +328,15 @@ class KeycloakAuth
 
         $userInfo = json_decode($result);
 
+        // Check for JSON decoding errors
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \RuntimeException(
+                "Failed to retrieve user information - invalid JSON response: " . json_last_error_msg()
+            );
+        }
+
         if (!$userInfo) {
-            throw new \RuntimeException("Failed to retrieve user information");
+            throw new \RuntimeException("Failed to retrieve user information - empty response");
         }
 
         return $userInfo;
@@ -411,7 +425,10 @@ class KeycloakAuth
             if ($httpCode !== 200) {
                 // Parse error response for better diagnostics
                 $errorResponse = json_decode($result);
-                $errorDesc = $errorResponse->error_description ?? $errorResponse->error ?? 'Unknown error';
+                // Ignore JSON errors in error response parsing - use raw message if decode fails
+                $errorDesc = (json_last_error() === JSON_ERROR_NONE && $errorResponse)
+                    ? ($errorResponse->error_description ?? $errorResponse->error ?? 'Unknown error')
+                    : substr($result, 0, 100); // First 100 chars of raw response
 
                 throw new \RuntimeException("Token refresh failed - HTTP $httpCode: $errorDesc");
             }
@@ -422,8 +439,15 @@ class KeycloakAuth
         // Parse response
         $tokenResponse = json_decode($result);
 
+        // Check for JSON decoding errors
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \RuntimeException(
+                "Token refresh failed - invalid JSON response: " . json_last_error_msg()
+            );
+        }
+
         if (!$tokenResponse || !isset($tokenResponse->access_token)) {
-            throw new \RuntimeException("Token refresh failed - invalid response");
+            throw new \RuntimeException("Token refresh failed - missing access_token in response");
         }
 
         // Update memory storage (for current request)

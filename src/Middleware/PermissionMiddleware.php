@@ -227,7 +227,17 @@ class PermissionMiddleware
         if (file_exists($endpointFile)) {
             $content = file_get_contents($endpointFile);
             $data = json_decode($content, true);
-            self::$endpointPermissions = $data ?? [];
+
+            // Check for JSON decoding errors
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                $this->log(
+                    "Failed to parse endpoint permissions JSON: " . json_last_error_msg(),
+                    'error'
+                );
+                self::$endpointPermissions = [];
+            } else {
+                self::$endpointPermissions = $data ?? [];
+            }
         } else {
             self::$endpointPermissions = [];
             $this->log("Endpoint permissions file not found: $endpointFile", 'warning');
@@ -237,7 +247,17 @@ class PermissionMiddleware
         if (file_exists($roleFile)) {
             $content = file_get_contents($roleFile);
             $data = json_decode($content, true);
-            self::$rolePermissions = $data['roles'] ?? [];
+
+            // Check for JSON decoding errors
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                $this->log(
+                    "Failed to parse role permissions JSON: " . json_last_error_msg(),
+                    'error'
+                );
+                self::$rolePermissions = [];
+            } else {
+                self::$rolePermissions = $data['roles'] ?? [];
+            }
         } else {
             self::$rolePermissions = [];
             $this->log("Role permissions file not found: $roleFile", 'warning');
