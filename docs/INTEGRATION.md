@@ -1721,9 +1721,56 @@ Add this snippet to your footer view (typically `application/views/layout/footer
         </div>
         <div style="padding: 20px; max-height: 500px; overflow-y: auto;">
             <?php
+            // Helper function to decode JWT tokens
+            function decodeJWT($token) {
+                if (!$token || !is_string($token)) return null;
+                $parts = explode('.', $token);
+                if (count($parts) === 3) {
+                    $payload = base64_decode(strtr($parts[1], '-_', '+/'));
+                    return json_decode($payload, true);
+                }
+                return null;
+            }
+
+            // Get session data
+            $sessionData = $this->session->userdata();
             $keycloakAuth = $this->session->userdata('keycloak_auth');
             $keycloakTokens = $this->session->userdata('keycloak_tokens');
             $keycloakConfig = $this->config->item('keycloak');
+
+            // Extract and decode ID token to get real-time exp/iat
+            $idToken = null;
+            if (isset($sessionData['id_token'])) {
+                $idToken = $sessionData['id_token'];
+            } elseif (isset($sessionData['keycloak_id_token'])) {
+                $idToken = $sessionData['keycloak_id_token'];
+            }
+
+            // Extract and decode access token
+            $accessToken = null;
+            if (isset($sessionData['keycloak_tokens'])) {
+                $tokens = $sessionData['keycloak_tokens'];
+                if (is_array($tokens) && isset($tokens['access_token'])) {
+                    $accessToken = $tokens['access_token'];
+                } elseif (is_object($tokens) && isset($tokens->access_token)) {
+                    $accessToken = $tokens->access_token;
+                }
+            }
+            if (!$accessToken && isset($sessionData['access_token'])) {
+                $accessToken = $sessionData['access_token'];
+            } elseif (!$accessToken && isset($sessionData['keycloak_access_token'])) {
+                $accessToken = $sessionData['keycloak_access_token'];
+            }
+
+            // Decode tokens to get fresh timestamps
+            $idTokenPayload = decodeJWT($idToken);
+            $accessTokenPayload = decodeJWT($accessToken);
+
+            // Use decoded token data if available, fallback to keycloak_auth
+            if ($idTokenPayload) {
+                $keycloakAuth['iat'] = $idTokenPayload['iat'] ?? $keycloakAuth['iat'] ?? null;
+                $keycloakAuth['exp'] = $idTokenPayload['exp'] ?? $keycloakAuth['exp'] ?? null;
+            }
 
             if (!empty($keycloakAuth)):
                 // Prepare Keycloak admin console URL
@@ -1842,36 +1889,19 @@ Add this snippet to your footer view (typically `application/views/layout/footer
                     <p style="margin: 5px 0; font-size: 12px;">
                         <strong>Issued At:</strong>
                         <?php echo date('Y-m-d H:i:s', $keycloakAuth['iat']); ?>
-                        <span style="color: #666; font-size: 10px;">(<?php echo date('U') - $keycloakAuth['iat']; ?> seconds ago)</span>
+                        <span style="color: #666; font-size: 10px;" id="modal-session-age" data-iat="<?php echo $keycloakAuth['iat']; ?>"></span>
                     </p>
                     <?php endif; ?>
                     <?php if (!empty($keycloakAuth['exp'])): ?>
                     <p style="margin: 5px 0; font-size: 12px;">
                         <strong>Expires At:</strong>
                         <?php echo date('Y-m-d H:i:s', $keycloakAuth['exp']); ?>
-                        <?php
-                        $timeRemaining = $keycloakAuth['exp'] - time();
-                        if ($timeRemaining > 0) {
-                            $minutes = floor($timeRemaining / 60);
-                            $seconds = $timeRemaining % 60;
-                            echo '<span style="color: #28a745; font-size: 10px;">(expires in ' . $minutes . 'm ' . $seconds . 's)</span>';
-                        } else {
-                            echo '<span style="color: #dc3545; font-size: 10px; font-weight: bold;">(EXPIRED)</span>';
-                        }
-                        ?>
+                        <span id="modal-token-countdown" data-exp="<?php echo $keycloakAuth['exp']; ?>"></span>
                     </p>
                     <?php elseif (isset($keycloakTokens['expires_in'])): ?>
                     <p style="margin: 5px 0; font-size: 12px;">
                         <strong>Expires In:</strong>
-                        <?php
-                        $expiresIn = (int)$keycloakTokens['expires_in'];
-                        $minutes = floor($expiresIn / 60);
-                        $seconds = $expiresIn % 60;
-                        echo $expiresIn . ' seconds';
-                        if ($expiresIn > 0) {
-                            echo ' <span style="color: #666; font-size: 10px;">(' . $minutes . 'm ' . $seconds . 's)</span>';
-                        }
-                        ?>
+                        <span id="modal-token-countdown-relative" data-expires-in="<?php echo (int)$keycloakTokens['expires_in']; ?>"></span>
                     </p>
                     <?php endif; ?>
                     <?php if (!empty($keycloakTokens['refresh_token'])): ?>
@@ -1900,6 +1930,79 @@ Add this snippet to your footer view (typically `application/views/layout/footer
         </div>
     </div>
 </div>
+
+<!-- Live Token Countdown Script -->
+<script>
+function updateModalCountdowns() {
+    const now = Math.floor(Date.now() / 1000);
+
+    // Update session age
+    const sessionAge = document.getElementById('modal-session-age');
+    if (sessionAge) {
+        const iat = parseInt(sessionAge.getAttribute('data-iat'));
+        const ageSeconds = now - iat;
+        const hours = Math.floor(ageSeconds / 3600);
+        const minutes = Math.floor((ageSeconds % 3600) / 60);
+        const seconds = ageSeconds % 60;
+        sessionAge.textContent = '(' + hours + 'h ' + minutes + 'm ' + seconds + 's ago)';
+    }
+
+    // Update token countdown
+    const tokenCountdown = document.getElementById('modal-token-countdown');
+    if (tokenCountdown) {
+        const exp = parseInt(tokenCountdown.getAttribute('data-exp'));
+        updateModalCountdownDisplay(tokenCountdown, exp, now);
+    }
+
+    // Update relative countdown (expires_in)
+    const relativeCountdown = document.getElementById('modal-token-countdown-relative');
+    if (relativeCountdown) {
+        const expiresIn = parseInt(relativeCountdown.getAttribute('data-expires-in'));
+        const diff = expiresIn;
+
+        if (diff <= 0) {
+            relativeCountdown.innerHTML = '<span style="color: #e74c3c; font-weight: bold;">EXPIRED</span>';
+        } else {
+            const hours = Math.floor(diff / 3600);
+            const minutes = Math.floor((diff % 3600) / 60);
+            const seconds = diff % 60;
+
+            const parts = [];
+            if (hours > 0) parts.push(hours + 'h');
+            if (minutes > 0) parts.push(minutes + 'm');
+            if (seconds > 0) parts.push(seconds + 's');
+
+            relativeCountdown.innerHTML = diff + ' seconds <span style="color: #666; font-size: 10px;">(' + parts.join(' ') + ')</span>';
+        }
+    }
+}
+
+function updateModalCountdownDisplay(element, exp, now) {
+    const diff = exp - now;
+
+    if (diff <= 0) {
+        element.innerHTML = ' <span style="color: #dc3545; font-size: 10px; font-weight: bold;">(EXPIRED)</span>';
+        return;
+    }
+
+    const hours = Math.floor(diff / 3600);
+    const minutes = Math.floor((diff % 3600) / 60);
+    const seconds = diff % 60;
+
+    const parts = [];
+    if (hours > 0) parts.push(hours + 'h');
+    if (minutes > 0) parts.push(minutes + 'm');
+    if (seconds > 0) parts.push(seconds + 's');
+
+    element.innerHTML = ' <span style="color: #28a745; font-size: 10px;">(expires in ' + parts.join(' ') + ')</span>';
+}
+
+// Update immediately when page loads
+updateModalCountdowns();
+
+// Update every second
+setInterval(updateModalCountdowns, 1000);
+</script>
 ```
 
 **What it does:**
@@ -1908,10 +2011,23 @@ Add this snippet to your footer view (typically `application/views/layout/footer
   - Basic user information (username, full name, email, verification status)
   - Assigned roles and permissions (as styled badges)
   - Session information (issue time, expiry time, client ID)
-  - **Development mode only**: Token details for debugging (access token snippet, token type, issue/expiry timestamps)
+  - **Development mode only**: Token details for debugging (access token snippet, token type, issue/expiry timestamps with **live countdown timers**)
+- **Live token countdown**: JavaScript automatically updates the token expiry countdown every second, showing real-time remaining time
+- **Session age tracking**: Displays how long ago the session was issued, updating in real-time
+- **Token refresh compatibility**: Decodes JWT tokens directly to get fresh expiration times (instead of relying on cached session data), ensuring accuracy even after background token refreshes
 - Provides link to Keycloak Admin Console
 - Uses inline styles for portability (no external CSS dependencies)
 - Responsive design with max-width for mobile compatibility
+
+**Important Implementation Note:**
+
+The modal **decodes JWT tokens directly** using the `decodeJWT()` helper function to extract real-time `iat` (issued at) and `exp` (expiration) timestamps. This is critical because:
+
+1. **Token Refresh**: When tokens are refreshed (either manually or automatically), the actual JWT tokens in `keycloak_tokens` are updated, but the cached `keycloak_auth` session data may not be
+2. **Accuracy**: Decoding the JWT ensures you always display the correct expiration time from the token itself, not stale cached data
+3. **Consistency**: This matches the implementation in `home_simple.php`, ensuring consistent behavior across all views
+
+Without this JWT decoding, the modal would show outdated expiration times that don't reflect token refreshes.
 
 #### Customization Notes
 

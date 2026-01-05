@@ -5,6 +5,12 @@ namespace Simss\KeycloakAuth\Tests\Unit;
 use PHPUnit\Framework\TestCase;
 use Simss\KeycloakAuth\Config\KeycloakConfig;
 
+
+/** 
+ * Unit tests for KeycloakConfig class
+ *
+ * Tests configuration loading, validation, and getters.
+ */
 class KeycloakConfigTest extends TestCase
 {
     protected function setUp(): void
