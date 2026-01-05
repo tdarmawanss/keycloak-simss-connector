@@ -287,15 +287,45 @@ class PermissionMiddleware
     /**
      * Normalize endpoint path to config key format
      *
+     * Handles path traversal attacks by:
+     * - Decoding URL encoding (%2F → /)
+     * - Resolving dot segments (../ and ./)
+     * - Removing double slashes (//)
+     * - Case normalization
+     *
      * @param string $path e.g., "/btb/add" or "/simadiskc/btb/add"
      * @return string e.g., "btb/add"
      */
     protected function normalizeEndpoint($path)
     {
+        // Decode URL encoding first (prevents %2F bypass)
+        $path = urldecode($path);
+
+        // Remove query string if present
+        $path = parse_url($path, PHP_URL_PATH) ?: $path;
+
         // Remove leading/trailing slashes
         $path = trim($path, '/');
 
-        // Remove common base path prefixes if present
+        // Split path and filter out empty segments and dots
+        $parts = array_filter(explode('/', $path), function($part) {
+            return $part !== '' && $part !== '.';
+        });
+
+        // Resolve dot-dot segments (path traversal)
+        $normalized = [];
+        foreach ($parts as $part) {
+            if ($part === '..') {
+                // Go up one directory (remove last segment)
+                array_pop($normalized);
+            } else {
+                $normalized[] = $part;
+            }
+        }
+
+        $path = implode('/', $normalized);
+
+        // Remove common base path prefixes
         $prefixes = ['simadiskc', 'simadis', 'index.php'];
         foreach ($prefixes as $prefix) {
             if (stripos($path, $prefix . '/') === 0) {
