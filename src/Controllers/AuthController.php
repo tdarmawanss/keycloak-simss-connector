@@ -143,16 +143,6 @@ public function logout()
             session_start();
         }
 
-        /* DEBUG: Show raw session FIRST
-        echo "<pre>\n";
-        echo "=== LOGOUT DEBUG - RAW SESSION ===\n";
-        echo "Session ID: " . session_id() . "\n";
-        echo "Session status: " . session_status() . " (2=active)\n";
-        echo "\$_SESSION contents:\n";
-        print_r($_SESSION);
-        echo "\n";
-        */
-
         // Get ID token before destroying session (for OIDC logout)
         $idToken = $this->sessionManager->getIdToken();
         $postLogoutRedirect = $this->getBaseUrl();
@@ -232,37 +222,11 @@ public function logout()
             'expires_in' => $tokenResponse->expires_in ?? 300,
         ];
 
-        /* DEBUG: Show what we got
-        echo "<pre>\n";
-        echo "=== LOGIN SUCCESS DEBUG ===\n";
-        echo "Session ID: " . session_id() . "\n";
-        echo "ID Token received: " . ($idToken ? "YES (length: " . strlen($idToken) . ")" : "NO") . "\n";
-        echo "ID Token (first 50 chars): " . ($idToken ? substr($idToken, 0, 50) . "..." : "NULL") . "\n";
-        echo "User: " . ($userInfo->preferred_username ?? $userInfo->sub ?? 'unknown') . "\n";
-        echo "</pre>";
-        // END DEBUG
-        */
-
         // Regenerate session ID to prevent session fixation attacks
         $this->regenerateSession();
 
         // Create session with user info and tokens
         $this->sessionManager->createSession($userInfo, $tokens);
-
-        /* DEBUG: Verify session was saved
-        echo "<pre>\n";
-        echo "=== AFTER SESSION SAVE ===\n";
-        echo "New Session ID: " . session_id() . "\n";
-        echo "\$_SESSION keys: " . implode(", ", array_keys($_SESSION ?? [])) . "\n";
-        echo "keycloak_id_token saved: " . (isset($_SESSION['keycloak_id_token']) ? "YES" : "NO") . "\n";
-        $intendedUrl = $this->getIntendedUrl();
-        $redirectTo = $intendedUrl ?: $this->getHomeUrl();
-        echo "Will redirect to: " . $redirectTo . "\n";
-        echo "</pre>";
-        echo "<p><a href='" . htmlspecialchars($redirectTo) . "'>Click here to continue</a></p>";
-        exit;
-        // END DEBUG
-        */
 
         // Redirect to intended URL or home
         $intendedUrl = $this->getIntendedUrl();
