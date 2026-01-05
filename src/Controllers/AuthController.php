@@ -25,14 +25,6 @@ class AuthController
         // Initialize configuration
         try {
             $this->config = KeycloakConfig::getInstance();
-
-            // DEBUG: Show loaded config
-            if (isset($_GET['debug_config'])) {
-                echo "<pre>Loaded Keycloak Config:\n";
-                print_r($this->config->toArray());
-                echo "</pre>";
-                exit;
-            }
         } catch (\Exception $e) {
             $this->handleError("Configuration error. Please contact administrator.");
             return;
