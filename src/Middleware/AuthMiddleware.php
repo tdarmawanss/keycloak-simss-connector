@@ -318,7 +318,8 @@ class AuthMiddleware
         }
 
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
-        $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+        // Use SERVER_NAME instead of HTTP_HOST to prevent Host header injection
+        $host = $_SERVER['SERVER_NAME'] ?? $_SERVER['HTTP_HOST'] ?? 'localhost';
         $uri = $_SERVER['REQUEST_URI'] ?? '/';
 
         return $protocol . $host . $uri;
@@ -340,7 +341,8 @@ class AuthMiddleware
     protected function getBaseUrl()
     {
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
-        $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+        // Use SERVER_NAME instead of HTTP_HOST to prevent Host header injection
+        $host = $_SERVER['SERVER_NAME'] ?? $_SERVER['HTTP_HOST'] ?? 'localhost';
         $script = dirname($_SERVER['SCRIPT_NAME']);
         $base = $protocol . $host . ($script !== '/' ? $script : '');
         return rtrim($base, '/');
