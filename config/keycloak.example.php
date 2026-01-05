@@ -67,6 +67,17 @@ return [
     // 'logout_endpoint' => 'https://keycloak.example.com/realms/simss/protocol/openid-connect/logout',
 
     /**
+     * Allow HTTP URLs (Development Only)
+     * SECURITY: Must be false in production!
+     *
+     * When false (default): Enforces HTTPS for issuer and redirect_uri
+     * When true: Allows HTTP URLs for local development
+     *
+     * Default: false (HTTPS required)
+     */
+    // 'allow_http' => false,
+
+    /**
      * SSL Verification
      * IMPORTANT: Set to true in production!
      * Only disable for local development with self-signed certificates

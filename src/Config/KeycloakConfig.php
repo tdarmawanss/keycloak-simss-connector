@@ -76,6 +76,26 @@ class KeycloakConfig
         if (!filter_var($this->config['redirect_uri'], FILTER_VALIDATE_URL)) {
             throw new \InvalidArgumentException("Invalid redirect_uri URL");
         }
+
+        // Enforce HTTPS in production (security best practice)
+        $allowHttp = $this->config['allow_http'] ?? false;
+        if (!$allowHttp) {
+            $issuerScheme = parse_url($this->config['issuer'], PHP_URL_SCHEME);
+            if ($issuerScheme !== 'https') {
+                throw new \InvalidArgumentException(
+                    "HTTPS is required for issuer URL in production. " .
+                    "Use HTTPS or set 'allow_http' => true for development only."
+                );
+            }
+
+            $redirectScheme = parse_url($this->config['redirect_uri'], PHP_URL_SCHEME);
+            if ($redirectScheme !== 'https') {
+                throw new \InvalidArgumentException(
+                    "HTTPS is required for redirect_uri in production. " .
+                    "Use HTTPS or set 'allow_http' => true for development only."
+                );
+            }
+        }
     }
 
     public function get($key, $default = null)

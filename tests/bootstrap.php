@@ -16,4 +16,5 @@ define('TEST_CONFIG', [
     'redirect_uri' => 'http://localhost/auth/callback',
     'verify_peer' => false,
     'verify_host' => false,
+    'allow_http' => true, // Allow HTTP in tests for localhost redirect_uri
 ]);
