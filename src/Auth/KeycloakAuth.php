@@ -107,24 +107,88 @@ class KeycloakAuth
     {
         // Step 1: No code = user needs to authenticate at Keycloak
         if (!isset($_GET['code'])) {
+            // Generate nonce for OIDC replay protection
+            $nonce = bin2hex(random_bytes(16));
+            $_SESSION['openid_connect_nonce'] = $nonce;
+            $this->oidcClient->setNonce($nonce);
+
             // This redirects to Keycloak and exits (Keycloak will redirect back to /auth/callback)
             $this->oidcClient->authenticate();
             return true;
         }
 
         // Step 2: We have a code = user returned from Keycloak
-        // Validate state parameter to prevent CSRF attacks
+        // Validate state parameter to prevent CSRF attacks (constant-time comparison)
         $urlState = $_GET['state'] ?? '';
         $sessionState = $_SESSION['openid_connect_state'] ?? '';
-        
-        if (empty($urlState) || $urlState !== $sessionState) {
+
+        if (empty($urlState) || empty($sessionState) || !hash_equals($sessionState, $urlState)) {
             throw new \RuntimeException("State mismatch - possible CSRF attack");
         }
 
         // Exchange authorization code for tokens
         $this->exchangeCodeForTokens($_GET['code']);
-        
+
+        // Validate nonce in ID token (replay protection)
+        $this->validateNonce();
+
         return true;
+    }
+
+    /**
+     * Validate nonce claim in ID token to prevent replay attacks
+     *
+     * OIDC nonce parameter protects against token replay attacks. The nonce is:
+     * 1. Generated and stored in session before redirect to Keycloak
+     * 2. Sent to Keycloak which embeds it in the ID token
+     * 3. Validated here to ensure the token was issued for this specific auth request
+     *
+     * @throws \RuntimeException If nonce validation fails
+     */
+    private function validateNonce()
+    {
+        if (!isset($this->idToken)) {
+            return; // No ID token to validate
+        }
+
+        $sessionNonce = $_SESSION['openid_connect_nonce'] ?? '';
+
+        if (empty($sessionNonce)) {
+            throw new \RuntimeException("No nonce in session - possible replay attack");
+        }
+
+        // Decode ID token to extract nonce claim
+        $parts = explode('.', $this->idToken);
+        if (count($parts) !== 3) {
+            throw new \RuntimeException("Invalid ID token format");
+        }
+
+        // Decode payload (second part) - handle URL-safe base64
+        $payload = str_replace(['-', '_'], ['+', '/'], $parts[1]);
+        $remainder = strlen($payload) % 4;
+        if ($remainder) {
+            $payload .= str_repeat('=', 4 - $remainder);
+        }
+
+        $decoded = base64_decode($payload, true);
+        if ($decoded === false) {
+            throw new \RuntimeException("Failed to decode ID token payload");
+        }
+
+        $claims = json_decode($decoded, true);
+        if (!is_array($claims)) {
+            throw new \RuntimeException("Invalid ID token claims");
+        }
+
+        $tokenNonce = $claims['nonce'] ?? '';
+
+        // Use constant-time comparison to prevent timing attacks
+        if (empty($tokenNonce) || !hash_equals($sessionNonce, $tokenNonce)) {
+            throw new \RuntimeException("Nonce mismatch - possible replay attack");
+        }
+
+        // Clear nonce (one-time use for replay protection)
+        unset($_SESSION['openid_connect_nonce']);
     }
 
     /**
