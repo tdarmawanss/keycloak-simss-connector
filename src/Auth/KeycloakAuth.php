@@ -444,6 +444,40 @@ class KeycloakAuth
     }
 
     /**
+     * Generate logout form for POST-based logout (more secure)
+     *
+     * POST-based logout prevents ID tokens from appearing in:
+     * - Browser history
+     * - Server access logs
+     * - Proxy/CDN logs
+     * - Referer headers
+     *
+     * @param string|null $idToken ID token for the id_token_hint parameter
+     * @param string|null $redirectUrl Where to redirect after logout
+     * @return string HTML form with auto-submit
+     */
+    public function getLogoutForm($idToken = null, $redirectUrl = null)
+    {
+        $logoutEndpoint = $this->config->getLogoutEndpoint();
+        $postLogoutRedirect = $redirectUrl ?: $this->getBaseUrl();
+
+        $html = '<!DOCTYPE html><html><head><title>Logging out...</title></head><body>';
+        $html .= '<p>Logging out, please wait...</p>';
+        $html .= '<form id="logoutForm" method="POST" action="' . htmlspecialchars($logoutEndpoint) . '">';
+
+        if ($idToken) {
+            $html .= '<input type="hidden" name="id_token_hint" value="' . htmlspecialchars($idToken) . '">';
+        }
+
+        $html .= '<input type="hidden" name="post_logout_redirect_uri" value="' . htmlspecialchars($postLogoutRedirect) . '">';
+        $html .= '</form>';
+        $html .= '<script>document.getElementById("logoutForm").submit();</script>';
+        $html .= '</body></html>';
+
+        return $html;
+    }
+
+    /**
      * Get application base URL
      */
     private function getBaseUrl()

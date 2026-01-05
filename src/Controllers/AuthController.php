@@ -155,44 +155,14 @@ public function logout()
 
         // Get ID token before destroying session (for OIDC logout)
         $idToken = $this->sessionManager->getIdToken();
-
-        /*
-        echo "=== LOGOUT DEBUG - ID TOKEN CHECK ===\n";
-        echo "getIdToken() returned: " . ($idToken ? "YES (length: " . strlen($idToken) . ")" : "NULL") . "\n";
-        echo "Direct \$_SESSION['keycloak_id_token']: " . (isset($_SESSION['keycloak_id_token']) ? "EXISTS" : "NOT SET") . "\n";
-
-        if ($idToken) {
-            echo "ID Token (first 80 chars): " . substr($idToken, 0, 80) . "...\n";
-        }
-        */
-
-        // Build logout URL before destroying session
         $postLogoutRedirect = $this->getBaseUrl();
-        $logoutUrl = $this->keycloakAuth->getLogoutUrl($idToken, $postLogoutRedirect);
 
-        /*
-        echo "\n=== LOGOUT URL ===\n";
-        echo "Has id_token_hint: " . (strpos($logoutUrl, 'id_token_hint') !== false ? "YES" : "NO - MISSING!") . "\n";
-        echo "Full URL: " . $logoutUrl . "\n";
-
-        // NOW destroy the session
-        echo "\n--- Calling sessionManager->destroy() ---\n";
-        */
-
+        // Destroy local session
         $this->sessionManager->destroy();
 
-        /*
-        echo "\n=== AFTER DESTROY ===\n";
-        echo "Session destroyed successfully\n";
-
-        echo "</pre>";
-        echo "<p><a href='" . htmlspecialchars($logoutUrl) . "'>Click here to continue to Keycloak logout</a></p>";
+        // Use POST-based logout (more secure - doesn't expose token in URL)
+        echo $this->keycloakAuth->getLogoutForm($idToken, $postLogoutRedirect);
         exit;
-        // END DEBUG
-        */
-
-        // Redirect to Keycloak logout
-        $this->redirect($logoutUrl);
 
     } catch (\Exception $e) {
         // Even if logout fails, destroy local session
