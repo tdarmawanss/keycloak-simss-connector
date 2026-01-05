@@ -579,14 +579,18 @@ public function logout()
 
     protected function getClientIp()
     {
-        $keys = ['HTTP_CLIENT_IP','HTTP_X_FORWARDED_FOR','REMOTE_ADDR'];
-        foreach ($keys as $k) {
-            if (!empty($_SERVER[$k])) {
-                $ipList = explode(',', $_SERVER[$k]);
+        // Only trust X-Forwarded-For if behind a known proxy
+        $trustedProxies = $this->config->get('trusted_proxies', []);
+
+        if (!empty($trustedProxies) && in_array($_SERVER['REMOTE_ADDR'] ?? '', $trustedProxies)) {
+            if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+                $ipList = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
                 return trim($ipList[0]);
             }
         }
-        return 'unknown';
+
+        // Default to REMOTE_ADDR (can't be spoofed)
+        return $_SERVER['REMOTE_ADDR'] ?? 'unknown';
     }
 
     protected function isAjaxRequest()

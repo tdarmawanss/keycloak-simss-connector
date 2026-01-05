@@ -87,6 +87,19 @@ return [
     // 'http_proxy' => 'http://proxy.example.com:8080',
 
     /**
+     * Trusted Proxies (Optional)
+     * List of trusted proxy server IP addresses
+     *
+     * SECURITY: Only configure if your application is behind a reverse proxy/load balancer
+     * When set, X-Forwarded-For header will be trusted ONLY if the request comes from
+     * one of these proxy IPs. This prevents IP spoofing attacks on rate limiting.
+     *
+     * Example: ['10.0.0.1', '192.168.1.100']
+     * Default: [] (empty - don't trust X-Forwarded-For)
+     */
+    // 'trusted_proxies' => [],
+
+    /**
      * Token Refresh Buffer (Optional)
      * Seconds before token expiry to trigger a refresh
      * Default: 60
