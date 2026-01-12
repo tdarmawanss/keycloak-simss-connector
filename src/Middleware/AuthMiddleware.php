@@ -232,10 +232,33 @@ class AuthMiddleware
     }
 
     /**
-     * Redirect to login page
+     * Redirect to login page or return JSON for AJAX requests
      */
     protected function redirectToLogin()
     {
+        // Check if this is an AJAX request
+        $isAjax = $this->isAjaxRequest();
+
+        // Debug logging
+        error_log('[AuthMiddleware] redirectToLogin called. isAjax=' . ($isAjax ? 'true' : 'false'));
+        error_log('[AuthMiddleware] Headers: X-Requested-With=' . ($_SERVER['HTTP_X_REQUESTED_WITH'] ?? 'not set') .
+                  ', Accept=' . ($_SERVER['HTTP_ACCEPT'] ?? 'not set'));
+
+        if ($isAjax) {
+            // Return JSON response for AJAX requests
+            error_log('[AuthMiddleware] Returning JSON 401 response for AJAX request');
+            header('Content-Type: application/json');
+            http_response_code(401);
+            echo json_encode([
+                'error' => 'Unauthorized',
+                'message' => 'Sesi Anda berakhir. Silakan muat ulang halaman dan login kembali.',
+                'redirect' => $this->getLoginUrl()
+            ]);
+            exit;
+        }
+
+        error_log('[AuthMiddleware] Redirecting to login page (not AJAX)');
+
         $loginUrl = $this->getLoginUrl();
 
         // Store intended URL for post-login redirect
@@ -376,5 +399,26 @@ class AuthMiddleware
             }
             $_SESSION['auth_notice'] = 'Sesi Anda berakhir. Silakan login kembali.';
         }
+    }
+
+    /**
+     * Check if the current request is an AJAX request
+     */
+    protected function isAjaxRequest()
+    {
+        // Check common AJAX indicators
+        return (
+            // Check X-Requested-With header (jQuery, Axios, etc.)
+            (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+             strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest')
+            ||
+            // Check Accept header contains application/json
+            (!empty($_SERVER['HTTP_ACCEPT']) &&
+             strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false)
+            ||
+            // Check Content-Type header for JSON
+            (!empty($_SERVER['CONTENT_TYPE']) &&
+             strpos($_SERVER['CONTENT_TYPE'], 'application/json') !== false)
+        );
     }
 }

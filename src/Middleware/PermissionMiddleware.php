@@ -511,6 +511,21 @@ class PermissionMiddleware
         // Development-mode detailed logging
         $this->logDevelopmentDetails($endpoint, $userRoles, $requiredModules);
 
+        // Check if this is an AJAX request
+        if ($this->isAjaxRequest()) {
+            // Return JSON response for AJAX requests
+            header('Content-Type: application/json');
+            http_response_code(403);
+            echo json_encode([
+                'error' => 'Forbidden',
+                'message' => 'Anda tidak memiliki izin untuk mengakses resource ini.',
+                'endpoint' => $endpoint,
+                'required_modules' => $reqModulesFormatted,
+                'reason' => $reason
+            ]);
+            exit;
+        }
+
         // Set flash message
         $this->setAccessDeniedNotice();
 
@@ -771,6 +786,29 @@ class PermissionMiddleware
     public static function getRolePermissions()
     {
         return self::$rolePermissions ?? [];
+    }
+
+    /**
+     * Check if the current request is an AJAX request
+     *
+     * @return bool
+     */
+    protected function isAjaxRequest()
+    {
+        // Check common AJAX indicators
+        return (
+            // Check X-Requested-With header (jQuery, Axios, etc.)
+            (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+             strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest')
+            ||
+            // Check Accept header contains application/json
+            (!empty($_SERVER['HTTP_ACCEPT']) &&
+             strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false)
+            ||
+            // Check Content-Type header for JSON
+            (!empty($_SERVER['CONTENT_TYPE']) &&
+             strpos($_SERVER['CONTENT_TYPE'], 'application/json') !== false)
+        );
     }
 }
 
