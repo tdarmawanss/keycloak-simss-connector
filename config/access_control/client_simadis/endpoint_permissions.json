@@ -4,7 +4,7 @@
     "method": "daftarbkb",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -19,7 +19,7 @@
     "method": "daftarbtb",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -34,7 +34,7 @@
     "method": "daftarretur",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -49,7 +49,7 @@
     "method": "daftarspb",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -64,7 +64,7 @@
     "method": "getdataperincianstok",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -79,7 +79,7 @@
     "method": "getdataposisistok",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -94,7 +94,7 @@
     "method": "getproduk",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -109,7 +109,7 @@
     "method": "outrequisisi",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -124,7 +124,7 @@
     "method": "outstandingbkb",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -139,7 +139,7 @@
     "method": "perincianstok",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -154,7 +154,7 @@
     "method": "perincianstok_pdf",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -169,7 +169,7 @@
     "method": "posisistok",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -184,7 +184,7 @@
     "method": "posisistok_pdf",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -199,7 +199,7 @@
     "method": "sjb",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -214,7 +214,7 @@
     "method": "index",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -229,7 +229,7 @@
     "method": "callback",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -244,7 +244,7 @@
     "method": "check",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -259,7 +259,7 @@
     "method": "login",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -274,7 +274,7 @@
     "method": "logout",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -289,7 +289,7 @@
     "method": "index",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -304,7 +304,7 @@
     "method": "callback",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -319,7 +319,7 @@
     "method": "check",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -334,7 +334,7 @@
     "method": "index",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -349,7 +349,7 @@
     "method": "login",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -364,7 +364,7 @@
     "method": "logout",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -394,7 +394,7 @@
     "method": "add",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -409,7 +409,7 @@
     "method": "cekbarangstok",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -424,7 +424,7 @@
     "method": "confirm",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -439,7 +439,7 @@
     "method": "delete",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -454,7 +454,7 @@
     "method": "detail",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -469,7 +469,7 @@
     "method": "edit",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -484,7 +484,7 @@
     "method": "finddataCustomer",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -499,7 +499,7 @@
     "method": "finddataEkspedisi",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -514,7 +514,7 @@
     "method": "finddatanocp",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -529,7 +529,7 @@
     "method": "finddatanoform",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -544,7 +544,7 @@
     "method": "finddatanolks",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -559,7 +559,7 @@
     "method": "finddatanomc",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -574,7 +574,7 @@
     "method": "finddataPrincSup",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -589,7 +589,7 @@
     "method": "finddataStation",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -604,7 +604,7 @@
     "method": "finddataViaEkspedisi",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -619,7 +619,7 @@
     "method": "findtipeBKB",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -634,7 +634,7 @@
     "method": "getAllDataBKB",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -649,7 +649,7 @@
     "method": "getdatabarang",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -664,7 +664,7 @@
     "method": "getdataclaim",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -679,7 +679,7 @@
     "method": "getdataedit",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -694,7 +694,7 @@
     "method": "getdataform",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -709,7 +709,7 @@
     "method": "getnourut",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -724,7 +724,7 @@
     "method": "getserial",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -739,7 +739,7 @@
     "method": "index",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -754,7 +754,7 @@
     "method": "print",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -769,7 +769,7 @@
     "method": "save",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -784,7 +784,7 @@
     "method": "update",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -799,7 +799,7 @@
     "method": "index",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -814,7 +814,7 @@
     "method": "add",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -829,7 +829,7 @@
     "method": "confirm",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -844,7 +844,7 @@
     "method": "delete",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -859,7 +859,7 @@
     "method": "detail",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -874,7 +874,7 @@
     "method": "edit",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -889,7 +889,7 @@
     "method": "finddataCustomer",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -904,7 +904,7 @@
     "method": "finddataEkspedisi",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -919,7 +919,7 @@
     "method": "finddatanocp",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -934,7 +934,7 @@
     "method": "finddatanomc",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -949,7 +949,7 @@
     "method": "finddataPrincSup",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -964,7 +964,7 @@
     "method": "finddataStation",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -979,7 +979,7 @@
     "method": "finddataViaEkspedisi",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -994,7 +994,7 @@
     "method": "findtipeBKB",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1009,7 +1009,7 @@
     "method": "getdatabarang",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1024,7 +1024,7 @@
     "method": "getdataedit",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1039,7 +1039,7 @@
     "method": "getdataref",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1054,7 +1054,7 @@
     "method": "getnourut",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1069,7 +1069,7 @@
     "method": "getserial",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1084,7 +1084,7 @@
     "method": "index",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1099,7 +1099,7 @@
     "method": "print",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1114,7 +1114,7 @@
     "method": "save",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1129,7 +1129,7 @@
     "method": "update",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1144,7 +1144,7 @@
     "method": "index",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1159,7 +1159,7 @@
     "method": "add",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1174,7 +1174,7 @@
     "method": "delete",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1189,7 +1189,7 @@
     "method": "detail",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1204,7 +1204,7 @@
     "method": "edit",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1219,7 +1219,7 @@
     "method": "finddataPrincSup",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1234,7 +1234,7 @@
     "method": "finddataStation",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1249,7 +1249,7 @@
     "method": "findtipeBTB",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1264,7 +1264,7 @@
     "method": "getallserial",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1279,7 +1279,7 @@
     "method": "getdatabarang",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1294,7 +1294,7 @@
     "method": "getdatabkb",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1309,7 +1309,7 @@
     "method": "getdataedit",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1324,7 +1324,7 @@
     "method": "getnourut",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1339,7 +1339,7 @@
     "method": "index",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1354,7 +1354,7 @@
     "method": "print",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1369,7 +1369,7 @@
     "method": "save",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1384,7 +1384,7 @@
     "method": "update",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1399,7 +1399,7 @@
     "method": "index",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1414,7 +1414,7 @@
     "method": "getdataproduk",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1429,7 +1429,7 @@
     "method": "index",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1444,7 +1444,7 @@
     "method": "repairstok",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1459,7 +1459,7 @@
     "method": "index",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1474,7 +1474,7 @@
     "method": "add",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1489,7 +1489,7 @@
     "method": "detail",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1504,7 +1504,7 @@
     "method": "edit",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1519,7 +1519,7 @@
     "method": "index",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1534,7 +1534,7 @@
     "method": "save",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1549,7 +1549,7 @@
     "method": "update",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1564,7 +1564,7 @@
     "method": "kirimdata_BKB",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1579,7 +1579,7 @@
     "method": "kirimdata_BTB",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1594,7 +1594,7 @@
     "method": "kirimdata_Serial",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1609,7 +1609,7 @@
     "method": "kirimdata_SPB",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1624,7 +1624,7 @@
     "method": "migrasi_custmc",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1639,7 +1639,7 @@
     "method": "set_periodeapp",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1654,7 +1654,7 @@
     "method": "updatebtb",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1669,7 +1669,7 @@
     "method": "updatestoknas",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1684,7 +1684,7 @@
     "method": "index",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1699,7 +1699,7 @@
     "method": "index",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1714,7 +1714,7 @@
     "method": "index",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1729,7 +1729,7 @@
     "method": "getdataproduk",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1744,7 +1744,7 @@
     "method": "index",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1759,7 +1759,7 @@
     "method": "index",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1774,7 +1774,7 @@
     "method": "add",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1789,7 +1789,7 @@
     "method": "confirm",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1804,7 +1804,7 @@
     "method": "delete",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1819,7 +1819,7 @@
     "method": "detail",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1834,7 +1834,7 @@
     "method": "edit",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1849,7 +1849,7 @@
     "method": "findbarang",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1864,7 +1864,7 @@
     "method": "getdatabarang",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1879,7 +1879,7 @@
     "method": "getdataedit",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1894,7 +1894,7 @@
     "method": "getformclaim",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1909,7 +1909,7 @@
     "method": "getnourut",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1924,7 +1924,7 @@
     "method": "index",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1939,7 +1939,7 @@
     "method": "print",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1954,7 +1954,7 @@
     "method": "save",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1969,7 +1969,7 @@
     "method": "update",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1984,7 +1984,7 @@
     "method": "index",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -1999,7 +1999,7 @@
     "method": "add",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2014,7 +2014,7 @@
     "method": "delete",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2029,7 +2029,7 @@
     "method": "detail",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2044,7 +2044,7 @@
     "method": "edit",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2059,7 +2059,7 @@
     "method": "getdataedit",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2074,7 +2074,7 @@
     "method": "getdatafaktur",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2089,7 +2089,7 @@
     "method": "getnofaktur",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2104,7 +2104,7 @@
     "method": "getnourut",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2119,7 +2119,7 @@
     "method": "index",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2134,7 +2134,7 @@
     "method": "print",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2149,7 +2149,7 @@
     "method": "save",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2164,7 +2164,7 @@
     "method": "update",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2179,7 +2179,7 @@
     "method": "index",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2194,7 +2194,7 @@
     "method": "add",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2209,7 +2209,7 @@
     "method": "cekbarangstok",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2224,7 +2224,7 @@
     "method": "delete",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2239,7 +2239,7 @@
     "method": "detail",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2254,7 +2254,7 @@
     "method": "edit",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2269,7 +2269,7 @@
     "method": "getallserial",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2284,7 +2284,7 @@
     "method": "getdatabarang",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2299,7 +2299,7 @@
     "method": "getdataedit",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2314,7 +2314,7 @@
     "method": "getdatafaktur",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2329,7 +2329,7 @@
     "method": "getnofaktur",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2344,7 +2344,7 @@
     "method": "getnourut",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2359,7 +2359,7 @@
     "method": "index",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2374,7 +2374,7 @@
     "method": "print",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2389,7 +2389,7 @@
     "method": "save",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2404,7 +2404,7 @@
     "method": "update",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2419,7 +2419,7 @@
     "method": "index",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2434,7 +2434,7 @@
     "method": "add",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2449,7 +2449,7 @@
     "method": "cekbarangstok",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2464,7 +2464,7 @@
     "method": "delete",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2479,7 +2479,7 @@
     "method": "detail",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2494,7 +2494,7 @@
     "method": "edit",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2509,7 +2509,7 @@
     "method": "getallserial",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2524,7 +2524,7 @@
     "method": "getdatabarang",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2539,7 +2539,7 @@
     "method": "getdataedit",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2554,7 +2554,7 @@
     "method": "getdatafaktur",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2569,7 +2569,7 @@
     "method": "getnofaktur",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2584,7 +2584,7 @@
     "method": "getnourut",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2599,7 +2599,7 @@
     "method": "index",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2614,7 +2614,7 @@
     "method": "print",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2629,7 +2629,7 @@
     "method": "save",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2644,7 +2644,7 @@
     "method": "update",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2659,7 +2659,7 @@
     "method": "index",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2674,7 +2674,7 @@
     "method": "add",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2689,7 +2689,7 @@
     "method": "delete",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2704,7 +2704,7 @@
     "method": "detail",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2719,7 +2719,7 @@
     "method": "edit",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2734,7 +2734,7 @@
     "method": "getdatabarang",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2749,7 +2749,7 @@
     "method": "getdataedit",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2764,7 +2764,7 @@
     "method": "getnourut",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2779,7 +2779,7 @@
     "method": "index",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2794,7 +2794,7 @@
     "method": "print",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2809,7 +2809,7 @@
     "method": "save",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",
@@ -2824,7 +2824,7 @@
     "method": "update",
     "modules": [
       {
-        "name": "module_name",
+        "name": "test_module",
         "permissions": [
           "C",
           "R",

@@ -2,7 +2,7 @@
   "_meta": {
     "description": "Maps user roles to module privileges (CRUD). Used with endpoint_permissions.json to determine access.",
     "generated_from": "access_control.csv",
-    "generated_at": "2026-01-02 13:21:07"
+    "generated_at": "2026-01-05 17:26:53"
   },
   "roles": {
     "branch_mgr": {
@@ -15,6 +15,33 @@
           "R"
         ],
         "data_ekspedisi": [
+          "R"
+        ],
+        "requisisi_barang": [
+          "R"
+        ],
+        "bon_terima_barang": [
+          "R"
+        ],
+        "bon_keluar_barang": [
+          "R"
+        ],
+        "surat_penyerahan_barang": [
+          "R"
+        ],
+        "retur_barang": [
+          "R"
+        ],
+        "report_outstanding": [
+          "R"
+        ],
+        "report_terima_barang": [
+          "R"
+        ],
+        "report_keluar_barang": [
+          "R"
+        ],
+        "report_stock_barang": [
           "R"
         ]
       }
@@ -30,6 +57,33 @@
         ],
         "data_ekspedisi": [
           "R"
+        ],
+        "requisisi_barang": [
+          "R"
+        ],
+        "bon_terima_barang": [
+          "R"
+        ],
+        "bon_keluar_barang": [
+          "R"
+        ],
+        "surat_penyerahan_barang": [
+          "R"
+        ],
+        "retur_barang": [
+          "R"
+        ],
+        "report_outstanding": [
+          "R"
+        ],
+        "report_terima_barang": [
+          "R"
+        ],
+        "report_keluar_barang": [
+          "R"
+        ],
+        "report_stock_barang": [
+          "R"
         ]
       }
     },
@@ -43,6 +97,33 @@
           "R"
         ],
         "data_ekspedisi": [
+          "R"
+        ],
+        "requisisi_barang": [
+          "R"
+        ],
+        "bon_terima_barang": [
+          "R"
+        ],
+        "bon_keluar_barang": [
+          "R"
+        ],
+        "surat_penyerahan_barang": [
+          "R"
+        ],
+        "retur_barang": [
+          "R"
+        ],
+        "report_outstanding": [
+          "R"
+        ],
+        "report_terima_barang": [
+          "R"
+        ],
+        "report_keluar_barang": [
+          "R"
+        ],
+        "report_stock_barang": [
           "R"
         ]
       }
@@ -62,6 +143,43 @@
           "C",
           "R",
           "U"
+        ],
+        "requisisi_barang": [
+          "C",
+          "R",
+          "U"
+        ],
+        "bon_terima_barang": [
+          "C",
+          "R",
+          "U"
+        ],
+        "bon_keluar_barang": [
+          "C",
+          "R",
+          "U"
+        ],
+        "surat_penyerahan_barang": [
+          "C",
+          "R",
+          "U"
+        ],
+        "retur_barang": [
+          "C",
+          "R",
+          "U"
+        ],
+        "report_outstanding": [
+          "R"
+        ],
+        "report_terima_barang": [
+          "R"
+        ],
+        "report_keluar_barang": [
+          "R"
+        ],
+        "report_stock_barang": [
+          "R"
         ]
       }
     },
@@ -80,12 +198,235 @@
           "C",
           "R",
           "U"
+        ],
+        "requisisi_barang": [
+          "C",
+          "R",
+          "U"
+        ],
+        "bon_terima_barang": [
+          "C",
+          "R",
+          "U"
+        ],
+        "bon_keluar_barang": [
+          "C",
+          "R",
+          "U"
+        ],
+        "surat_penyerahan_barang": [
+          "C",
+          "R",
+          "U"
+        ],
+        "retur_barang": [
+          "C",
+          "R",
+          "U"
+        ],
+        "report_outstanding": [
+          "R"
+        ],
+        "report_terima_barang": [
+          "R"
+        ],
+        "report_keluar_barang": [
+          "R"
+        ],
+        "report_stock_barang": [
+          "R"
+        ]
+      }
+    },
+    "fna_head": {
+      "display_name": "fna_head",
+      "modules": {
+        "data_produk": [
+          "R"
+        ],
+        "data_stock": [
+          "R"
+        ],
+        "data_ekspedisi": [
+          "R"
+        ],
+        "requisisi_barang": [
+          "R"
+        ],
+        "bon_terima_barang": [
+          "R"
+        ],
+        "bon_keluar_barang": [
+          "R"
+        ],
+        "surat_penyerahan_barang": [
+          "R"
+        ],
+        "retur_barang": [
+          "R"
+        ],
+        "report_outstanding": [
+          "R"
+        ],
+        "report_terima_barang": [
+          "R"
+        ],
+        "report_keluar_barang": [
+          "R"
+        ],
+        "report_stock_barang": [
+          "R"
+        ]
+      }
+    },
+    "fna_staff": {
+      "display_name": "fna_staff",
+      "modules": {
+        "data_produk": [
+          "R"
+        ],
+        "data_stock": [
+          "R"
+        ],
+        "data_ekspedisi": [
+          "R"
+        ],
+        "surat_penyerahan_barang": [
+          "R"
+        ],
+        "retur_barang": [
+          "R"
+        ]
+      }
+    },
+    "acc_mgr": {
+      "display_name": "acc_mgr",
+      "modules": {
+        "data_produk": [
+          "R"
+        ]
+      }
+    },
+    "acc_spv": {
+      "display_name": "acc_spv",
+      "modules": {
+        "data_produk": [
+          "R"
+        ]
+      }
+    },
+    "acc_staff": {
+      "display_name": "acc_staff",
+      "modules": {
+        "data_produk": [
+          "R"
+        ]
+      }
+    },
+    "fin_mgr": {
+      "display_name": "fin_mgr",
+      "modules": {
+        "data_produk": [
+          "R"
+        ]
+      }
+    },
+    "fin_staff": {
+      "display_name": "fin_staff",
+      "modules": {
+        "data_produk": [
+          "R"
+        ]
+      }
+    },
+    "cs_staff": {
+      "display_name": "cs_staff",
+      "modules": {
+        "data_produk": [
+          "R"
+        ],
+        "data_stock": [
+          "R"
+        ]
+      }
+    },
+    "mkt_mgr": {
+      "display_name": "mkt_mgr",
+      "modules": {
+        "data_produk": [
+          "R"
+        ],
+        "data_stock": [
+          "R"
+        ]
+      }
+    },
+    "mkt_staff": {
+      "display_name": "mkt_staff",
+      "modules": {
+        "data_produk": [
+          "R"
+        ],
+        "data_stock": [
+          "R"
+        ]
+      }
+    },
+    "sales_spv": {
+      "display_name": "sales_spv",
+      "modules": {
+        "data_produk": [
+          "R"
+        ]
+      }
+    },
+    "sales": {
+      "display_name": "sales",
+      "modules": {
+        "data_produk": [
+          "R"
+        ]
+      }
+    },
+    "tech_head": {
+      "display_name": "tech_head",
+      "modules": {
+        "data_produk": [
+          "R"
+        ],
+        "data_stock": [
+          "R"
+        ]
+      }
+    },
+    "tech_mgr": {
+      "display_name": "tech_mgr",
+      "modules": {
+        "data_produk": [
+          "R"
+        ],
+        "data_stock": [
+          "R"
+        ]
+      }
+    },
+    "technician": {
+      "display_name": "technician",
+      "modules": {
+        "data_produk": [
+          "R"
         ]
       }
     },
     "admin": {
       "display_name": "admin",
       "modules": {
+        "test_module": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ],
         "data_produk": [
           "C",
           "R",
@@ -103,6 +444,48 @@
           "R",
           "U",
           "D"
+        ],
+        "requisisi_barang": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ],
+        "bon_terima_barang": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ],
+        "bon_keluar_barang": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ],
+        "surat_penyerahan_barang": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ],
+        "retur_barang": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ],
+        "report_outstanding": [
+          "R"
+        ],
+        "report_terima_barang": [
+          "R"
+        ],
+        "report_keluar_barang": [
+          "R"
+        ],
+        "report_stock_barang": [
+          "R"
         ]
       }
     }
