@@ -110,7 +110,6 @@ class KeycloakAuth
             // Generate nonce for OIDC replay protection
             $nonce = bin2hex(random_bytes(16));
             $_SESSION['openid_connect_nonce'] = $nonce;
-            $this->oidcClient->setNonce($nonce);
 
             // This redirects to Keycloak and exits (Keycloak will redirect back to /auth/callback)
             $this->oidcClient->authenticate();
