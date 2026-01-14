@@ -110,23 +110,127 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 require_once APPPATH . 'third_party/keycloak-simss-connector/vendor/autoload.php';
 
 use Simss\KeycloakAuth\Controllers\AuthController;
+use Simss\KeycloakAuth\Config\KeycloakConfig;
 
-class AuthKeycloak extends AuthController
+class AuthKeycloak extends CI_Controller
 {
+    protected $authController;
+
     public function __construct()
     {
         parent::__construct();
+
+        // Reset singleton to ensure fresh config is loaded
+        KeycloakConfig::reset();
+
+        // Load keycloak config via CI and pass to KeycloakConfig
+        $this->config->load('keycloak');
+        $keycloakConfig = $this->config->item('keycloak');
+        KeycloakConfig::getInstance($keycloakConfig);
+
+        // Load role-based home URL configuration (if exists)
+        $homeUrlConfig = null;
+        if (file_exists(APPPATH . 'config/keycloak_home_urls.php')) {
+            $this->config->load('keycloak_home_urls');
+            $homeUrlConfig = $this->config->item('keycloak_home_urls');
+        }
+
+        // Create AuthController with home URL configuration
+        $this->authController = new AuthController($homeUrlConfig);
     }
 
-    /**
-     * Override to customize home redirect
-     */
-    protected function getHomeUrl()
+    public function index()
     {
-        return base_url('home');
+        $this->authController->index();
+    }
+
+    public function login()
+    {
+        $this->authController->login();
+    }
+
+    public function callback()
+    {
+        $this->authController->callback();
+    }
+
+    public function logout()
+    {
+        $this->authController->logout();
+    }
+
+    public function check()
+    {
+        $this->authController->check();
     }
 }
 ```
+
+#### Step 5a: (Optional) Configure Role-Based Home URLs
+
+To redirect users to different home pages based on their roles after login, create a home URL configuration file.
+
+**Create `application/config/keycloak_home_urls.php`:**
+
+```php
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+/**
+ * Role-Based Home URL Configuration
+ * 
+ * Maps user roles to their respective home URLs.
+ * When a user logs in, they will be redirected to the URL associated
+ * with their role. If a user has multiple roles, the first matching
+ * role (in order) will be used.
+ */
+
+$config['keycloak_home_urls'] = [
+    // Role-based home URLs (in priority order)
+    'supervisor' => 'supervisor',
+    'admin' => 'admin/dashboard',
+    'staff' => 'home',
+    
+    // Default home URL if no role matches
+    'default' => 'home',
+];
+```
+
+**How it works:**
+
+1. After successful authentication, `AuthController` checks the user's roles from the session
+2. It matches roles against the configuration in order (first match wins)
+3. If a match is found, the user is redirected to that URL
+4. If no role matches, the `default` URL is used
+5. Role matching is case-insensitive
+
+**URL Format:**
+
+- **Relative URLs** (recommended): Use paths relative to `base_url()`
+  - Example: `'supervisor' => 'supervisor'` → redirects to `/supervisor`
+  - Example: `'admin' => 'admin/dashboard'` → redirects to `/admin/dashboard`
+  
+- **Absolute URLs**: Use full URLs for external redirects
+  - Example: `'external' => 'https://external-app.com/dashboard'`
+
+**Example Configuration:**
+
+```php
+$config['keycloak_home_urls'] = [
+    // High priority roles first
+    'super_admin' => 'admin/dashboard',
+    'administrator' => 'admin',
+    'supervisor' => 'supervisor',
+    'manager' => 'manager/home',
+    'staff' => 'staff/dashboard',
+    'viewer' => 'home',
+    
+    // Default fallback
+    'default' => 'home',
+];
+```
+
+**Note:** If you don't create this configuration file, users will be redirected to the default `/home` URL after login.
 
 ### Step 6: Update Routes
 
