@@ -1,0 +1,117 @@
+{
+  "_meta": {
+    "description": "Maps user roles to module privileges (CRUD). Used with endpoint_permissions.json to determine access.",
+    "generated_from": "access_control.csv",
+    "generated_at": "2026-01-14 16:33:55"
+  },
+  "roles": {
+    "branch_mgr": {
+      "display_name": "branch_mgr",
+      "modules": {
+        "data_prospek": [
+          "R"
+        ],
+        "data_kunjungan_prospek": [
+          "R"
+        ],
+        "report_kunjungan_prospek": [
+          "R"
+        ]
+      }
+    },
+    "gen_mgr": {
+      "display_name": "gen_mgr",
+      "modules": {
+        "data_prospek": [
+          "R"
+        ],
+        "data_kunjungan_prospek": [
+          "R"
+        ],
+        "report_kunjungan_prospek": [
+          "R"
+        ]
+      }
+    },
+    "mkt_mgr": {
+      "display_name": "mkt_mgr",
+      "modules": {
+        "data_prospek": [
+          "R"
+        ],
+        "data_kunjungan_prospek": [
+          "R"
+        ],
+        "report_kunjungan_prospek": [
+          "R"
+        ]
+      }
+    },
+    "mkt_staff": {
+      "display_name": "mkt_staff",
+      "modules": {
+        "data_prospek": [
+          "R"
+        ],
+        "data_kunjungan_prospek": [
+          "R"
+        ]
+      }
+    },
+    "sales_spv": {
+      "display_name": "sales_spv",
+      "modules": {
+        "data_prospek": [
+          "C",
+          "R",
+          "U"
+        ],
+        "data_kunjungan_prospek": [
+          "C",
+          "R",
+          "U"
+        ],
+        "report_kunjungan_prospek": [
+          "R"
+        ]
+      }
+    },
+    "sales": {
+      "display_name": "sales",
+      "modules": {
+        "data_prospek": [
+          "C",
+          "R",
+          "U"
+        ],
+        "data_kunjungan_prospek": [
+          "C",
+          "R",
+          "U"
+        ]
+      }
+    },
+    "admin": {
+      "display_name": "admin",
+      "modules": {
+        "data_user": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ],
+        "data_prospek": [
+          "R",
+          "D"
+        ],
+        "data_kunjungan_prospek": [
+          "R",
+          "D"
+        ],
+        "report_kunjungan_prospek": [
+          "R"
+        ]
+      }
+    }
+  }
+}

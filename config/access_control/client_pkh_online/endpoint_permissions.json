@@ -1,0 +1,2162 @@
+{
+  "administrator": {
+    "controller": "pkh",
+    "method": "Administrator",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "administrator-lks": {
+    "controller": "lks",
+    "method": "Administrator",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "backup-sales": {
+    "controller": "pkh",
+    "method": "Backup_Sales",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "branchmanager": {
+    "controller": "pkh",
+    "method": "Branchmanager",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "extra": {
+    "controller": "lks",
+    "method": "Extra",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "koordinator": {
+    "controller": "lks",
+    "method": "Koordinator",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/administrator_lks": {
+    "controller": "Administrator_Lks",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/administrator_lks/getdatasto": {
+    "controller": "Administrator_Lks",
+    "method": "getdatasto",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/administrator_lks/index": {
+    "controller": "Administrator_Lks",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/administrator_lks/save": {
+    "controller": "Administrator_Lks",
+    "method": "save",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/auth": {
+    "controller": "Auth",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/auth/index": {
+    "controller": "Auth",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/auth/login": {
+    "controller": "Auth",
+    "method": "login",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/auth/logout": {
+    "controller": "Auth",
+    "method": "logout",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/auth/set_session": {
+    "controller": "Auth",
+    "method": "set_session",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/authkeycloak": {
+    "controller": "AuthKeycloak",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/authkeycloak/callback": {
+    "controller": "AuthKeycloak",
+    "method": "callback",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/authkeycloak/check": {
+    "controller": "AuthKeycloak",
+    "method": "check",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/authkeycloak/index": {
+    "controller": "AuthKeycloak",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/authkeycloak/login": {
+    "controller": "AuthKeycloak",
+    "method": "login",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/authkeycloak/logout": {
+    "controller": "AuthKeycloak",
+    "method": "logout",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/extra/viewlokasi": {
+    "controller": "Extra",
+    "method": "viewlokasi",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/koordinator": {
+    "controller": "Koordinator",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/koordinator/getdatacabang": {
+    "controller": "Koordinator",
+    "method": "getdatacabang",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/koordinator/getdatalks": {
+    "controller": "Koordinator",
+    "method": "getdatalks",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/koordinator/getdatalksaktif": {
+    "controller": "Koordinator",
+    "method": "getdatalksaktif",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/koordinator/getdatalksexcel": {
+    "controller": "Koordinator",
+    "method": "getdatalksexcel",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/koordinator/getdatalksout": {
+    "controller": "Koordinator",
+    "method": "getdatalksout",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/koordinator/getdatapart": {
+    "controller": "Koordinator",
+    "method": "getdatapart",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/koordinator/getdatarekap": {
+    "controller": "Koordinator",
+    "method": "getdatarekap",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/koordinator/getdatarekapexcel": {
+    "controller": "Koordinator",
+    "method": "getdatarekapexcel",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/koordinator/getdatasupnori": {
+    "controller": "Koordinator",
+    "method": "getdatasupnori",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/koordinator/getdatateknisi": {
+    "controller": "Koordinator",
+    "method": "getdatateknisi",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/koordinator/getdetaillks": {
+    "controller": "Koordinator",
+    "method": "getdetaillks",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/koordinator/index": {
+    "controller": "Koordinator",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/koordinator/lembarkerjaservis": {
+    "controller": "Koordinator",
+    "method": "lembarkerjaservis",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/koordinator/lembarkerjaservisoutstanding": {
+    "controller": "Koordinator",
+    "method": "lembarkerjaservisoutstanding",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/koordinator/rekapkunjungan": {
+    "controller": "Koordinator",
+    "method": "rekapkunjungan",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/koordinator/rekapsupplies": {
+    "controller": "Koordinator",
+    "method": "rekapsupplies",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/teknisi": {
+    "controller": "Teknisi",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/teknisi/batallks": {
+    "controller": "Teknisi",
+    "method": "batallks",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/teknisi/emailnotiflokasi": {
+    "controller": "Teknisi",
+    "method": "EmailNotifLokasi",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/teknisi/emailnotifnonori": {
+    "controller": "Teknisi",
+    "method": "EmailNotifNonOri",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/teknisi/getdaftarlks": {
+    "controller": "Teknisi",
+    "method": "getdaftarlks",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/teknisi/getdaftarlksaktif": {
+    "controller": "Teknisi",
+    "method": "getdaftarlksaktif",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/teknisi/getdatalks": {
+    "controller": "Teknisi",
+    "method": "getdatalks",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/teknisi/gethistorilks": {
+    "controller": "Teknisi",
+    "method": "gethistorilks",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/teknisi/historiservice": {
+    "controller": "Teknisi",
+    "method": "historiservice",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/teknisi/index": {
+    "controller": "Teknisi",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/teknisi/lembarkerjaservis": {
+    "controller": "Teknisi",
+    "method": "lembarkerjaservis",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/teknisi/lksmulai": {
+    "controller": "Teknisi",
+    "method": "lksmulai",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/teknisi/lksselesai": {
+    "controller": "Teknisi",
+    "method": "lksselesai",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "lks/teknisi/uploadbuktisupplies": {
+    "controller": "Teknisi",
+    "method": "uploadbuktisupplies",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "marketing": {
+    "controller": "pkh",
+    "method": "Marketing",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/administrator": {
+    "controller": "Administrator",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/administrator/index": {
+    "controller": "Administrator",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/administrator/save": {
+    "controller": "Administrator",
+    "method": "save",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/authkeycloak": {
+    "controller": "AuthKeycloak",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/authkeycloak/callback": {
+    "controller": "AuthKeycloak",
+    "method": "callback",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/authkeycloak/check": {
+    "controller": "AuthKeycloak",
+    "method": "check",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/authkeycloak/index": {
+    "controller": "AuthKeycloak",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/authkeycloak/login": {
+    "controller": "AuthKeycloak",
+    "method": "login",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/authkeycloak/logout": {
+    "controller": "AuthKeycloak",
+    "method": "logout",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/branchmanager": {
+    "controller": "Branchmanager",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/branchmanager/approval": {
+    "controller": "Branchmanager",
+    "method": "approval",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/branchmanager/getdatacustse": {
+    "controller": "Branchmanager",
+    "method": "getdatacustse",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/branchmanager/getdatagraph": {
+    "controller": "Branchmanager",
+    "method": "getdatagraph",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/branchmanager/getdatakunj": {
+    "controller": "Branchmanager",
+    "method": "getdatakunj",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/branchmanager/getdatakunjse": {
+    "controller": "Branchmanager",
+    "method": "getdatakunjse",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/branchmanager/getdataproduk": {
+    "controller": "Branchmanager",
+    "method": "getdataproduk",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/branchmanager/getdataprospek": {
+    "controller": "Branchmanager",
+    "method": "getdataprospek",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/branchmanager/getdatase": {
+    "controller": "Branchmanager",
+    "method": "getdatase",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/branchmanager/index": {
+    "controller": "Branchmanager",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/branchmanager/savempp": {
+    "controller": "Branchmanager",
+    "method": "savempp",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/marketing": {
+    "controller": "Marketing",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/marketing/ajax_getdatakunj": {
+    "controller": "Marketing",
+    "method": "ajax_getdatakunj",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/marketing/approval": {
+    "controller": "Marketing",
+    "method": "approval",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/marketing/downloadkjskp": {
+    "controller": "Marketing",
+    "method": "downloadkjskp",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/marketing/getdatagraph": {
+    "controller": "Marketing",
+    "method": "getdatagraph",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/marketing/getdatakunj": {
+    "controller": "Marketing",
+    "method": "getdatakunj",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/marketing/getdatakunjexcel": {
+    "controller": "Marketing",
+    "method": "getdatakunjexcel",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/marketing/getdataproduk": {
+    "controller": "Marketing",
+    "method": "getdataproduk",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/marketing/getdatase": {
+    "controller": "Marketing",
+    "method": "getdatase",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/marketing/index": {
+    "controller": "Marketing",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/marketing/savekomentar": {
+    "controller": "Marketing",
+    "method": "savekomentar",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales": {
+    "controller": "Sales",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/cancel_kunj": {
+    "controller": "Sales",
+    "method": "cancel_kunj",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/downloadpkh": {
+    "controller": "Sales",
+    "method": "downloadpkh",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/getautocompletenewcust": {
+    "controller": "Sales",
+    "method": "getautocompletenewcust",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/getdaftarmesin": {
+    "controller": "Sales",
+    "method": "getdaftarmesin",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/getdaftarpkh": {
+    "controller": "Sales",
+    "method": "getdaftarpkh",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/getdatacust": {
+    "controller": "Sales",
+    "method": "getdatacust",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/getdatacustdetail": {
+    "controller": "Sales",
+    "method": "getdatacustdetail",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/getdatadept": {
+    "controller": "Sales",
+    "method": "getdatadept",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/getdataharapan": {
+    "controller": "Sales",
+    "method": "getdataharapan",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/getdatajbtn": {
+    "controller": "Sales",
+    "method": "getdatajbtn",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/getdatajnsdokctk": {
+    "controller": "Sales",
+    "method": "getdatajnsdokctk",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/getdatajnskj": {
+    "controller": "Sales",
+    "method": "getdatajnskj",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/getdatakertas": {
+    "controller": "Sales",
+    "method": "getdatakertas",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/getdatakunjaktif": {
+    "controller": "Sales",
+    "method": "getdatakunjaktif",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/getdatapic": {
+    "controller": "Sales",
+    "method": "getdatapic",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/getdatapkh": {
+    "controller": "Sales",
+    "method": "getdatapkh",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/getdatapreviewkunj": {
+    "controller": "Sales",
+    "method": "getdatapreviewkunj",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/getdetailhistkunj": {
+    "controller": "Sales",
+    "method": "getdetailhistkunj",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/gethistkunj": {
+    "controller": "Sales",
+    "method": "gethistkunj",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/getkunjaktif": {
+    "controller": "Sales",
+    "method": "getkunjaktif",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/histori": {
+    "controller": "Sales",
+    "method": "histori",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/index": {
+    "controller": "Sales",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/index2": {
+    "controller": "Sales",
+    "method": "index2",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/programkerja": {
+    "controller": "Sales",
+    "method": "programkerja",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/save_kunj": {
+    "controller": "Sales",
+    "method": "save_kunj",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/save_kunjexcel": {
+    "controller": "Sales",
+    "method": "save_kunjexcel",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/save_kunjtambahan": {
+    "controller": "Sales",
+    "method": "save_kunjtambahan",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/save_newcust": {
+    "controller": "Sales",
+    "method": "save_newcust",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/save_perj": {
+    "controller": "Sales",
+    "method": "save_perj",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/save_sup": {
+    "controller": "Sales",
+    "method": "save_sup",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/update_kunj": {
+    "controller": "Sales",
+    "method": "update_kunj",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/update_perj": {
+    "controller": "Sales",
+    "method": "update_perj",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/sales/uploadbuktidemo": {
+    "controller": "Sales",
+    "method": "uploadbuktidemo",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/supervisor": {
+    "controller": "Supervisor",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/supervisor/approval": {
+    "controller": "Supervisor",
+    "method": "approval",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/supervisor/datakunj": {
+    "controller": "Supervisor",
+    "method": "datakunj",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/supervisor/getdataaktivse": {
+    "controller": "Supervisor",
+    "method": "getdataaktivse",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/supervisor/getdatacab": {
+    "controller": "Supervisor",
+    "method": "getdatacab",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/supervisor/getdatacustse": {
+    "controller": "Supervisor",
+    "method": "getdatacustse",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/supervisor/getdatagraph": {
+    "controller": "Supervisor",
+    "method": "getdatagraph",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/supervisor/getdatagraphkunj": {
+    "controller": "Supervisor",
+    "method": "getdatagraphkunj",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/supervisor/getdatajadwalse": {
+    "controller": "Supervisor",
+    "method": "getdatajadwalse",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/supervisor/getdatakunj": {
+    "controller": "Supervisor",
+    "method": "getdatakunj",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/supervisor/getdatakunjse": {
+    "controller": "Supervisor",
+    "method": "getdatakunjse",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/supervisor/getdatapkh": {
+    "controller": "Supervisor",
+    "method": "getdatapkh",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/supervisor/getdatase": {
+    "controller": "Supervisor",
+    "method": "getdatase",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/supervisor/getdataspv": {
+    "controller": "Supervisor",
+    "method": "getdataspv",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/supervisor/getdatasummarykjse": {
+    "controller": "Supervisor",
+    "method": "getdatasummarykjse",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/supervisor/index": {
+    "controller": "Supervisor",
+    "method": "index",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/supervisor/kunjungansales": {
+    "controller": "Supervisor",
+    "method": "kunjungansales",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/supervisor/programkerja": {
+    "controller": "Supervisor",
+    "method": "programkerja",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/supervisor/rencanaaktivitas": {
+    "controller": "Supervisor",
+    "method": "rencanaaktivitas",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/supervisor/rencanakunjungan": {
+    "controller": "Supervisor",
+    "method": "rencanakunjungan",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/supervisor/savempp": {
+    "controller": "Supervisor",
+    "method": "savempp",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "pkh/supervisor/summarykunjungan": {
+    "controller": "Supervisor",
+    "method": "summarykunjungan",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "sales": {
+    "controller": "pkh",
+    "method": "Sales",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "supervisor": {
+    "controller": "pkh",
+    "method": "Supervisor",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  },
+  "teknisi": {
+    "controller": "lks",
+    "method": "Teknisi",
+    "modules": [
+      {
+        "name": "module_name",
+        "permissions": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ]
+      }
+    ]
+  }
+}

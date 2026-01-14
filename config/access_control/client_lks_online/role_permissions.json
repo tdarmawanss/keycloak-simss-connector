@@ -1,0 +1,116 @@
+{
+  "_meta": {
+    "description": "Maps user roles to module privileges (CRUD). Used with endpoint_permissions.json to determine access.",
+    "generated_from": "access_control.csv",
+    "generated_at": "2026-01-14 16:34:12"
+  },
+  "roles": {
+    "branch_mgr": {
+      "display_name": "branch_mgr",
+      "modules": {
+        "data_lks": [
+          "R"
+        ],
+        "data_kunjungan_lks": [
+          "R"
+        ],
+        "report_kunjungan_lks": [
+          "R"
+        ]
+      }
+    },
+    "gen_mgr": {
+      "display_name": "gen_mgr",
+      "modules": {
+        "data_lks": [
+          "R"
+        ],
+        "data_kunjungan_lks": [
+          "R"
+        ],
+        "report_kunjungan_lks": [
+          "R"
+        ]
+      }
+    },
+    "cs_staff": {
+      "display_name": "cs_staff",
+      "modules": {
+        "data_lks": [
+          "C",
+          "R"
+        ],
+        "report_kunjungan_lks": [
+          "R"
+        ]
+      }
+    },
+    "tech_head": {
+      "display_name": "tech_head",
+      "modules": {
+        "data_lks": [
+          "R",
+          "U"
+        ],
+        "data_kunjungan_lks": [
+          "C",
+          "R",
+          "U"
+        ],
+        "report_kunjungan_lks": [
+          "R"
+        ]
+      }
+    },
+    "tech_mgr": {
+      "display_name": "tech_mgr",
+      "modules": {
+        "data_lks": [
+          "R"
+        ],
+        "data_kunjungan_lks": [
+          "R"
+        ],
+        "report_kunjungan_lks": [
+          "R"
+        ]
+      }
+    },
+    "tech": {
+      "display_name": "tech",
+      "modules": {
+        "data_lks": [
+          "R",
+          "U"
+        ],
+        "data_kunjungan_lks": [
+          "C",
+          "R",
+          "U"
+        ]
+      }
+    },
+    "admin": {
+      "display_name": "admin",
+      "modules": {
+        "data_user": [
+          "C",
+          "R",
+          "U",
+          "D"
+        ],
+        "data_lks": [
+          "R",
+          "D"
+        ],
+        "data_kunjungan_lks": [
+          "R",
+          "D"
+        ],
+        "report_kunjungan_lks": [
+          "R"
+        ]
+      }
+    }
+  }
+}

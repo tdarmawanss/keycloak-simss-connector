@@ -247,12 +247,12 @@ class CI3EndpointParser:
 def main():
     """Main entry point for the script."""
     # Path to your CI3 application
-    ci3_app_path = "/Users/discovery-air/Documents/simadiskc/application"
+    ci3_app_path = "/Users/discovery-air/Dropbox/Work/MUGI/SS/SIMSS/PKH-Online/application"
 
     # Output path for the JSON file
-    client_id = "client_simadis"
+    client_id = "client_pkh_online"
     filename = "endpoint_permissions.json"
-    output_json = f"/Users/discovery-air/Documents/simadiskc/application/third_party/keycloak-simss-connector/config/access_control/{client_id}/{filename}"
+    output_json = f"/Users/discovery-air/Dropbox/Work/MUGI/SS/SIMSS/PKH-Online/application/third_party/keycloak-simss-connector/config/access_control/{client_id}/{filename}"
 
     # Create parser and run
     parser = CI3EndpointParser(ci3_app_path)
