@@ -19,26 +19,47 @@ class AuthController
     protected $config;
     protected $ci;
     protected $cache;
+    protected $homeUrlConfig;
 
-    public function __construct()
+    /**
+     * Constructor
+     * 
+     * @param array|null $homeUrlConfig Optional role-based home URL configuration
+     *                                  Format: ['role_name' => 'url', 'default' => 'url']
+     */
+    public function __construct($homeUrlConfig = null)
     {
+        // Store home URL configuration
+        $this->homeUrlConfig = $homeUrlConfig;
+
+        // Initialize session manager first (doesn't require config)
+        $this->sessionManager = new SessionManager();
+
         // Initialize configuration
         try {
             $this->config = KeycloakConfig::getInstance();
         } catch (\Exception $e) {
-            $this->handleError("Configuration error. Please contact administrator.");
-            return;
+            // Log the actual error for debugging
+            $this->logError('Configuration initialization failed', $e);
+            // Don't return early - allow methods to handle config errors gracefully
+            $this->config = null;
         }
 
-        // Initialize auth and session managers
-        $this->keycloakAuth = new KeycloakAuth($this->config);
-        $this->sessionManager = new SessionManager();
+        // Initialize auth manager only if config is available
+        if ($this->config !== null) {
+            try {
+                $this->keycloakAuth = new KeycloakAuth($this->config);
+            } catch (\Exception $e) {
+                $this->logError('KeycloakAuth initialization failed', $e);
+                $this->keycloakAuth = null;
+            }
+        }
 
         // Load CodeIgniter instance if available
         if (function_exists('get_instance')) {
             $this->ci =& get_instance();
             // Optional cache driver for rate limiting (uses file cache by default)
-            if (property_exists($this->ci, 'load')) {
+            if ($this->ci && property_exists($this->ci, 'load')) {
                 try {
                     $this->ci->load->driver('cache', ['adapter' => 'file']);
                     $this->cache = $this->ci->cache;
@@ -72,6 +93,12 @@ class AuthController
      */
     public function login()
     {
+        // Check if configuration is available
+        if ($this->keycloakAuth === null) {
+            $this->handleError("Configuration error. Please contact administrator.");
+            return;
+        }
+
         try {
             // Check if already authenticated, via PHP session
             if ($this->sessionManager->isAuthenticated()) {
@@ -105,6 +132,12 @@ class AuthController
      */
     public function callback()
     {
+        // Check if configuration is available
+        if ($this->keycloakAuth === null) {
+            $this->handleError("Configuration error. Please contact administrator.");
+            return;
+        }
+
         try {
             // Basic rate limiting on callback as well
             if ($this->isRateLimited('auth_callback', 60, 300)) { // 60 per 5 minutes
@@ -151,6 +184,12 @@ public function logout()
         $this->sessionManager->destroy();
 
         // Use POST-based logout (more secure - doesn't expose token in URL)
+        // If keycloakAuth is not available, just redirect to home
+        if ($this->keycloakAuth === null) {
+            $this->redirect($postLogoutRedirect);
+            return;
+        }
+
         echo $this->keycloakAuth->getLogoutForm($idToken, $postLogoutRedirect);
         exit;
 
@@ -203,10 +242,16 @@ public function logout()
      * Handle successful authentication by creating a new PHP session
      * and storing the user information in the session.
      * The user is then redirected to the intended URL or home URL otherwise.
-
+    
      */
     protected function handleSuccessfulAuthentication()
     {
+        // Check if configuration is available
+        if ($this->keycloakAuth === null) {
+            $this->handleError("Configuration error. Please contact administrator.");
+            return;
+        }
+
         // Get user information from Keycloak
         $userInfo = $this->keycloakAuth->getUserInfo();
 
@@ -525,11 +570,72 @@ public function logout()
             && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
     }
 
+    /**
+     * Get home URL based on user role
+     * 
+     * If homeUrlConfig is provided, checks user roles and returns
+     * the URL for the first matching role. Falls back to 'default'
+     * or standard '/home' if no match is found.
+     * 
+     * @return string Home URL
+     */
     protected function getHomeUrl()
     {
+        // If no role-based configuration, use default behavior
+        if (empty($this->homeUrlConfig)) {
+            return function_exists('base_url')
+                ? base_url('home')
+                : $this->getBaseUrl() . '/home';
+        }
+
+        // Check if user is authenticated and has roles
+        if (!$this->sessionManager->isAuthenticated()) {
+            // Not authenticated - use default
+            $defaultUrl = $this->homeUrlConfig['default'] ?? 'home';
+            return function_exists('base_url')
+                ? base_url($defaultUrl)
+                : $this->getBaseUrl() . '/' . ltrim($defaultUrl, '/');
+        }
+
+        // Get user roles from session
+        $userRoles = $this->sessionManager->getRoles();
+        
+        // Also check for standard Keycloak roles in session data
+        $sessionData = $this->sessionManager->getSessionData();
+        if (empty($userRoles) && !empty($sessionData['roles'])) {
+            $userRoles = $sessionData['roles'];
+        }
+        
+        // Check each role in configuration order (first match wins)
+        foreach ($this->homeUrlConfig as $role => $url) {
+            // Skip 'default' key - it's not a role
+            if ($role === 'default') {
+                continue;
+            }
+
+            // Case-insensitive role matching
+            foreach ($userRoles as $userRole) {
+                if (strtolower($userRole) === strtolower($role)) {
+                    // Found matching role - return its URL
+                    // URL can be relative (will use base_url) or absolute
+                    if (filter_var($url, FILTER_VALIDATE_URL)) {
+                        // Absolute URL
+                        return $url;
+                    } else {
+                        // Relative URL
+                        return function_exists('base_url')
+                            ? base_url($url)
+                            : $this->getBaseUrl() . '/' . ltrim($url, '/');
+                    }
+                }
+            }
+        }
+
+        // No role matched - use default
+        $defaultUrl = $this->homeUrlConfig['default'] ?? 'home';
         return function_exists('base_url')
-            ? base_url('home')
-            : $this->getBaseUrl() . '/home';
+            ? base_url($defaultUrl)
+            : $this->getBaseUrl() . '/' . ltrim($defaultUrl, '/');
     }
 
     protected function getLoginUrl()
