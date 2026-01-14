@@ -32,24 +32,66 @@ class KeycloakConfig
     private function loadConfigFile()
     {
         // For CodeIgniter integration
-        if (function_exists('config_item')) {
+        if (function_exists('config_item') && function_exists('get_instance')) {
             $ci =& get_instance();
-            $ci->load->config('keycloak', TRUE);
-            $config = $ci->config->item('keycloak');
-
-            // If CodeIgniter config loading failed, try direct file loading
-            if (empty($config) && defined('APPPATH')) {
-                $ciConfigPath = APPPATH . 'config/keycloak.php';
-                if (file_exists($ciConfigPath)) {
-                    $configData = require $ciConfigPath;
-                    return $configData['keycloak'] ?? [];
+            
+            // Check if CI instance is available and has required properties
+            if ($ci !== null && is_object($ci) && property_exists($ci, 'load') && property_exists($ci, 'config')) {
+                try {
+                    $ci->load->config('keycloak', TRUE);
+                    $config = $ci->config->item('keycloak');
+                    
+                    if (!empty($config)) {
+                        return $config;
+                    }
+                } catch (\Exception $e) {
+                    // Fall through to direct file loading
                 }
             }
 
-            return $config ?: [];
+            // If CodeIgniter config loading failed or CI not available, try direct file loading
+            if (defined('APPPATH')) {
+                $ciConfigPath = APPPATH . 'config/keycloak.php';
+                if (file_exists($ciConfigPath)) {
+                    // The keycloak.php file may set $config['keycloak'] instead of returning
+                    // So we need to capture both the return value and the $config variable
+                    $config = [];
+                    $returned = require $ciConfigPath;
+                    
+                    // If file returned something, use it
+                    if (is_array($returned) && isset($returned['keycloak'])) {
+                        return $returned['keycloak'];
+                    }
+                    
+                    // Otherwise, check if $config['keycloak'] was set
+                    if (isset($config['keycloak']) && is_array($config['keycloak'])) {
+                        return $config['keycloak'];
+                    }
+                }
+            }
         }
 
-        // Standalone loading
+        // Standalone loading or fallback
+        if (defined('APPPATH')) {
+            $ciConfigPath = APPPATH . 'config/keycloak.php';
+            if (file_exists($ciConfigPath)) {
+                // The keycloak.php file may set $config['keycloak'] instead of returning
+                $config = [];
+                $returned = require $ciConfigPath;
+                
+                // If file returned something, use it
+                if (is_array($returned) && isset($returned['keycloak'])) {
+                    return $returned['keycloak'];
+                }
+                
+                // Otherwise, check if $config['keycloak'] was set
+                if (isset($config['keycloak']) && is_array($config['keycloak'])) {
+                    return $config['keycloak'];
+                }
+            }
+        }
+
+        // Last resort: try connector's own config directory
         $configPath = dirname(dirname(__DIR__)) . '/config/keycloak.php';
         if (file_exists($configPath)) {
             return require $configPath;
