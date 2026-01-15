@@ -20,3 +20,4 @@ RUN /opt/keycloak/bin/kc.sh build
 
 # Default command - can be overridden
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
+CMD ["start-dev"]
